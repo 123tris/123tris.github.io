@@ -69,13 +69,13 @@ I’ll be measuring my comprehension using 2 methods:
 Although very simplified I think a vocabulary count is the purest form of someone’s comprehension ability. It is not possible to comprehend a message when parts of it are not understood. Regardless of how advanced your understanding of grammar is. Likewise no matter how many words you have memorized, if you do not understand the grammar used, comprehending the meaning of what is said will also be perilous. Although assessing someone’s vocabulary can be hard, fortunately jpdb keeps track of all the vocab I’ve acquired through sentence mining and reviewing. Since I’ve started I’ve acquired over roughly 9 thousand words of the almost 13 thousand words I have mined.
 
 
-![alt_text](images/image4.png "image_tooltip")
+![image](https://github.com/123tris/123tris.github.io/assets/4441805/d57429a4-2ac5-4afd-9d5b-82a8682213b0)
 
 
 which has cost me roughly 11.3 thousand minutes to review the flashcards alone
 
 
-![alt_text](images/image5.png "image_tooltip")
+![image](https://github.com/123tris/123tris.github.io/assets/4441805/c77a388d-ea3f-47c1-bcaf-dacbe8b4058c)
 
 
 
