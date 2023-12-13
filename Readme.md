@@ -88,11 +88,12 @@ I’ll be using sample questions of the N2 from JLPT (Japanese Language Proficie
 I’ve used the sample question available from the official website: https://www.jlpt.jp/e/samples/forlearners.html
 
 I score 7/19 (37%) correct before my study
-![alt_text](images/image6.png "image_tooltip")
+![image](https://github.com/123tris/123tris.github.io/assets/4441805/eefa11d7-911e-4755-9319-0e60335d523e)
+
 
 
 I scored 16/19 correct (84%) after. An increase of 47%.
-![alt_text](images/image7.png "image_tooltip")
+![image](https://github.com/123tris/123tris.github.io/assets/4441805/f24bf94c-30f8-4f79-b24f-1a0b66ca75b8)
 
 
 
