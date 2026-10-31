@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tristan Metz — Portfolio</title>
+  <meta name="description" content="Projects by Tristan Metz: Ryze, the Lumen endoscopy simulator, Ripple, BotBandJazz, the Tristeon C++ engine, an osu!catch level editor and more.">
+  <meta property="og:title" content="Tristan Metz — Portfolio">
+  <meta property="og:image" content="../assets/img/ryze-trailer.webp">
+  <link rel="icon" href="../assets/img/favicon.png">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="alternate" hreflang="ja" href="../portfolio.html">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="index.html">Résumé</a>
+    <a href="portfolio.html" aria-current="page">Portfolio</a>
+    <a class="lang" href="../portfolio.html" hreflang="ja" lang="ja">日本語</a>
+  </nav>
+
+  <main class="container">
+    <h1 class="page-title">Here's some of my work</h1>
+
+    <!-- ===================== RYZE ===================== -->
+    <article class="project" id="ryze">
+      <div class="project-media">
+        <video class="shot" controls preload="none" poster="../assets/img/ryze-trailer.webp" width="1280" height="720">
+          <source src="../assets/video/ryze-trailer.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="project-info">
+        <h2>Ryze</h2>
+        <p class="subtitle">Idomi Games · on Steam, playtest out now</p>
+        <dl>
+          <dt>Description</dt>
+          <dd>A 2D precision platformer where you climb by throwing yourself: charge a throw, launch a pearl and teleport
+            to wherever it lands, while platforms shift between two dimensions.</dd>
+          <dt>Duration</dt>
+          <dd>2022 — present. It began as our Global Game Jam entry and grew into a commercial release.</dd>
+          <dt>What I did</dt>
+          <dd><ul>
+            <li>Programmer and co-founder</li>
+            <li>The character controller and throw-to-teleport movement, the game's core feel</li>
+            <li>Level mechanics, from moving and crumbling platforms to pistons and conveyor belts, plus a test level that exercises every one</li>
+            <li>A reusable dialogue system with NPCs, walk-up cutscenes and localization</li>
+          </ul></dd>
+          <dt>What I used</dt>
+          <dd>Unity 6, C#, Input System, Odin Inspector, <a href="projects/ripple.html">Ripple</a></dd>
+        </dl>
+        <div class="links">
+          <a class="btn btn-primary" href="projects/ryze.html">More info</a>
+          <a href="https://store.steampowered.com/app/4137850/Ryze/">Steam page</a>
+        </div>
+      </div>
+    </article>
+
+    <hr>
+
+    <!-- ===================== LUMEN ===================== -->
+    <article class="project" id="lumen">
+      <div class="project-media">
+        <video class="shot" autoplay muted loop playsinline preload="metadata" poster="../assets/img/lumen-dissection.webp" width="1280" height="720">
+          <source src="../assets/video/lumen-dissection.mp4" type="video/mp4">
+        </video>
+        <p class="caption">Submucosal dissection in Lumen, driven by the custom endoscope controller</p>
+      </div>
+      <div class="project-info">
+        <h2>Lumen</h2>
+        <p class="subtitle">XR Japan · endoscopy simulator</p>
+        <dl>
+          <dt>Description</dt>
+          <dd>A virtual training platform where doctors practise endoscopic submucosal dissection (ESD) on a realistic,
+            moving esophagus, using a dedicated endoscope controller and foot pedal. Supervised by a leading
+            endoscopist and now in beta.</dd>
+          <dt>Duration</dt>
+          <dd>Ongoing, as lead programmer</dd>
+          <dt>What I did</dt>
+          <dd><ul>
+            <li>Lead programmer: architecture, conventions and the technical side of client and partner conversations</li>
+            <li>Tissue behaviour during the procedure, on Burst-compiled solvers</li>
+            <li>Lesion marking and the input from the custom endoscope controller</li>
+            <li>Load-time and frame-time optimization</li>
+          </ul></dd>
+          <dt>What I used</dt>
+          <dd>Unity, C#, URP, Burst/Jobs, custom hardware input</dd>
+        </dl>
+        <div class="links">
+          <a class="btn btn-primary" href="projects/lumen.html">More info</a>
+          <a href="https://xrjapan.co.jp/">Product page (Japanese)</a>
+        </div>
+      </div>
+    </article>
+
+    <hr>
+
+    <!-- ===================== RIPPLE ===================== -->
+    <article class="project" id="ripple">
+      <div class="project-media gallery">
+        <img class="shot" src="../assets/img/ripple-invoked.webp" alt="Ripple inspector during play: the Invoked by table lists the Player as caller with call count and last value" width="1600" height="900">
+        <div class="thumbs">
+          <button type="button" aria-pressed="true" data-full="../assets/img/ripple-invoked.webp"><img src="../assets/img/thumbs/ripple-invoked.webp" alt="Ripple inspector during play: the Invoked by table"></button>
+          <button type="button" aria-pressed="false" data-full="../assets/img/ripple-logger.webp"><img src="../assets/img/thumbs/ripple-logger.webp" alt="Ripple Event Logger listing events raised during play" loading="lazy"></button>
+          <button type="button" aria-pressed="false" data-full="../assets/img/ripple-listeners.webp"><img src="../assets/img/thumbs/ripple-listeners.webp" alt="Scan Listeners on the Player_Shoot event" loading="lazy"></button>
+          <button type="button" aria-pressed="false" data-full="../assets/img/ripple-wizard.webp"><img src="../assets/img/thumbs/ripple-wizard.webp" alt="The Ripple Wizard listing every Ripple asset in the project" loading="lazy"></button>
+        </div>
+      </div>
+      <div class="project-info">
+        <h2>Ripple</h2>
+        <p class="subtitle">Open-source Unity framework</p>
+        <dl>
+          <dt>Description</dt>
+          <dd>A ScriptableObject framework: shared variables, typed events and runtime sets live in assets, so systems
+            talk to data instead of to each other. Unlike other takes on the pattern, it shows you who changed what.</dd>
+          <dt>Duration</dt>
+          <dd>2024 — present</dd>
+          <dt>Features</dt>
+          <dd><ul>
+            <li>An "Invoked by" table on every asset: caller, call count and last value</li>
+            <li>One click finds every listener across code, scenes and prefabs</li>
+            <li>A wizard to browse every asset, and a live event logger</li>
+            <li>Runs in all of my recent games, including Ryze</li>
+          </ul></dd>
+          <dt>What I used</dt>
+          <dd>Unity, C#, Odin Inspector, UltEvents, reflection, UPM</dd>
+        </dl>
+        <div class="links">
+          <a class="btn btn-primary" href="projects/ripple.html">More info</a>
+          <a href="https://github.com/123tris/Ripple">GitHub</a>
+        </div>
+      </div>
+    </article>
+
+    <hr>
+
+    <!-- ===================== BOTBANDJAZZ ===================== -->
+    <article class="project" id="botbandjazz">
+      <div class="project-media gallery">
+        <img class="shot" src="../assets/img/botbandjazz-theatre.webp" alt="BotBandJazz: the theatre seen from the player's seat in VR" width="1014" height="498">
+        <div class="thumbs">
+          <button type="button" aria-pressed="true" data-full="../assets/img/botbandjazz-theatre.webp"><img src="../assets/img/botbandjazz-theatre.webp" alt="The theatre in VR"></button>
+          <button type="button" aria-pressed="false" data-full="../assets/img/botbandjazz-teleport.webp"><img src="../assets/img/thumbs/botbandjazz-3.webp" alt="The teleport target in front of the theatre's music machine" loading="lazy"></button>
+          <button type="button" aria-pressed="false" data-full="../assets/img/botbandjazz-title.webp"><img src="../assets/img/botbandjazz-title.webp" alt="BotBandJazz title art" loading="lazy"></button>
+        </div>
+      </div>
+      <div class="project-info">
+        <h2>BotBandJazz</h2>
+        <p class="subtitle">HTC Vive · shown at the Dutch Game Garden</p>
+        <dl>
+          <dt>Description</dt>
+          <dd>A VR game set in an old theatre: play mini-games around the hall to get a robot jazz band back on stage.
+            It was exhibited at the Dutch Game Garden and entered in the Dutch Game Awards 2017.</dd>
+          <dt>Duration</dt>
+          <dd>10 weeks in 2017, team of 6</dd>
+          <dt>What I did</dt>
+          <dd><ul>
+            <li>Teleport locomotion: a projected arc that finds a valid place to land</li>
+            <li>A trigger system for designers: pick a function from a dropdown and fill in its parameters</li>
+            <li>A BPM-based level editor inside Unity for the rhythm mini-game</li>
+            <li>Physics interactions with the Vive controllers</li>
+          </ul></dd>
+          <dt>What I used</dt>
+          <dd>Unity, C#, SteamVR, HTC Vive</dd>
+        </dl>
+        <div class="links">
+          <a class="btn btn-primary" href="projects/botbandjazz.html">More info</a>
+        </div>
+      </div>
+    </article>
+
+    <hr>
+
+    <!-- ===================== TRISTEON ===================== -->
+    <article class="project" id="tristeon">
+      <div class="project-media">
+        <img class="shot contain" src="../assets/img/tristeon3d-editor.webp" alt="Tristeon 3D editor with scene view, hierarchy, inspector and asset browser" width="1600" height="841">
+      </div>
+      <div class="project-info">
+        <h2>Tristeon</h2>
+        <p class="subtitle">C++ game engine · with Leon Brands</p>
+        <dl>
+          <dt>Description</dt>
+          <dd>A 3D engine written from scratch by two students in five months, with a Vulkan renderer and a
+            Unity-style editor. 70+ stars on GitHub.</dd>
+          <dt>Duration</dt>
+          <dd>2017</dd>
+          <dt>What I did</dt>
+          <dd><ul>
+            <li>The complete editor: scene view, hierarchy, inspector and asset browser</li>
+            <li>Reflection and serialization: scenes and prefabs saved as JSON, objects rebuilt by type name</li>
+            <li>An inspector that edits any component without hand-written UI</li>
+          </ul></dd>
+          <dt>What I used</dt>
+          <dd>C++, Vulkan, ImGui, GLFW, Assimp, GLM, CMake</dd>
+        </dl>
+        <div class="links">
+          <a class="btn btn-primary" href="projects/tristeon.html">More info</a>
+          <a href="https://github.com/Tristeon/Tristeon3D">GitHub</a>
+          <a href="https://www.youtube.com/watch?v=6kVTGHOJu-E">Showcase video</a>
+        </div>
+      </div>
+    </article>
+
+    <hr>
+
+    <!-- ===================== SHROOMER ===================== -->
+    <article class="project" id="shroomer">
+      <div class="project-media">
+        <video class="shot" autoplay muted loop playsinline preload="metadata" poster="../assets/img/shroomer-combat.webp" width="960" height="540">
+          <source src="../assets/video/shroomer-combat.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="project-info">
+        <h2>Shroomer</h2>
+        <p class="subtitle">GMTK Game Jam 2026 · theme "Countdown"</p>
+        <dl>
+          <dt>Description</dt>
+          <dd>A psychedelic movement shooter set in a dream. Your alarm clock is counting down, and only kills buy you more
+            time to stay asleep.</dd>
+          <dt>Duration</dt>
+          <dd>4 days, team of 4</dd>
+          <dt>What I did</dt>
+          <dd><ul>
+            <li>All programming</li>
+            <li>A momentum-based controller: air-strafing, wall-running, sliding, dashing and mantling</li>
+            <li>A composable enemy system: one component, with movement and attacks picked from dropdowns</li>
+            <li>Shooting, the countdown loop, menus and settings</li>
+          </ul></dd>
+          <dt>What I used</dt>
+          <dd>Unity 6, C#, Ripple, FMOD, Feel</dd>
+        </dl>
+        <div class="links">
+          <a class="btn btn-primary" href="projects/shroomer.html">More info</a>
+          <a href="https://123tris.itch.io/shroomer">Play in browser</a>
+        </div>
+      </div>
+    </article>
+
+    <hr>
+
+    <!-- ===================== CTB EDITOR ===================== -->
+    <article class="project" id="ctb-editor">
+      <div class="project-media">
+        <video class="shot contain" controls preload="none" poster="../assets/img/ctb-editor.webp" width="1600" height="900">
+          <source src="../assets/img/ctb-editor.mp4" type="video/mp4">
+        </video>
+        <p class="caption">Editing a map with correctly timed hitsounds (sound on)</p>
+      </div>
+      <div class="project-info">
+        <h2>osu!catch level editor</h2>
+        <p class="subtitle">Community tool</p>
+        <dl>
+          <dt>Description</dt>
+          <dd>The rhythm game osu! has millions of players but no proper editor for its catch mode, so I built one:
+            a beat-accurate timeline, editing tools and a built-in play mode to test a map instantly.</dd>
+          <dt>Duration</dt>
+          <dd>2018 — 2019, solo</dd>
+          <dt>Features</dt>
+          <dd><ul>
+            <li>A shader-drawn beat grid that stays exact at any zoom level and BPM</li>
+            <li>Undo/redo for every edit, plus importing and exporting osu! beatmaps</li>
+            <li>Playback on the audio clock, so timing never drifts</li>
+            <li>Built with constant feedback from the player community</li>
+          </ul></dd>
+          <dt>What I used</dt>
+          <dd>Unity, C#, ShaderLab, NAudio</dd>
+        </dl>
+        <div class="links">
+          <a class="btn btn-primary" href="projects/ctb-editor.html">More info</a>
+          <a href="https://github.com/123tris/CTB-Editor">GitHub</a>
+        </div>
+      </div>
+    </article>
+
+    <hr>
+
+    <!-- ===================== THIS SIDE UP ===================== -->
+    <article class="project" id="this-side-up">
+      <div class="project-media">
+        <video class="shot" autoplay muted loop playsinline preload="metadata" poster="../assets/img/thissideup-play.webp" width="960" height="540">
+          <source src="../assets/video/thissideup-play.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="project-info">
+        <h2>This Side Up</h2>
+        <p class="subtitle">Mini Jam 188 · limitation "All in a box"</p>
+        <dl>
+          <dt>Description</dt>
+          <dd>A pixel-art platformer about delivering a package, except you cannot jump. A boxing glove launches you
+            through the level instead.</dd>
+          <dt>Duration</dt>
+          <dd>72 hours, team of 5</dd>
+          <dt>What I did</dt>
+          <dd><ul>
+            <li>All programming</li>
+            <li>Boxing-glove propulsion with a mid-air second punch, aimed with mouse or gamepad</li>
+            <li>Gravity that rotates 90 degrees at trigger zones, with music that follows each orientation</li>
+              <li>Sticky walls, moving platforms, conveyor belts, dialogue and FMOD audio</li>
+          </ul></dd>
+          <dt>What I used</dt>
+          <dd>Unity, C#, FMOD, Ripple</dd>
+        </dl>
+        <div class="links">
+          <a class="btn btn-primary" href="projects/this-side-up.html">More info</a>
+          <a href="https://phbarralis.itch.io/this-side-up">Play in browser</a>
+        </div>
+      </div>
+    </article>
+
+    <hr>
+
+    <!-- ===================== MORE JAMS ===================== -->
+    <section id="more-jams">
+      <h2 class="section-title">More game jams</h2>
+      <div class="cards">
+        <div class="card">
+          <img src="../assets/img/thumbs/hako-3.webp" alt="Hako: the player next to a box with a door" loading="lazy">
+          <h3>Hako</h3>
+          <div class="meta">Mini Jam 154 · programming</div>
+          <p>A puzzle platformer about travelling through rooms inside nested boxes.</p>
+          <a href="https://123tris.itch.io/hako">itch.io</a>
+        </div>
+        <div class="card">
+          <img src="../assets/img/thumbs/islandrevolution.webp" alt="Island Revolution title screen" loading="lazy">
+          <h3>Island Revolution</h3>
+          <div class="meta">Kenney Jam 2024 · with MindNoMore</div>
+          <p>Connect your city to nearby islands for resources, before unmet demands spark a revolt.</p>
+          <a href="https://123tris.itch.io/island-revolution">itch.io</a>
+        </div>
+        <div class="card">
+          <img src="../assets/img/thumbs/consumption.webp" alt="Consumption key art" loading="lazy">
+          <h3>Consumption</h3>
+          <div class="meta">Ludum Dare 52 · programming</div>
+          <p>An action game: harvest enemies to survive, harvest ores to get stronger.</p>
+          <a href="https://123tris.itch.io/consumption">itch.io</a>
+        </div>
+        <div class="card">
+          <img src="../assets/img/thumbs/equilibrium.webp" alt="Equilibrium title screen" loading="lazy">
+          <h3>Equilibrium</h3>
+          <div class="meta">Global Game Jam 2022</div>
+          <p>A two-world platformer made in 48 hours. It became the starting point of <a href="projects/ryze.html">Ryze</a>.</p>
+          <a href="https://123tris.itch.io/equilibrium">itch.io</a>
+        </div>
+        <div class="card">
+          <img src="../assets/img/thumbs/rocktheboat.webp" alt="Rock the Boat: pirate ships on the waves" loading="lazy">
+          <h3>Rock the Boat</h3>
+          <div class="meta">Global Game Jam 2017 · buoyancy physics &amp; UI</div>
+          <p>Rocking pirates. My first game jam.</p>
+          <a href="https://leon-brands.itch.io/rock-the-boat">itch.io</a>
+        </div>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- ===================== MORE PROJECTS ===================== -->
+    <section id="earlier">
+      <h2 class="section-title">More projects</h2>
+      <div class="cards">
+        <div class="card">
+          <img src="../assets/img/thumbs/orb-2.webp" alt="Orb: a level built in Unity running in our own C++ engine" loading="lazy">
+          <h3>Orb</h3>
+          <div class="meta">Custom C++ engine · 2017</div>
+          <p>A first-person puzzle game on our first engine. I wrote its physics engine and serialization, and turned
+            Unity into its level editor.</p>
+          <a class="btn btn-primary" href="projects/orb.html">More info</a>
+        </div>
+        <div class="card">
+          <img src="../assets/img/thumbs/wren.webp" alt="Benchmark chart comparing C# and Wren" loading="lazy">
+          <h3>C# vs. Wren</h3>
+          <div class="meta">Research · scripting for a C++ engine</div>
+          <p>Which scripting language should a C++ engine embed? I measured runtime speed, compile time and the cost of
+            calling into C++.</p>
+          <a class="btn btn-primary" href="projects/wren.html">More info</a>
+        </div>
+        <div class="card" id="ghostebash">
+          <img src="../assets/img/thumbs/ghostebash.webp" alt="Ghostebash: the haunted museum level" loading="lazy">
+          <h3>Ghostebash</h3>
+          <div class="meta">VR Amsterdam · free-roaming VR · 2021 — 2022</div>
+          <p>A multiplayer ghost-hunting game for a VR arcade where groups share one real room. Sole programmer:
+            local multiplayer with Mirror, full-body IK and physics interactions.</p>
+        </div>
+        <div class="card">
+          <img src="../assets/img/thumbs/abyss.webp" alt="Abyss: a forest level layout in the Unity editor" loading="lazy">
+          <h3>Abyss</h3>
+          <div class="meta">2D Metroidvania · sole programmer · 2018 — 2019</div>
+          <p>A hand-drawn Metroidvania about a demon sealed at the bottom of an abyss. As its only programmer I built
+            combat, enemies, healing, parallax layers, floor-material footsteps and a depth-layer editor for the artists.</p>
+        </div>
+        <div class="card">
+          <img src="../assets/img/thumbs/back2bed.webp" alt="Back to Bed!: a bedroom in VR" loading="lazy">
+          <h3>Back to Bed!</h3>
+          <div class="meta">VR · 3 weeks · 2 programmers · 2016</div>
+          <p>My first VR game, made when consumer VR had just launched. VR player controller, menus, an event system and
+            a node-based dialogue editor for the designers.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr>
+
+    <section id="other">
+      <h2 class="section-title">Also on GitHub</h2>
+      <ul>
+        <li><a href="https://github.com/123tris/SystemPattern">SystemPattern</a>: a Unity add-on that replaces singletons with explicitly loaded systems</li>
+        <li><a href="https://github.com/123tris/UnityUtilities">UnityUtilities</a>: scene references, a collision event manager and other utilities used across my projects</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>© 2026 Tristan Metz · <a href="index.html">Résumé</a></footer>
+  <script src="../assets/js/site.js"></script>
+</body>
+</html>
