@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ryze — Tristan Metz</title>
+  <meta name="description" content="Ryze, a 2D precision platformer by Idomi Games. Tristan Metz is a programmer and co-founder.">
+  <meta property="og:image" content="../../assets/img/ryze-trailer.webp">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="alternate" hreflang="ja" href="../../projects/ryze.html">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">Résumé</a>
+    <a href="../portfolio.html" aria-current="page">Portfolio</a>
+    <a class="lang" href="../../projects/ryze.html" hreflang="ja" lang="ja">日本語</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>Ryze</h1>
+      <p class="lead">A 2D precision platformer about climbing by throwing yourself, made by Idomi Games, the studio I
+        co-founded. As a programmer on the team I focus on how the character feels to control and on the mechanics
+        the levels are built from.</p>
+      <p class="facts">Unity 6 · C# · 2022 — present · Steam playtest out now</p>
+      <a class="btn btn-primary" href="https://store.steampowered.com/app/4137850/Ryze/">Steam page</a>
+      <a class="btn" href="https://idomigames.itch.io/ryze">itch.io</a>
+    </div>
+    <div class="hero-media">
+      <video class="shot" controls preload="metadata" poster="../../assets/img/ryze-trailer.webp" width="1280" height="720">
+        <source src="../../assets/video/ryze-trailer.mp4" type="video/mp4">
+      </video>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>One verb, done well</h2>
+        <p>Ryze has a single movement verb: charge a throw, release a pearl, and teleport to wherever it lands. The
+          character controller runs on a small state machine (grounded, aiming, pearl in flight, respawning), and
+          a lot of care goes into the moments between states. A press just before landing is buffered, so it still
+          counts. Walking off an edge turns you into the pearl instead of dropping you. Probes under each foot notice
+          when you are teetering on a ledge, so the animation can react before you fall.</p>
+        <p>The pearl bounces off walls and rolls down slopes, and on long throws the camera hands over to it, so the
+          player never loses sight of where they will land.</p>
+      </div>
+      <figure>
+        <video class="shot" autoplay muted loop playsinline poster="../../assets/img/ryze-long-throw.webp" width="800" height="450">
+          <source src="../../assets/video/ryze-long-throw.mp4" type="video/mp4">
+        </video>
+        <figcaption>A long throw: the camera follows the pearl up into the next area</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>Charging the throw</h2>
+        <p>Holding the button charges the throw for more height, up to a cap, and the throw goes off by itself
+          when the cap is reached or the player starts to fall. Readable code for the core loop matters: this is the
+          part of the game that gets tuned the most.</p>
+      </div>
+<pre><code><span class="k">if</span> (PlayerInput.Shoot.WasPressedThisFrame())
+    shootPressedAt = Time.unscaledTime;
+
+<span class="c">// A press shortly before landing still counts.</span>
+<span class="k">if</span> (CanShoot &amp;&amp; Mode != ShootingMode.Aiming
+    &amp;&amp; PlayerInput.Shoot.IsPressed() &amp;&amp; HasBufferedShootPress)
+{
+    shootPressedAt = <span class="k">float</span>.NegativeInfinity;
+    chargingFX.ChargeShot();
+    Mode = ShootingMode.Aiming;
+}
+
+<span class="k">if</span> (Mode == ShootingMode.Aiming)
+{
+    aimTime += Time.deltaTime * buildUpSpeed;
+    <span class="k">if</span> (IsFalling || PlayerInput.Shoot.WasReleasedThisFrame()
+        || aimTime &gt;= maxBuildUp)
+        <span class="t">Shoot</span>();
+}</code></pre>
+    </section>
+
+    <hr>
+
+    <section id="test-level">
+      <h2 class="section-title">A test level for every mechanic</h2>
+      <p style="max-width:46rem;margin:0 auto 1.75rem;text-align:center">Every mechanic I add gets its own station in
+        one long technical test level. A change to the controller can be checked against all of them in a minute,
+        and designers see each component working on its own before they use it in a real level. Each one is a
+        self-contained component, tuned from the inspector.</p>
+      <p style="max-width:46rem;margin:0 auto 1.75rem;text-align:center">Time bubbles are one of them. The character,
+        the pearl and the pistons each run on their own timeline (built on the Chronos plugin), so a bubble changes
+        the speed of everything inside it: movement, physics and animation slow down or speed up together.</p>
+      <div class="clip-grid two">
+        <figure>
+          <video class="shot" autoplay muted loop playsinline poster="../../assets/img/ryze-test-throws.webp" width="960" height="540">
+            <source src="../../assets/video/ryze-test-throws.mp4" type="video/mp4">
+          </video>
+          <figcaption>Short, medium and fully charged throws</figcaption>
+        </figure>
+        <figure>
+          <video class="shot" autoplay muted loop playsinline poster="../../assets/img/ryze-test-bubbles.webp" width="960" height="540">
+            <source src="../../assets/video/ryze-test-bubbles.mp4" type="video/mp4">
+          </video>
+          <figcaption>Walking through a bubble that doubles time, then falling through one that halves it</figcaption>
+        </figure>
+        <figure>
+          <video class="shot" autoplay muted loop playsinline poster="../../assets/img/ryze-test-conveyor.webp" width="960" height="540">
+            <source src="../../assets/video/ryze-test-conveyor.mp4" type="video/mp4">
+          </video>
+          <figcaption>Walking against a conveyor belt, then with it</figcaption>
+        </figure>
+        <figure>
+          <video class="shot" autoplay muted loop playsinline poster="../../assets/img/ryze-test-crumble.webp" width="960" height="540">
+            <source src="../../assets/video/ryze-test-crumble.mp4" type="video/mp4">
+          </video>
+          <figcaption>A crumbling platform gives way, then rebuilds when the world shifts between light and dark</figcaption>
+        </figure>
+      </div>
+      <p class="caption" style="margin-top:1rem">Recorded in the test level. Other stations cover moving and slippery
+        platforms, pistons, dialogue triggers, area banners and Japanese text.</p>
+    </section>
+
+    <hr>
+
+    <section class="detail">
+      <div>
+        <h2>A dialogue system that travels</h2>
+        <p>I wrote this dialogue system for an earlier project and brought it into Ryze with its core unchanged. Three
+          decisions made that possible:</p>
+        <ul>
+          <li><b>It knows nothing about the UI.</b> Each line goes out as a Ripple event. Every NPC listens and shows
+            its speech bubble only when the line is theirs and the player is close, and the dialogue sounds listen
+            to the same event. A new project only needs a new view.</li>
+          <li><b>The caller decides when a line moves on.</b> Starting a dialogue is one awaitable call that takes
+            the condition for advancing. Trigger zones, walk-up cutscenes and lines that react when the player keeps
+            failing at a checkpoint are each a small component around that call.</li>
+          <li><b>Dialogues are data.</b> Writers edit lines and speakers as assets in the inspector, and every line
+            has a localized version that falls back to the English text.</li>
+        </ul>
+      </div>
+      <figure>
+        <video class="shot" autoplay muted loop playsinline poster="../../assets/img/ryze-dialogue.webp" width="800" height="450">
+          <source src="../../assets/video/ryze-dialogue.mp4" type="video/mp4">
+        </video>
+        <figcaption>An NPC conversation in the game</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>Built on Ripple</h2>
+        <p>Game state in Ryze runs on <a href="ripple.html">Ripple</a>, my ScriptableObject framework: the player's
+          visibility, the camera target and every gameplay event are assets. Systems stay decoupled, and when
+          something goes wrong in a playtest, the inspector shows who changed what.</p>
+      </div>
+      <figure>
+        <video class="shot" autoplay muted loop playsinline poster="../../assets/img/ryze-ricochet.webp" width="800" height="450">
+          <source src="../../assets/video/ryze-ricochet.mp4" type="video/mp4">
+        </video>
+        <figcaption>The pearl bouncing off walls on its way up</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <p class="credits">Made by Idomi Games: Tristan Metz (programming), Arjen de Aldrey (programming),
+      Canozalez (level design &amp; writing), Chaos-1001 (art) and Pierre-Henri Barralis (music &amp; audio).</p>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#ryze">← Back to the portfolio</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>
