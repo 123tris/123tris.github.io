@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lumen — Tristan Metz</title>
+  <meta name="description" content="Lumen, XR Japan's virtual endoscopy trainer. Tristan Metz is its lead programmer.">
+  <meta property="og:image" content="../../assets/img/lumen-dissection.webp">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="alternate" hreflang="ja" href="../../projects/lumen.html">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">Résumé</a>
+    <a href="../portfolio.html" aria-current="page">Portfolio</a>
+    <a class="lang" href="../../projects/lumen.html" hreflang="ja" lang="ja">日本語</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>Lumen</h1>
+      <p class="lead">A virtual training platform for endoscopic surgery. Doctors practise a complete endoscopic submucosal
+        dissection (ESD) with a dedicated endoscope controller and foot pedal, without risk to a patient. I am its lead
+        programmer at XR Japan.</p>
+      <p class="facts">Unity · C# · Burst · custom hardware · in beta</p>
+      <a class="btn btn-primary" href="https://xrjapan.co.jp/">Product page (Japanese)</a>
+    </div>
+    <div class="hero-media">
+      <video class="shot" autoplay muted loop playsinline poster="../../assets/img/lumen-dissection.webp" width="1280" height="720">
+        <source src="../../assets/video/lumen-dissection.mp4" type="video/mp4">
+      </video>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>Why it matters</h2>
+        <p>Endoscopic procedures take years to master, and young doctors have little time and few mentors to learn
+          them from. Lumen gives every trainee the same high-quality, repeatable practice environment, available
+          wherever there is a PC and the controller. The scenarios are supervised by the head of gastroenterology
+          at Tokyo Metropolitan Komagome Hospital.</p>
+        <p>The beta focuses on ESD in the esophagus, with more procedures and scenarios planned.</p>
+      </div>
+      <figure>
+        <img class="shot contain" src="../../assets/img/lumen-hero.webp" alt="Lumen running on a monitor next to the endoscope controller" width="1100" height="942" style="aspect-ratio:auto">
+      </figure>
+    </section>
+
+    <hr>
+
+    <section>
+      <h2 class="section-title">The full procedure, step by step</h2>
+      <div class="clip-grid">
+        <figure>
+          <video class="shot" autoplay muted loop playsinline poster="../../assets/img/lumen-marking.webp" width="1280" height="720">
+            <source src="../../assets/video/lumen-marking.mp4" type="video/mp4">
+          </video>
+          <figcaption>Marking around the lesion</figcaption>
+        </figure>
+        <figure>
+          <video class="shot" autoplay muted loop playsinline poster="../../assets/img/lumen-injection.webp" width="1280" height="720">
+            <source src="../../assets/video/lumen-injection.mp4" type="video/mp4">
+          </video>
+          <figcaption>Submucosal injection lifts the tissue</figcaption>
+        </figure>
+        <figure>
+          <video class="shot" autoplay muted loop playsinline poster="../../assets/img/lumen-incision.webp" width="1280" height="720">
+            <source src="../../assets/video/lumen-incision.mp4" type="video/mp4">
+          </video>
+          <figcaption>Mucosal incision along the markings</figcaption>
+        </figure>
+        <figure>
+          <video class="shot" autoplay muted loop playsinline poster="../../assets/img/lumen-dissection.webp" width="1280" height="720">
+            <source src="../../assets/video/lumen-dissection.mp4" type="video/mp4">
+          </video>
+          <figcaption>Dissecting the submucosal layer</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>What I built</h2>
+        <ul>
+          <li><b>Tissue behaviour.</b> How the tissue responds to each step of the procedure, running on Burst-compiled
+            solvers so it stays smooth at a high frame rate.</li>
+          <li><b>Lesion marking.</b> Placing and showing the markings that guide the incision.</li>
+          <li><b>Controller input.</b> Turning the custom endoscope controller and foot pedal into precise movement of
+            the endoscope tip: push and pull, rotation and angle.</li>
+          <li><b>Performance.</b> Faster loading of the mesh data and frame-time work on the simulation.</li>
+          <li><b>Lead programmer.</b> Architecture and conventions, code reviews, mentoring, and the technical side of
+            conversations with doctors and partners.</li>
+        </ul>
+      </div>
+      <figure>
+        <video class="shot" autoplay muted loop playsinline poster="../../assets/img/lumen-controller.webp" width="1280" height="720">
+          <source src="../../assets/video/lumen-controller.mp4" type="video/mp4">
+        </video>
+        <figcaption>Push and pull on the controller moves the endoscope through the esophagus</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <section class="detail">
+      <div>
+        <h2>A living esophagus</h2>
+        <p>The environment is reconstructed from real endoscope footage, and the esophagus moves with natural
+          peristalsis, so trainees have to work with a moving target just like in a real procedure.</p>
+      </div>
+      <figure>
+        <video class="shot" autoplay muted loop playsinline poster="../../assets/img/lumen-peristalsis.webp" width="1280" height="720">
+          <source src="../../assets/video/lumen-peristalsis.mp4" type="video/mp4">
+        </video>
+        <figcaption>Peristalsis</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <p class="credits">Footage from XR Japan's public product video. Lumen is developed by the team at XR Japan.</p>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#lumen">← Back to the portfolio</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>
