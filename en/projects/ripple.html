@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ripple — Tristan Metz</title>
+  <meta name="description" content="Ripple, an open-source ScriptableObject framework for Unity by Tristan Metz.">
+  <meta property="og:image" content="../../assets/img/ripple-invoked.webp">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="alternate" hreflang="ja" href="../../projects/ripple.html">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">Résumé</a>
+    <a href="../portfolio.html" aria-current="page">Portfolio</a>
+    <a class="lang" href="../../projects/ripple.html" hreflang="ja" lang="ja">日本語</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>Ripple</h1>
+      <p class="lead">An open-source ScriptableObject framework for Unity, built around one question the pattern
+        usually cannot answer: who changed this, and who is listening?</p>
+      <p class="facts">Unity · C# · editor tooling · 2024 — present</p>
+      <a class="btn btn-primary" href="https://github.com/123tris/Ripple">GitHub</a>
+    </div>
+    <div class="hero-media">
+      <img class="shot contain" src="../../assets/img/ripple-invoked.webp" alt="Ripple inspector during play: the Invoked by table lists callers, call counts and last values" width="1600" height="900">
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>The idea</h2>
+        <p>Shared variables, typed events and runtime sets live in assets. A health bar does not need a reference to
+          the player: both point at the same <code>Player_Health</code> asset. Systems stay decoupled, designers can
+          wire things up in the inspector, and scenes load in any order.</p>
+        <p>Variables can persist between sessions with one toggle, and references switch between a constant and an
+          asset, so prototypes can start simple and grow.</p>
+      </div>
+<pre><code><span class="c">// Gameplay code only holds references to assets.</span>
+[SerializeField] FloatVariableSO shotsFired;
+[SerializeField] BoolVariableSO  playerVisible;
+[SerializeField] VoidEventSO     onTeleport;
+
+<span class="k">void</span> <span class="t">Shoot</span>()
+{
+    <span class="c">// Passing "this" fills the Invoked by table.</span>
+    shotsFired.SetCurrentValue(
+        shotsFired.CurrentValue + <span class="s">1</span>, <span class="k">this</span>);
+    playerVisible.SetCurrentValue(<span class="k">false</span>);
+}</code></pre>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>Debuggable by design</h2>
+        <p>The usual complaint about this pattern is that it hides control flow: an event fires and nobody knows
+          from where. Ripple answers that directly in the inspector. During play, every asset lists who invoked it,
+          how many times and with what value.</p>
+        <p>"Scan listeners" goes the other way: it finds everything that reacts to an asset, across serialized event
+          calls, runtime subscribers, and listener components in every scene and prefab.</p>
+      </div>
+      <figure>
+        <img class="shot contain" src="../../assets/img/ripple-listeners.webp" alt="Scan Listeners on the Player_Shoot event finds the gun in the scene and in the player prefab" width="1600" height="900">
+        <figcaption>Scan listeners on <code>Player_Shoot</code>: the gun in the scene and in the player prefab</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <section class="detail">
+      <div>
+        <h2>Tools for the whole team</h2>
+        <p>The Ripple Wizard lists every Ripple asset in the project by type, to browse and edit them in one place.
+          The event logger shows each event the moment it fires, with its sender, which makes bug reports from
+          playtests far easier to follow.</p>
+        <p>All diagnostics compile out of player builds, and the runtime is IL2CPP-safe, so the tooling costs nothing
+          in a shipped game.</p>
+      </div>
+      <figure>
+        <img class="shot contain" src="../../assets/img/ripple-logger.webp" alt="Ripple Event Logger listing events raised during play and who raised them" width="1600" height="900">
+        <figcaption>The event logger during a fight in Shroomer</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>Proven in production</h2>
+        <p>Ripple started as the backbone of my own games and runs in all of my recent ones: <a href="ryze.html">Ryze</a>, <a href="shroomer.html">Shroomer</a> and
+          <a href="this-side-up.html">This Side Up</a>.</p>
+      </div>
+      <figure>
+        <img class="shot contain" src="../../assets/img/ripple-wizard.webp" alt="The Ripple Wizard listing every Ripple asset in the project by type" width="1600" height="900">
+        <figcaption>The Ripple Wizard</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#ripple">← Back to the portfolio</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>
