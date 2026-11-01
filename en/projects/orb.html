@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orb — Tristan Metz</title>
+  <meta name="description" content="Orb, a first-person puzzle game on a custom C++ engine. Tristan Metz wrote the engine's physics and serialization and made Unity its level editor.">
+  <meta property="og:image" content="../../assets/img/orb-unity.webp">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="alternate" hreflang="ja" href="../../projects/orb.html">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">Résumé</a>
+    <a href="../portfolio.html" aria-current="page">Portfolio</a>
+    <a class="lang" href="../../projects/orb.html" hreflang="ja" lang="ja">日本語</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>Orb</h1>
+      <p class="lead">A first-person puzzle game about a test subject in a lab who moves glowing orbs to open the way
+        forward. It runs on our first C++ engine, which two of us built alongside the game. I wrote the engine's
+        physics, scene management and serialization, the pipeline that turned Unity into our level editor, and the
+        gameplay on top.</p>
+      <p class="facts">C++ · OpenGL · Unity as level editor · 2017 · with Leon Brands</p>
+    </div>
+    <div class="hero-media">
+      <img class="shot" src="../../assets/img/orb-game.webp" alt="Orb running in our C++ engine: a lab room with an orb on a pedestal and the player's orb gun" width="1600" height="900">
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>Unity as the level editor</h2>
+        <p>A custom engine with no editor means levels written by hand, and we had one school project to build both an engine and a game. So I made Unity the
+          editor instead. Designers built levels in Unity with our own components: a manager, a player controller,
+          rigidbodies and colliders that mirrored the C++ ones field for field.</p>
+        <p>A custom exporter serialized the scene, and the engine loaded it and rebuilt every object by type name.
+          The designers kept the tool they knew, and we never had to write an editor.</p>
+      </div>
+      <figure>
+        <img class="shot contain" src="../../assets/img/orb-unity.webp" alt="A level in the Unity editor on the left, running live in our C++ engine on the right" width="1600" height="900">
+        <figcaption>A level in Unity (left) and the same level running in our engine (right)</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>A physics engine from scratch</h2>
+        <p>Orb is a physics puzzle game, so the physics had to be solid. I wrote it myself: rigidbodies with gravity,
+          drag, bounciness and friction, AABB collision with continuous collision detection so fast objects never
+          tunnel through walls, triggers for the puzzles, and raycasts.</p>
+        <p>Serialization handles polymorphic objects and shared pointers, so the same code saves scenes and prefabs
+          and loads what Unity exported.</p>
+      </div>
+      <figure>
+        <img class="shot contain" src="../../assets/img/orb-physics.webp" alt="Our engine's window with collider debug drawing, over the same room in Unity with our Custom Box Collider in the inspector" width="1600" height="869">
+        <figcaption>Collider debug view in our engine, over the same room in Unity with our collider component selected</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <section class="detail">
+      <div>
+        <h2>The game on top</h2>
+        <p>On the gameplay side I wrote the character and camera controller, the trigger logic that drives each puzzle
+          and the orbs themselves. The designers planned every room on paper first, and those plans became Unity
+          scenes, then levels in the engine.</p>
+      </div>
+      <figure>
+        <img class="shot contain" src="../../assets/img/orb-level.webp" alt="A designer's level plan drawn over the layout in Unity" width="807" height="500">
+        <figcaption>A designer's plan for one of the rooms</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <p class="credits">Built with Leon Brands, who wrote the renderer. We went on to build <a href="tristeon.html">Tristeon</a> together.</p>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#earlier">← Back to the portfolio</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>C# vs. Wren — Tristan Metz</title>
+  <meta name="description" content="A benchmark of C# and Wren as embedded scripting languages for a C++ game engine, by Tristan Metz.">
+  <meta property="og:image" content="../../assets/img/thumbs/wren.webp">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="alternate" hreflang="ja" href="../../projects/wren.html">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">Résumé</a>
+    <a href="../portfolio.html" aria-current="page">Portfolio</a>
+    <a class="lang" href="../../projects/wren.html" hreflang="ja" lang="ja">日本語</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>C# vs. Wren</h1>
+      <p class="lead">Our C++ engine <a href="tristeon.html">Tristeon</a> had no scripting layer. Before picking one, I
+        measured the two strongest candidates: Wren, a small embeddable language in the spirit of Lua, and C#, the
+        industry standard that is much harder to embed in C++.</p>
+      <p class="facts">C++ · C# · Wren · benchmarking</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>Three questions</h2>
+        <p>Runtime speed is the obvious one, but for an engine it is not the whole story. I measured three things:</p>
+        <ul>
+          <li><b>Runtime performance:</b> arithmetic, filling a list, and allocating user-defined types, each 100,000
+            times.</li>
+          <li><b>Compile time:</b> how long a change takes to become runnable, which decides how fast designers can
+            iterate.</li>
+          <li><b>C++ interop cost:</b> what each call across the language boundary costs, since engine scripts do
+            little else.</li>
+        </ul>
+        <p>Wren is a C library and needs only a thin C++ wrapper. For C# the options were P/Invoke, COM interop,
+          embedded interop types and hosting through Mono.</p>
+      </div>
+<pre><code><span class="c">// Arithmetic (C#)</span>
+<span class="k">for</span> (<span class="k">int</span> i = <span class="s">0</span>; i &lt; <span class="s">100000</span>; i++)
+{
+    <span class="k">int</span> x = <span class="s">0</span>, y = <span class="s">10</span>;
+    <span class="k">int</span> result = x * y / (i + <span class="s">1</span>);
+}
+
+<span class="c">// Collections (Wren)</span>
+<span class="k">var</span> items = []
+<span class="k">for</span> (i <span class="k">in</span> <span class="s">1</span>..<span class="s">100000</span>) {
+    items.add(i * i)
+}</code></pre>
+    </section>
+
+    <hr>
+
+    <section>
+      <h2 class="section-title">Results</h2>
+      <div class="charts">
+        <figure class="panel chart" style="margin:0">
+          <h3>Arithmetic (µs, lower is better)</h3>
+          <div class="bars wide">
+            <div class="bar"><span>Wren</span><i class="alt" style="width:100%"></i><em>7,910</em></div>
+            <div class="bar"><span>C#</span><i style="width:9.2%"></i><em>726</em></div>
+          </div>
+        </figure>
+        <figure class="panel chart" style="margin:0">
+          <h3>Lists (µs, lower is better)</h3>
+          <div class="bars wide">
+            <div class="bar"><span>Wren</span><i class="alt" style="width:100%"></i><em>4,912</em></div>
+            <div class="bar"><span>C#</span><i style="width:15.9%"></i><em>779</em></div>
+          </div>
+        </figure>
+        <figure class="panel chart" style="margin:0">
+          <h3>Allocating objects (µs, lower is better)</h3>
+          <div class="bars wide">
+            <div class="bar"><span>Wren</span><i class="alt" style="width:100%"></i><em>31,000</em></div>
+            <div class="bar"><span>C#</span><i style="width:6.8%"></i><em>2,105</em></div>
+          </div>
+        </figure>
+        <figure class="panel chart" style="margin:0">
+          <h3>Compile time (µs, lower is better)</h3>
+          <div class="bars wide">
+            <div class="bar"><span>Wren</span><i class="alt" style="width:.5%"></i><em>53</em></div>
+            <div class="bar"><span>C#</span><i style="width:100%"></i><em>88,000</em></div>
+          </div>
+        </figure>
+        <figure class="panel chart" style="margin:0">
+          <h3>Calling into C++ (ms, lower is better)</h3>
+          <div class="bars wide">
+            <div class="bar"><span>Wren</span><i class="alt" style="width:.5%"></i><em>&lt; 1</em></div>
+            <div class="bar"><span>C#</span><i style="width:100%"></i><em>117</em></div>
+          </div>
+        </figure>
+      </div>
+      <p class="caption" style="max-width:46rem;margin:1.25rem auto 0">How these were measured: each runtime benchmark
+        is one of the loops above, 100,000 iterations, written the same way in both languages. This was a short
+        university study, not a full benchmark suite, so read the results as orders of magnitude rather than exact
+        figures. Timings like these shift with hardware, runtime version and JIT warm-up.</p>
+    </section>
+
+    <hr>
+
+    <section class="detail wide">
+      <div>
+        <h2>A trade-off, not a winner</h2>
+        <p>C# ran 6 to 15 times faster. Wren compiled over a thousand times faster, and its calls into C++ were close
+          to free, where C# paid a real price for every crossing.</p>
+        <p>So the right choice depends on what the scripts do. Gameplay scripts in an engine mostly glue engine
+          systems together, calling into C++ constantly and changing all the time, which favours Wren's cheap interop
+          and instant iteration. Heavy computation belongs in C++ either way.</p>
+      </div>
+    </section>
+
+    <hr>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#earlier">← Back to the portfolio</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>

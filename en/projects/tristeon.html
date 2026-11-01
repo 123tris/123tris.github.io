@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tristeon — Tristan Metz</title>
+  <meta name="description" content="Tristeon, a C++ game engine with a Vulkan renderer and editor, by Tristan Metz and Leon Brands.">
+  <meta property="og:image" content="../../assets/img/tristeon3d-editor.webp">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="alternate" hreflang="ja" href="../../projects/tristeon.html">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">Résumé</a>
+    <a href="../portfolio.html" aria-current="page">Portfolio</a>
+    <a class="lang" href="../../projects/tristeon.html" hreflang="ja" lang="ja">日本語</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>Tristeon</h1>
+      <p class="lead">A 3D game engine written from scratch in C++ by two students in five months, with a Vulkan
+        renderer and a Unity-style editor. I was the engine tools programmer: the editor, reflection and
+        serialization.</p>
+      <p class="facts">C++ · Vulkan · ImGui · 2017 · 70+ stars on GitHub</p>
+      <a class="btn btn-primary" href="https://github.com/Tristeon/Tristeon3D">GitHub</a>
+      <a class="btn" href="https://www.youtube.com/watch?v=6kVTGHOJu-E">Showcase video</a>
+    </div>
+    <div class="hero-media">
+      <img class="shot contain" src="../../assets/img/tristeon3d-editor.webp" alt="The Tristeon 3D editor with scene view, hierarchy, inspector and asset browser" width="1600" height="841">
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail wide">
+      <div>
+        <h2>An editor like the ones we used</h2>
+        <p>Tristeon 3D was built in five months by two students. I wrote its complete editor in ImGui: a scene view
+          with transform gizmos, a hierarchy, an inspector that edits any component, and an asset browser.</p>
+        <p>The asset browser scans the project folder and generates a metadata file for every asset, holding its
+          import settings, so assets can be renamed and moved without breaking references. The editor lives in its
+          own layer, separate from the engine and game code, so a game ships without it.</p>
+      </div>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>Reflection and serialization</h2>
+        <p>C++ has no reflection, so we built our own. Every serializable type registers a factory in a static map before
+          <code>main</code> runs. Scenes and prefabs are stored as JSON with the type name of each object, and the
+          deserializer rebuilds any component from that name, including types the engine has never heard of, written
+          by the game.</p>
+        <p>The same introspection drives the inspector: it can show and edit any component without hand-written UI.</p>
+      </div>
+<pre><code><span class="k">template</span> &lt;<span class="k">typename</span> T&gt;
+<span class="k">struct</span> <span class="t">DerivedRegister</span> : TypeRegister
+{
+    DerivedRegister()
+    {
+        getMap()-&gt;emplace(TRISTEON_TYPENAME(T),
+                          &amp;CreateInstance&lt;T&gt;);
+    }
+};
+
+<span class="k">static</span> std::unique_ptr&lt;IntrospectionInterface&gt;
+<span class="t">createInstance</span>(<span class="k">const</span> std::string&amp; s)
+{
+    <span class="k">const auto</span> it = getMap()-&gt;find(s);
+    <span class="k">if</span> (it == getMap()-&gt;end()) <span class="k">return nullptr</span>;
+    <span class="k">return</span> it-&gt;second();
+}
+
+<span class="c">// In a component's header:</span>
+REGISTER_TYPE_H(MeshRenderer)</code></pre>
+    </section>
+
+    <hr>
+
+    <section class="detail">
+      <div>
+        <h2>Where it came from</h2>
+        <p>Tristeon grew out of our first engine, built earlier that year for the puzzle game
+          <a href="orb.html">Orb</a>. There I wrote the physics and made Unity the level editor; Tristeon was the
+          step to a real editor of our own.</p>
+        <p>Choosing a scripting language for the engine led to a separate study:
+          <a href="wren.html">C# vs. Wren</a>.</p>
+      </div>
+      <figure>
+        <img class="shot contain" src="../../assets/img/tristeon-unity-pipeline.webp" alt="A level built in Unity on the left, running live in our first engine on the right" width="1600" height="900">
+        <figcaption>Our first engine, running a level built in Unity</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <p class="credits">Built with Leon Brands, who focused on rendering.</p>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#tristeon">← Back to the portfolio</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>
