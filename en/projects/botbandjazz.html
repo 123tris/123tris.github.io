@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BotBandJazz — Tristan Metz</title>
+  <meta name="description" content="BotBandJazz, a VR game for the HTC Vive shown at the Dutch Game Garden. Tristan Metz was its generalist programmer.">
+  <meta property="og:image" content="../../assets/img/botbandjazz-theatre.webp">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="alternate" hreflang="ja" href="../../projects/botbandjazz.html">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">Résumé</a>
+    <a href="../portfolio.html" aria-current="page">Portfolio</a>
+    <a class="lang" href="../../projects/botbandjazz.html" hreflang="ja" lang="ja">日本語</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>BotBandJazz</h1>
+      <p class="lead">A VR game made by six students in ten weeks: explore an old theatre and play mini-games to bring a
+        robot jazz band back to the stage. It was exhibited at the Dutch Game Garden and entered in the Dutch Game
+        Awards 2017. I was the team's generalist programmer: gameplay, VR physics and tools.</p>
+      <p class="facts">Unity · C# · HTC Vive · 10 weeks · team of 6 · 2017</p>
+    </div>
+    <div class="hero-media">
+      <img class="shot contain" src="../../assets/img/botbandjazz-theatre.webp" alt="The theatre of BotBandJazz, seen from the player's seat" width="1014" height="498">
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>Getting around a theatre in VR</h2>
+        <p>The theatre is far bigger than a living room, so players move by teleporting. Pointing a Vive controller
+          draws an arc: a projectile curve traced segment by segment until it hits the world. Only flat, walkable
+          surfaces count as a landing spot, so nobody ends up inside a prop or stuck to a wall, and the target marker
+          shows exactly where you will stand.</p>
+        <p>Instant teleporting keeps players comfortable, and the arc makes distant balconies and the stage
+          reachable without any instructions.</p>
+      </div>
+      <figure>
+        <img class="shot contain" src="../../assets/img/botbandjazz-teleport.webp" alt="The teleport target on the floor in front of the theatre's music machine" width="1014" height="498">
+        <figcaption>The landing marker in front of the theatre's music machine</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>Designers wire up the game themselves</h2>
+        <p>With six people and ten weeks, programmers could not be the bottleneck for every door, switch and puzzle.
+          I built a trigger system the designers used directly: give any object a trigger, pick what should happen
+          from a dropdown of functions, and type in the parameters. On enter or on collision, it runs.</p>
+        <p>That let the designers set up interactions themselves while I worked on the systems underneath.</p>
+      </div>
+      <figure class="panel">
+        <div class="stack">
+          <div><b>On trigger enter</b><span>Object tagged "Player" enters the area</span></div>
+          <div class="own"><b>Function: dropdown</b><span>Chosen from a list, no code needed</span></div>
+          <div><b>Parameters</b><span>Typed straight into the inspector</span></div>
+        </div>
+        <figcaption style="margin-top:.75rem">How a designer sets up an interaction, without code</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <section class="detail">
+      <div>
+        <h2>A level editor for the rhythm game</h2>
+        <p>One of the mini-games is a rhythm game played to the band's music. Placing notes by hand in seconds would
+          never line up, so I built an editor inside Unity that works in beats instead: set the song's BPM, and notes
+          snap to a beat grid that stays in time with the track.</p>
+        <p>A year later I built a full rhythm-game editor of my own, the
+          <a href="ctb-editor.html">osu!catch level editor</a>.</p>
+      </div>
+      <figure>
+        <img class="shot contain" src="../../assets/img/botbandjazz-title.webp" alt="BotBandJazz title art" width="1024" height="800" style="aspect-ratio:auto;max-height:420px">
+      </figure>
+    </section>
+
+    <hr>
+
+    <p class="credits">Made by a team of six students at Saxion University of Applied Sciences.</p>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#botbandjazz">← Back to the portfolio</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>
