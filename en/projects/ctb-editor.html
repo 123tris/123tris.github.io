@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>osu!catch Editor — Tristan Metz</title>
+  <meta name="description" content="A level editor for osu!catch, built in Unity by Tristan Metz.">
+  <meta property="og:image" content="../../assets/img/ctb-editor.webp">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="alternate" hreflang="ja" href="../../projects/ctb-editor.html">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">Résumé</a>
+    <a href="../portfolio.html" aria-current="page">Portfolio</a>
+    <a class="lang" href="../../projects/ctb-editor.html" hreflang="ja" lang="ja">日本語</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>osu!catch level editor</h1>
+      <p class="lead">osu! is a rhythm game with millions of players, but its catch mode never had an editor made for
+        it. Mappers were working around a tool built for a different mode, so I built them a dedicated one.</p>
+      <p class="facts">Unity · C# · ShaderLab · 2018 — 2019 · solo</p>
+      <a class="btn btn-primary" href="https://github.com/123tris/CTB-Editor">GitHub</a>
+    </div>
+    <div class="hero-media">
+      <video class="shot contain" controls preload="metadata" poster="../../assets/img/ctb-editor.webp" width="1600" height="900">
+        <source src="../../assets/img/ctb-editor.mp4" type="video/mp4">
+      </video>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>A beat grid that is always exact</h2>
+        <p>Everything in a rhythm game is placed on the beat, from whole notes down to sixteenths, at any tempo and
+          any zoom level. Drawing that grid from thousands of line objects would be slow and drift out of alignment,
+          so the whole timeline is a single quad with a fragment shader.</p>
+        <p>The shader works in pixel space rather than UV space, so a line is always exactly one pixel where it should be,
+          and each subdivision gets its own colour, the convention mappers already know.</p>
+      </div>
+<pre><code><span class="c">// Grid Shader.shader (excerpt)</span>
+<span class="k">float</span> y = i.uv.y * _RectSize.y; <span class="c">// UV to pixels: no rounding</span>
+<span class="k">float</span> rowStep = _RectSize.y / _Rows;
+y += _RowOffset;                  <span class="c">// scrolls with the song</span>
+
+<span class="k">if</span> (y % rowStep &lt; _RowWidth / <span class="s">2</span> ||
+    y % rowStep &gt; rowStep - _RowWidth / <span class="s">2</span>)
+{
+    <span class="c">// on a beat line: colour it by its divisor</span>
+    <span class="c">// (1/1, 1/2, 1/4, 1/8 or 1/16)</span>
+}</code></pre>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>Undo and redo for everything</h2>
+        <p>Every edit pushes a memento that knows how to revert itself. Reverting returns the opposite memento, so undo
+          and redo are the same operation running in different directions, and adding a new kind of edit takes one
+          small class.</p>
+      </div>
+<pre><code><span class="k">static</span> Stack&lt;IMemento&lt;<span class="k">object</span>&gt;&gt; changes = <span class="k">new</span>();
+<span class="k">static</span> Stack&lt;IMemento&lt;<span class="k">object</span>&gt;&gt; revertedChanges = <span class="k">new</span>();
+
+<span class="k">public static void</span> <span class="t">PerformUndo</span>()
+{
+    <span class="k">if</span> (changes.Count == <span class="s">0</span>) <span class="k">return</span>;
+    revertedChanges.Push(
+        (IMemento&lt;<span class="k">object</span>&gt;)changes.Pop().Revert());
+}
+
+<span class="k">public static void</span> <span class="t">PerformRedo</span>()
+{
+    <span class="k">if</span> (revertedChanges.Count == <span class="s">0</span>) <span class="k">return</span>;
+    changes.Push(
+        (IMemento&lt;<span class="k">object</span>&gt;)revertedChanges.Pop().Revert());
+}
+
+<span class="k">public static void</span> <span class="t">RegisterCreatedObject</span>(GameObject obj)
+{
+    changes.Push(<span class="k">new</span> AddGameObject(obj));
+    revertedChanges.Clear(); <span class="c">// new edits end the redo history</span>
+}</code></pre>
+    </section>
+
+    <hr>
+
+    <section class="detail wide">
+      <div>
+        <h2>Built with its players</h2>
+        <p>A rhythm editor lives or dies by its timing. Songs are decoded with NAudio and started with
+          <code>PlayScheduled</code> on Unity's DSP clock, and the timeline follows that audio clock instead of the
+          frame clock, so playback never drifts. Hitsounds come from a pool of audio sources, so overlapping
+          sounds never cut each other off. A built-in play mode switches
+          between editing and playing in an instant, and maps import from and export to the osu! format, so they go
+          straight into the game.</p>
+        <p>The feature list came from the catch community itself: I shared builds on Discord, collected feedback from
+          mappers and turned the most requested workflows into features.</p>
+      </div>
+    </section>
+
+    <hr>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#ctb-editor">← Back to the portfolio</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>
