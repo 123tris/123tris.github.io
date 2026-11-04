@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>This Side Up — Tristan Metz</title>
+  <meta name="description" content="This Side Up, a platformer without jumping made in 72 hours for Mini Jam 188. Programming by Tristan Metz.">
+  <meta property="og:image" content="../../assets/img/thissideup-build.webp">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="alternate" hreflang="ja" href="../../projects/this-side-up.html">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">Résumé</a>
+    <a href="../portfolio.html" aria-current="page">Portfolio</a>
+    <a class="lang" href="../../projects/this-side-up.html" hreflang="ja" lang="ja">日本語</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>This Side Up</h1>
+      <p class="lead">A pixel-art platformer about delivering a package, made in 72 hours for Mini Jam 188 under the
+        limitation "All in a box". You cannot jump: a boxing glove punches you through the level instead. I did all of
+        the programming.</p>
+      <p class="facts">Unity · C# · FMOD · 72 hours · team of 5</p>
+      <a class="btn btn-primary" href="https://phbarralis.itch.io/this-side-up">Play in browser</a>
+      <a class="btn" href="https://www.youtube.com/watch?v=FLGi_JpEl58">Full playthrough</a>
+    </div>
+    <div class="hero-media">
+      <video class="shot" autoplay muted loop playsinline poster="../../assets/img/thissideup-play.webp" width="960" height="540">
+        <source src="../../assets/video/thissideup-play.mp4" type="video/mp4">
+      </video>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>A movement verb in a weekend</h2>
+        <p>Aim with the mouse or the right stick and punch: the glove shoots out, and a fraction of a second later the
+          recoil launches you the other way. Punch again in mid-air and the glove snaps back with a second, stronger
+          kick, which works as a double jump. The glove recharges when you touch the ground, with a short coyote time so
+          a punch just after walking off a ledge still counts.</p>
+        <p>The level adds sticky walls that catch you mid-flight and let you slide down slowly, moving platforms and
+          conveyor belts, all tuned with the designers during the jam. Rotate triggers turn gravity by 90 degrees and
+          the view turns with it, so parts of the level are played on their side or upside down, and the music
+          changes with each orientation through an FMOD parameter.</p>
+      </div>
+<pre><code><span class="k">if</span> (protracted &amp;&amp; activateGloves.WasPressedThisFrame())
+{
+    <span class="c">// Second punch in the air: retract and kick off harder.</span>
+    retractCoroutine?.StopCoroutine();
+    Retract();
+    rb.AddForce(-direction * doubleJumpForce, ForceMode2D.Impulse);
+}
+
+<span class="k">if</span> (canActivate &amp;&amp; activateGloves.WasPressedThisFrame())
+{
+    protracted = <span class="k">true</span>;
+    canActivate = <span class="k">false</span>;  <span class="c">// recharged on (coyote) ground</span>
+    retractCoroutine = Cooldown(extendedDuration, Retract);
+    Cooldown(knockbackDelay, () =&gt;
+        rb.AddForce(-direction * knockbackForce, ForceMode2D.Impulse));
+}</code></pre>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>The rest of the jam</h2>
+        <p>Besides the movement I built the dialogue view, the pause menu and the FMOD audio hookup, with
+          state and events running on <a href="ripple.html">Ripple</a> so designers could wire up triggers without code.</p>
+      </div>
+      <figure>
+        <img class="shot" src="../../assets/img/thissideup-2.webp" alt="This Side Up: a dialogue on top of a container" width="1600" height="900">
+        <figcaption>A dialogue on top of a shipping container</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <p class="credits">Made with Canozalez, Chaos-1001 (art), Pierre-Henri Barralis (music &amp; audio) and the rest of the jam team.</p>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#this-side-up">← Back to the portfolio</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>

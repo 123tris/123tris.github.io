@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shroomer — Tristan Metz</title>
+  <meta name="description" content="Shroomer, a movement shooter made in four days for GMTK Game Jam 2026. Programming by Tristan Metz.">
+  <meta property="og:image" content="../../assets/img/shroomer-2.webp">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="alternate" hreflang="ja" href="../../projects/shroomer.html">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">Résumé</a>
+    <a href="../portfolio.html" aria-current="page">Portfolio</a>
+    <a class="lang" href="../../projects/shroomer.html" hreflang="ja" lang="ja">日本語</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>Shroomer</h1>
+      <p class="lead">A psychedelic movement shooter set in a dream, made in four days for GMTK Game Jam 2026. Your alarm
+        clock is counting down, and only kills buy you more time to stay asleep. I did all of the programming.</p>
+      <p class="facts">Unity 6 · C# · 4 days · team of 4</p>
+      <a class="btn btn-primary" href="https://123tris.itch.io/shroomer">Play in browser</a>
+      <a class="btn" href="https://www.youtube.com/watch?v=AhwISvN-oZg">Full playthrough</a>
+    </div>
+    <div class="hero-media">
+      <video class="shot" autoplay muted loop playsinline poster="../../assets/img/shroomer-combat.webp" width="960" height="540">
+        <source src="../../assets/video/shroomer-combat.mp4" type="video/mp4">
+      </video>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>Movement with momentum</h2>
+        <p>The controller follows the Quake and Titanfall school: instead of setting the velocity every frame, it
+          accelerates toward where you want to go and only friction takes speed away. Speed is kept across jumps, so
+          players can build it with air-strafing, wall-runs and slide-hops.</p>
+        <p>A small state machine (grounded, airborne, wall-running, sliding, mantling) owns the rigidbody, and the
+          camera leans and kicks its field of view from the controller's signals. The core math is pure functions,
+          so it can be unit-tested outside of play mode.</p>
+      </div>
+<pre><code><span class="c">// Only adds speed along the wish direction, and only up to
+// wishSpeed along that axis. Total speed is never clamped,
+// which is what makes air-strafing build speed.</span>
+<span class="k">public static</span> Vector3 <span class="t">Accelerate</span>(Vector3 vel, Vector3 wishDir,
+    <span class="k">float</span> wishSpeed, <span class="k">float</span> accel, <span class="k">float</span> dt)
+{
+    <span class="k">if</span> (wishDir == Vector3.zero) <span class="k">return</span> vel;
+    <span class="k">float</span> current = Vector3.Dot(vel, wishDir);
+    <span class="k">float</span> add = wishSpeed - current;
+    <span class="k">if</span> (add &lt;= <span class="s">0f</span>) <span class="k">return</span> vel;
+    <span class="k">float</span> accelSpeed = Mathf.Min(accel * wishSpeed * dt, add);
+    <span class="k">return</span> vel + wishDir * accelSpeed;
+}</code></pre>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>Enemies built from blocks</h2>
+        <p>In a jam, the designers need new enemies faster than a programmer can write them. So there is exactly one
+          enemy component. It handles targeting and aggro, and everything else is picked from dropdowns in the
+          inspector: one movement (stationary, ground chase, hover chase) and any number of abilities (shoot, explode),
+          with shot patterns (single, burst, spread, radial, wave, sequence) as swappable assets.</p>
+        <p>A flying kamikaze and a turret that fires spirals are the same component with different blocks, built
+          without writing a line of code.</p>
+      </div>
+<pre><code><span class="k">public sealed class</span> <span class="t">EnemyBrain</span> : MonoBehaviour
+{
+    <span class="k">public</span> FloatReference AggroRange = <span class="k">new</span>(<span class="s">14f</span>);
+
+    [SerializeReference] <span class="c">// pick one from a dropdown</span>
+    <span class="k">public</span> EnemyMovement Movement = <span class="k">new</span> GroundChaseMovement();
+
+    [SerializeReference] <span class="c">// stack as many as you like</span>
+    <span class="k">public</span> List&lt;EnemyAbility&gt; Abilities = <span class="k">new</span>();
+}
+
+[Serializable]
+<span class="k">public abstract class</span> <span class="t">EnemyMovement</span>
+{
+    <span class="k">public abstract void</span> <span class="t">Tick</span>(<span class="k">in</span> EnemyContext ctx);
+}</code></pre>
+    </section>
+
+    <hr>
+
+    <p class="credits">Made with Canozalez, Chaos-1001 (art) and Pierre-Henri Barralis (music &amp; audio).</p>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#shroomer">← Back to the portfolio</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>
