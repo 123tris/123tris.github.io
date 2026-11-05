@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BotBandJazz — Tristan Metz</title>
+  <meta name="description" content="Dutch Game Gardenで展示されたHTC Vive向けVRゲーム「BotBandJazz」。トリスタン・メッツがプログラマーを担当。">
+  <meta property="og:image" content="../assets/img/botbandjazz-theatre.webp">
+  <link rel="icon" href="../assets/img/favicon.png">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="alternate" hreflang="en" href="../en/projects/botbandjazz.html">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">履歴書</a>
+    <a href="../portfolio.html" aria-current="page">ポートフォリオ</a>
+    <a class="lang" href="../en/projects/botbandjazz.html" hreflang="en" lang="en">English</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>BotBandJazz</h1>
+      <p class="lead">学生6人が10週間で作ったVRゲーム。古い劇場を探索し、ミニゲームをクリアしてロボットのジャズバンドをステージに呼び戻します。Dutch Game Gardenで展示され、Dutch Game Awards 2017にも出品しました。私はチームのプログラマーとして、ゲームプレイ、VRの物理、ツールを幅広く担当しました。</p>
+      <p class="facts">Unity · C# · HTC Vive · 10週間 · 6人チーム · 2017年</p>
+    </div>
+    <div class="hero-media">
+      <img class="shot contain" src="../assets/img/botbandjazz-theatre.webp" alt="The theatre of BotBandJazz, seen from the player's seat" width="1014" height="498">
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>VRで劇場を移動する</h2>
+        <p>劇場はリビングよりはるかに広いため、移動はテレポートで行います。Viveコントローラーを向けると放物線が表示されます。発射体の軌道を区間ごとにたどり、ワールドに当たった地点を求める仕組みです。着地できるのは平らで歩ける面だけなので、小道具の中や壁に張り付くことはなく、マーカーが立つ位置を正確に示します。</p>
+        <p>瞬間移動なので酔いにくく、放物線のおかげで遠くのバルコニーやステージにも説明なしでたどり着けます。</p>
+      </div>
+      <figure>
+        <img class="shot contain" src="../assets/img/botbandjazz-teleport.webp" alt="The teleport target on the floor in front of the theatre's music machine" width="1014" height="498">
+        <figcaption>劇場の音楽マシンの前に表示された着地マーカー</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>デザイナーが自分でゲームを組み立てる</h2>
+        <p>6人・10週間の開発で、扉やスイッチやパズルのたびにプログラマーがボトルネックになるわけにはいきません。そこでデザイナーが直接使えるトリガーシステムを作りました。オブジェクトにトリガーを付け、実行する処理を関数のドロップダウンから選び、パラメーターを入力するだけ。範囲に入ったとき、または衝突したときに実行されます。</p>
+        <p>これによりデザイナーはインタラクションを自分で設定でき、私はその下のシステムの開発に集中できました。</p>
+      </div>
+      <figure class="panel">
+        <div class="stack">
+          <div><b>トリガーに入ったとき</b><span>「Player」タグのオブジェクトが範囲に入る</span></div>
+          <div class="own"><b>関数：ドロップダウン</b><span>リストから選ぶだけ、コード不要</span></div>
+          <div><b>パラメーター</b><span>インスペクターに直接入力</span></div>
+        </div>
+        <figcaption style="margin-top:.75rem">デザイナーがコードなしでインタラクションを設定する流れ</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <section class="detail">
+      <div>
+        <h2>リズムゲームのためのレベルエディター</h2>
+        <p>ミニゲームの一つは、バンドの音楽に合わせて遊ぶリズムゲームです。秒単位で手作業でノーツを置いても音楽とは合わないため、拍を単位に編集できるエディターをUnity内に作りました。曲のBPMを設定すると、ノーツは曲と同期したビートグリッドにスナップします。</p>
+        <p>翌年には、本格的なリズムゲーム用エディター<a href="ctb-editor.html">osu!catch レベルエディター</a>を個人で開発しました。</p>
+      </div>
+      <figure>
+        <img class="shot contain" src="../assets/img/botbandjazz-title.webp" alt="BotBandJazz title art" width="1024" height="800" style="aspect-ratio:auto;max-height:420px">
+      </figure>
+    </section>
+
+    <hr>
+
+    <p class="credits">サクシオン応用科学大学の学生6人のチームで制作。</p>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#botbandjazz">← ポートフォリオに戻る</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>

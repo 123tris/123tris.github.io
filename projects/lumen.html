@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lumen — Tristan Metz</title>
+  <meta name="description" content="XR Japanのバーチャル内視鏡トレーニング「Lumen」。トリスタン・メッツがリードプログラマーを担当。">
+  <meta property="og:image" content="../assets/img/lumen-dissection.webp">
+  <link rel="icon" href="../assets/img/favicon.png">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="alternate" hreflang="en" href="../en/projects/lumen.html">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">履歴書</a>
+    <a href="../portfolio.html" aria-current="page">ポートフォリオ</a>
+    <a class="lang" href="../en/projects/lumen.html" hreflang="en" lang="en">English</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>Lumen</h1>
+      <p class="lead">内視鏡手術のためのバーチャルトレーニングプラットフォーム。医師は専用の内視鏡コントローラーとフットペダルを使い、患者へのリスクなしに内視鏡的粘膜下層剥離術（ESD）の全工程を練習できます。私はXR Japanでリードプログラマーを務めています。</p>
+      <p class="facts">Unity · C# · Burst · 専用ハードウェア · ベータ版</p>
+      <a class="btn btn-primary" href="https://xrjapan.co.jp/">製品ページ</a>
+    </div>
+    <div class="hero-media">
+      <video class="shot" autoplay muted loop playsinline poster="../assets/img/lumen-dissection.webp" width="1280" height="720">
+        <source src="../assets/video/lumen-dissection.mp4" type="video/mp4">
+      </video>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>なぜ必要なのか</h2>
+        <p>内視鏡手技の習得には何年もかかりますが、若手医師には練習の時間も指導者も足りていません。Lumenは、PCとコントローラーさえあればどこでも、質の高い練習環境を誰にでも同じように提供します。シナリオは都立駒込病院の消化器内科部長が監修しています。</p>
+        <p>ベータ版は食道のESDに対応しており、今後さらに多くの手技とシナリオを予定しています。</p>
+      </div>
+      <figure>
+        <img class="shot contain" src="../assets/img/lumen-hero.webp" alt="Lumen running on a monitor next to the endoscope controller" width="1100" height="942" style="aspect-ratio:auto">
+      </figure>
+    </section>
+
+    <hr>
+
+    <section>
+      <h2 class="section-title">手技の全工程を一つずつ</h2>
+      <div class="clip-grid">
+        <figure>
+          <video class="shot" autoplay muted loop playsinline poster="../assets/img/lumen-marking.webp" width="1280" height="720">
+            <source src="../assets/video/lumen-marking.mp4" type="video/mp4">
+          </video>
+          <figcaption>病変周囲のマーキング</figcaption>
+        </figure>
+        <figure>
+          <video class="shot" autoplay muted loop playsinline poster="../assets/img/lumen-injection.webp" width="1280" height="720">
+            <source src="../assets/video/lumen-injection.mp4" type="video/mp4">
+          </video>
+          <figcaption>粘膜下層への局注で組織を持ち上げる</figcaption>
+        </figure>
+        <figure>
+          <video class="shot" autoplay muted loop playsinline poster="../assets/img/lumen-incision.webp" width="1280" height="720">
+            <source src="../assets/video/lumen-incision.mp4" type="video/mp4">
+          </video>
+          <figcaption>マーキングに沿った粘膜切開</figcaption>
+        </figure>
+        <figure>
+          <video class="shot" autoplay muted loop playsinline poster="../assets/img/lumen-dissection.webp" width="1280" height="720">
+            <source src="../assets/video/lumen-dissection.mp4" type="video/mp4">
+          </video>
+          <figcaption>粘膜下層の剥離</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>担当した部分</h2>
+        <ul>
+          <li><b>組織の挙動。</b>手技の各工程に対する組織の反応。Burstでコンパイルしたソルバーで、高いフレームレートでも滑らかに動きます。</li>
+          <li><b>病変のマーキング。</b>切開の目印となるマーキングの配置と表示。</li>
+          <li><b>コントローラー入力。</b>専用の内視鏡コントローラーとフットペダルの操作を、押し引き・回転・アングルといった内視鏡先端の正確な動きに変換。</li>
+          <li><b>パフォーマンス。</b>メッシュデータ読み込みの高速化と、シミュレーションのフレームタイム改善。</li>
+          <li><b>リードプログラマー。</b>設計と規約、コードレビュー、メンタリング、医師やパートナーとの技術的な打ち合わせ。</li>
+        </ul>
+      </div>
+      <figure>
+        <video class="shot" autoplay muted loop playsinline poster="../assets/img/lumen-controller.webp" width="1280" height="720">
+          <source src="../assets/video/lumen-controller.mp4" type="video/mp4">
+        </video>
+        <figcaption>コントローラーの押し引きで内視鏡が食道内を進む</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <section class="detail">
+      <div>
+        <h2>生きているような食道</h2>
+        <p>環境は実際の内視鏡映像から再構成されており、食道は自然な蠕動運動で動きます。実際の手技と同じように、動く対象に合わせて操作する必要があります。</p>
+      </div>
+      <figure>
+        <video class="shot" autoplay muted loop playsinline poster="../assets/img/lumen-peristalsis.webp" width="1280" height="720">
+          <source src="../assets/video/lumen-peristalsis.mp4" type="video/mp4">
+        </video>
+        <figcaption>蠕動運動</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <p class="credits">映像はXR Japanが公開している製品動画より。LumenはXR Japanのチームが開発しています。</p>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#lumen">← ポートフォリオに戻る</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>

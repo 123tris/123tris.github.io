@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shroomer — Tristan Metz</title>
+  <meta name="description" content="GMTK Game Jam 2026で4日間で制作したムーブメントシューター「Shroomer」。プログラミング担当：トリスタン・メッツ。">
+  <meta property="og:image" content="../assets/img/shroomer-2.webp">
+  <link rel="icon" href="../assets/img/favicon.png">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="alternate" hreflang="en" href="../en/projects/shroomer.html">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">履歴書</a>
+    <a href="../portfolio.html" aria-current="page">ポートフォリオ</a>
+    <a class="lang" href="../en/projects/shroomer.html" hreflang="en" lang="en">English</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>Shroomer</h1>
+      <p class="lead">GMTK Game Jam 2026のために4日間で作った、夢の中を舞台にしたサイケデリックなムーブメントシューター。目覚まし時計のカウントダウンが進む中、敵を倒すことでしか眠り続ける時間を延ばせません。プログラミングはすべて私が担当しました。</p>
+      <p class="facts">Unity 6 · C# · 4日間 · 4人チーム</p>
+      <a class="btn btn-primary" href="https://123tris.itch.io/shroomer">ブラウザでプレイ</a>
+      <a class="btn" href="https://www.youtube.com/watch?v=AhwISvN-oZg">プレイ動画</a>
+    </div>
+    <div class="hero-media">
+      <video class="shot" autoplay muted loop playsinline poster="../assets/img/shroomer-combat.webp" width="960" height="540">
+        <source src="../assets/video/shroomer-combat.mp4" type="video/mp4">
+      </video>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>慣性のある移動</h2>
+        <p>コントローラーはQuakeやTitanfallの系譜です。毎フレーム速度を直接設定するのではなく、行きたい方向へ加速し、速度を奪うのは摩擦だけ。ジャンプしても速度が保たれるので、エアストレイフ、ウォールラン、スライドホップで速度を稼げます。</p>
+        <p>小さなステートマシン（接地、空中、ウォールラン、スライディング、よじ登り）がリジッドボディを管理し、カメラはコントローラーの信号に合わせて傾いたり視野角を変えたりします。中心となる計算は純粋関数なので、プレイモードの外でユニットテストできます。</p>
+      </div>
+<pre><code><span class="c">// Only adds speed along the wish direction, and only up to
+// wishSpeed along that axis. Total speed is never clamped,
+// which is what makes air-strafing build speed.</span>
+<span class="k">public static</span> Vector3 <span class="t">Accelerate</span>(Vector3 vel, Vector3 wishDir,
+    <span class="k">float</span> wishSpeed, <span class="k">float</span> accel, <span class="k">float</span> dt)
+{
+    <span class="k">if</span> (wishDir == Vector3.zero) <span class="k">return</span> vel;
+    <span class="k">float</span> current = Vector3.Dot(vel, wishDir);
+    <span class="k">float</span> add = wishSpeed - current;
+    <span class="k">if</span> (add &lt;= <span class="s">0f</span>) <span class="k">return</span> vel;
+    <span class="k">float</span> accelSpeed = Mathf.Min(accel * wishSpeed * dt, add);
+    <span class="k">return</span> vel + wishDir * accelSpeed;
+}</code></pre>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>ブロックを組み合わせて作る敵</h2>
+        <p>ゲームジャムでは、デザイナーはプログラマーが書くより速く新しい敵を必要とします。そこで敵のコンポーネントは一つだけ。ターゲティングとアグロを担当し、それ以外はインスペクターのドロップダウンから選びます。移動（静止、地上追跡、浮遊追跡）を一つと、能力（射撃、自爆）をいくつでも。弾のパターン（単発、バースト、拡散、放射、ウェーブ、シーケンス）は差し替え可能なアセットです。</p>
+        <p>飛んでくる自爆兵も、らせん状に撃つ砲台も、ブロックの組み合わせが違うだけの同じコンポーネント。コードを一行も書かずに作れます。</p>
+      </div>
+<pre><code><span class="k">public sealed class</span> <span class="t">EnemyBrain</span> : MonoBehaviour
+{
+    <span class="k">public</span> FloatReference AggroRange = <span class="k">new</span>(<span class="s">14f</span>);
+
+    [SerializeReference] <span class="c">// pick one from a dropdown</span>
+    <span class="k">public</span> EnemyMovement Movement = <span class="k">new</span> GroundChaseMovement();
+
+    [SerializeReference] <span class="c">// stack as many as you like</span>
+    <span class="k">public</span> List&lt;EnemyAbility&gt; Abilities = <span class="k">new</span>();
+}
+
+[Serializable]
+<span class="k">public abstract class</span> <span class="t">EnemyMovement</span>
+{
+    <span class="k">public abstract void</span> <span class="t">Tick</span>(<span class="k">in</span> EnemyContext ctx);
+}</code></pre>
+    </section>
+
+    <hr>
+
+    <p class="credits">Canozalez、Chaos-1001（アート）、Pierre-Henri Barralis（音楽・サウンド）と制作。</p>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#shroomer">← ポートフォリオに戻る</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>

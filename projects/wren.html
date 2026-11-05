@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>C# vs. Wren — Tristan Metz</title>
+  <meta name="description" content="C++ゲームエンジンに組み込むスクリプト言語としてのC#とWrenのベンチマーク。">
+  <meta property="og:image" content="../assets/img/thumbs/wren.webp">
+  <link rel="icon" href="../assets/img/favicon.png">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="alternate" hreflang="en" href="../en/projects/wren.html">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">履歴書</a>
+    <a href="../portfolio.html" aria-current="page">ポートフォリオ</a>
+    <a class="lang" href="../en/projects/wren.html" hreflang="en" lang="en">English</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>C# vs. Wren</h1>
+      <p class="lead">自作C++エンジン<a href="tristeon.html">Tristeon</a>にはスクリプトの仕組みがありませんでした。採用を決める前に、有力な二つの候補を計測しました。Luaに近い小さな組み込み言語のWrenと、業界標準ながらC++への組み込みが難しいC#です。</p>
+      <p class="facts">C++ · C# · Wren · ベンチマーク</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>三つの観点</h2>
+        <p>実行速度は当然重要ですが、エンジンにとってはそれだけではありません。次の三つを計測しました。</p>
+        <ul>
+          <li><b>実行性能：</b>四則演算、リストへの追加、ユーザー定義型の生成をそれぞれ10万回。</li>
+          <li><b>コンパイル時間：</b>変更が実行可能になるまでの時間。デザイナーの試行錯誤の速さを左右します。</li>
+          <li><b>C++呼び出しのコスト：</b>言語の境界をまたぐ呼び出し一回あたりのコスト。エンジンのスクリプトはほとんどこれで成り立っています。</li>
+        </ul>
+        <p>WrenはCライブラリなので薄いC++ラッパーだけで済みます。C#の選択肢はP/Invoke、COM相互運用、埋め込み相互運用型、Monoによるホスティングでした。</p>
+      </div>
+<pre><code><span class="c">// Arithmetic (C#)</span>
+<span class="k">for</span> (<span class="k">int</span> i = <span class="s">0</span>; i &lt; <span class="s">100000</span>; i++)
+{
+    <span class="k">int</span> x = <span class="s">0</span>, y = <span class="s">10</span>;
+    <span class="k">int</span> result = x * y / (i + <span class="s">1</span>);
+}
+
+<span class="c">// Collections (Wren)</span>
+<span class="k">var</span> items = []
+<span class="k">for</span> (i <span class="k">in</span> <span class="s">1</span>..<span class="s">100000</span>) {
+    items.add(i * i)
+}</code></pre>
+    </section>
+
+    <hr>
+
+    <section>
+      <h2 class="section-title">結果</h2>
+      <div class="charts">
+        <figure class="panel chart" style="margin:0">
+          <h3>四則演算（µs・小さいほど良い）</h3>
+          <div class="bars wide">
+            <div class="bar"><span>Wren</span><i class="alt" style="width:100%"></i><em>7,910</em></div>
+            <div class="bar"><span>C#</span><i style="width:9.2%"></i><em>726</em></div>
+          </div>
+        </figure>
+        <figure class="panel chart" style="margin:0">
+          <h3>リスト（µs・小さいほど良い）</h3>
+          <div class="bars wide">
+            <div class="bar"><span>Wren</span><i class="alt" style="width:100%"></i><em>4,912</em></div>
+            <div class="bar"><span>C#</span><i style="width:15.9%"></i><em>779</em></div>
+          </div>
+        </figure>
+        <figure class="panel chart" style="margin:0">
+          <h3>オブジェクト生成（µs・小さいほど良い）</h3>
+          <div class="bars wide">
+            <div class="bar"><span>Wren</span><i class="alt" style="width:100%"></i><em>31,000</em></div>
+            <div class="bar"><span>C#</span><i style="width:6.8%"></i><em>2,105</em></div>
+          </div>
+        </figure>
+        <figure class="panel chart" style="margin:0">
+          <h3>コンパイル時間（µs・小さいほど良い）</h3>
+          <div class="bars wide">
+            <div class="bar"><span>Wren</span><i class="alt" style="width:.5%"></i><em>53</em></div>
+            <div class="bar"><span>C#</span><i style="width:100%"></i><em>88,000</em></div>
+          </div>
+        </figure>
+        <figure class="panel chart" style="margin:0">
+          <h3>C++の呼び出し（ms・小さいほど良い）</h3>
+          <div class="bars wide">
+            <div class="bar"><span>Wren</span><i class="alt" style="width:.5%"></i><em>&lt; 1</em></div>
+            <div class="bar"><span>C#</span><i style="width:100%"></i><em>117</em></div>
+          </div>
+        </figure>
+      </div>
+      <p class="caption" style="max-width:46rem;margin:1.25rem auto 0">計測方法：実行性能のベンチマークは上のループ（10万回）を、両言語で同じように書いたものです。大学での短い調査であり本格的なベンチマークではないため、結果は正確な値ではなく桁の目安として見てください。こうした数値はハードウェア、ランタイムのバージョン、JITのウォームアップによって変わります。</p>
+    </section>
+
+    <hr>
+
+    <section class="detail wide">
+      <div>
+        <h2>勝ち負けではなくトレードオフ</h2>
+        <p>C#は6〜15倍速く動作しました。一方Wrenはコンパイルが1000倍以上速く、C++の呼び出しもほぼゼロコスト。C#は境界をまたぐたびに無視できないコストがかかりました。</p>
+        <p>つまり、正解はスクリプトの役割次第です。エンジンのゲームプレイスクリプトの多くはエンジンの機能同士をつなぐもので、C++を頻繁に呼び出し、頻繁に書き換えられます。これはWrenの安い呼び出しコストと即時の反復に向いています。重い計算はどちらにせよC++で書くべきです。</p>
+      </div>
+    </section>
+
+    <hr>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#earlier">← ポートフォリオに戻る</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>

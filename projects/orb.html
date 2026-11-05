@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orb — Tristan Metz</title>
+  <meta name="description" content="自作C++エンジンで動く一人称パズルゲーム「Orb」。トリスタン・メッツが物理エンジンとシリアライズを書き、Unityをレベルエディターにした。">
+  <meta property="og:image" content="../assets/img/orb-unity.webp">
+  <link rel="icon" href="../assets/img/favicon.png">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="alternate" hreflang="en" href="../en/projects/orb.html">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">履歴書</a>
+    <a href="../portfolio.html" aria-current="page">ポートフォリオ</a>
+    <a class="lang" href="../en/projects/orb.html" hreflang="en" lang="en">English</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>Orb</h1>
+      <p class="lead">研究所の被験者となり、光るオーブを動かして道を開いていく一人称パズルゲーム。ゲームと並行して2人で作った、初めてのC++エンジンで動いています。私はエンジンの物理、シーン管理、シリアライズ、Unityをレベルエディターにするパイプライン、そしてその上のゲームプレイを担当しました。</p>
+      <p class="facts">C++ · OpenGL · Unityをレベルエディターに · 2017年 · Leon Brandsと共同開発</p>
+    </div>
+    <div class="hero-media">
+      <img class="shot" src="../assets/img/orb-game.webp" alt="Orb running in our C++ engine: a lab room with an orb on a pedestal and the player's orb gun" width="1600" height="900">
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>Unityをレベルエディターに</h2>
+        <p>エディターのない自作エンジンでは、レベルを手で書くことになります。しかも一つの課題でエンジンとゲームの両方を作る必要がありました。そこでUnityをエディターにしました。デザイナーはUnityで、C++側とフィールド単位で対応する独自コンポーネント（マネージャー、プレイヤーコントローラー、リジッドボディ、コライダー）を使ってレベルを作ります。</p>
+        <p>独自のエクスポーターがシーンをシリアライズし、エンジンはそれを読み込んで型名からすべてのオブジェクトを復元します。デザイナーは使い慣れたツールのまま作業でき、私たちはエディターを書く必要がありませんでした。</p>
+      </div>
+      <figure>
+        <img class="shot contain" src="../assets/img/orb-unity.webp" alt="A level in the Unity editor on the left, running live in our C++ engine on the right" width="1600" height="900">
+        <figcaption>Unityのレベル（左）と、自作エンジンで動く同じレベル（右）</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>物理エンジンをゼロから</h2>
+        <p>Orbは物理パズルゲームなので、物理の信頼性が欠かせません。重力・抵抗・反発・摩擦をもつリジッドボディ、速い物体が壁をすり抜けない連続衝突判定付きのAABB衝突、パズル用のトリガー、レイキャストを自分で実装しました。</p>
+        <p>シリアライズはポリモーフィックなオブジェクトや共有ポインターに対応し、同じコードでシーンとプレハブの保存、Unityから書き出したデータの読み込みを行います。</p>
+      </div>
+      <figure>
+        <img class="shot contain" src="../assets/img/orb-physics.webp" alt="Our engine's window with collider debug drawing, over the same room in Unity with our Custom Box Collider in the inspector" width="1600" height="869">
+        <figcaption>自作エンジンのコライダーのデバッグ表示。後ろは同じ部屋のUnityで、自作のコライダーコンポーネントを選択中</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <section class="detail">
+      <div>
+        <h2>その上のゲーム</h2>
+        <p>ゲームプレイ面では、キャラクターとカメラのコントローラー、各パズルを動かすトリガーのロジック、オーブそのものを書きました。デザイナーは各部屋をまず紙に設計し、それがUnityのシーンに、そしてエンジンのレベルになりました。</p>
+      </div>
+      <figure>
+        <img class="shot contain" src="../assets/img/orb-level.webp" alt="A designer's level plan drawn over the layout in Unity" width="807" height="500">
+        <figcaption>デザイナーによる部屋の設計図</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <p class="credits">レンダラーを担当したLeon Brandsと共同開発。その後二人で<a href="tristeon.html">Tristeon</a>を作りました。</p>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#earlier">← ポートフォリオに戻る</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>

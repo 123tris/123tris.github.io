@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>This Side Up — Tristan Metz</title>
+  <meta name="description" content="Mini Jam 188で72時間で制作した、ジャンプのないプラットフォーマー「This Side Up」。プログラミング担当：トリスタン・メッツ。">
+  <meta property="og:image" content="../assets/img/thissideup-build.webp">
+  <link rel="icon" href="../assets/img/favicon.png">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="alternate" hreflang="en" href="../en/projects/this-side-up.html">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">履歴書</a>
+    <a href="../portfolio.html" aria-current="page">ポートフォリオ</a>
+    <a class="lang" href="../en/projects/this-side-up.html" hreflang="en" lang="en">English</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>This Side Up</h1>
+      <p class="lead">Mini Jam 188のために72時間で作った、荷物を届けるピクセルアートのプラットフォーマー。制約は「All in a box」。ジャンプはできず、ボクシンググローブのパンチでステージを飛んでいきます。プログラミングはすべて私が担当しました。</p>
+      <p class="facts">Unity · C# · FMOD · 72時間 · 5人チーム</p>
+      <a class="btn btn-primary" href="https://phbarralis.itch.io/this-side-up">ブラウザでプレイ</a>
+      <a class="btn" href="https://www.youtube.com/watch?v=FLGi_JpEl58">プレイ動画</a>
+    </div>
+    <div class="hero-media">
+      <video class="shot" autoplay muted loop playsinline poster="../assets/img/thissideup-play.webp" width="960" height="540">
+        <source src="../assets/video/thissideup-play.mp4" type="video/mp4">
+      </video>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>週末で作る移動アクション</h2>
+        <p>マウスか右スティックで狙ってパンチ。グローブが伸び、一瞬遅れて反動で逆方向へ飛ばされます。空中でもう一度パンチするとグローブが戻り、より強い二度目の反動が生まれ、二段ジャンプのように使えます。グローブは着地で回復し、足場から歩いて落ちた直後のパンチも有効になる短いコヨーテタイム付きです。</p>
+        <p>ステージには空中で張り付いてゆっくり滑り落ちる壁、動く足場、ベルトコンベアがあり、ジャム中にデザイナーと一緒に調整しました。回転トリガーで重力が90度回転し、画面も一緒に回るので、ステージの一部は横向きや逆さまでプレイします。音楽もFMODのパラメーターで向きごとに変わります。</p>
+      </div>
+<pre><code><span class="k">if</span> (protracted &amp;&amp; activateGloves.WasPressedThisFrame())
+{
+    <span class="c">// Second punch in the air: retract and kick off harder.</span>
+    retractCoroutine?.StopCoroutine();
+    Retract();
+    rb.AddForce(-direction * doubleJumpForce, ForceMode2D.Impulse);
+}
+
+<span class="k">if</span> (canActivate &amp;&amp; activateGloves.WasPressedThisFrame())
+{
+    protracted = <span class="k">true</span>;
+    canActivate = <span class="k">false</span>;  <span class="c">// recharged on (coyote) ground</span>
+    retractCoroutine = Cooldown(extendedDuration, Retract);
+    Cooldown(knockbackDelay, () =&gt;
+        rb.AddForce(-direction * knockbackForce, ForceMode2D.Impulse));
+}</code></pre>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>ジャムでのその他の担当</h2>
+        <p>移動以外に、会話画面、ポーズメニュー、FMODのサウンド連携を作りました。状態とイベントは<a href="ripple.html">Ripple</a>で動いているので、デザイナーはコードなしでトリガーを設定できました。</p>
+      </div>
+      <figure>
+        <img class="shot" src="../assets/img/thissideup-2.webp" alt="This Side Up: a dialogue on top of a container" width="1600" height="900">
+        <figcaption>コンテナの上での会話</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <p class="credits">Canozalez、Chaos-1001（アート）、Pierre-Henri Barralis（音楽・サウンド）ほかジャムチームと制作。</p>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#this-side-up">← ポートフォリオに戻る</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>

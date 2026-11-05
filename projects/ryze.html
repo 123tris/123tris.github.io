@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ryze — Tristan Metz</title>
+  <meta name="description" content="Idomi Gamesの2Dプレシジョンプラットフォーマー「Ryze」。トリスタン・メッツはプログラマー・共同創業者。">
+  <meta property="og:image" content="../assets/img/ryze-trailer.webp">
+  <link rel="icon" href="../assets/img/favicon.png">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="alternate" hreflang="en" href="../en/projects/ryze.html">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">履歴書</a>
+    <a href="../portfolio.html" aria-current="page">ポートフォリオ</a>
+    <a class="lang" href="../en/projects/ryze.html" hreflang="en" lang="en">English</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>Ryze</h1>
+      <p class="lead">自分自身を「投げて」登っていく2Dプレシジョンプラットフォーマー。私が共同創業したIdomi Gamesが開発しています。チームのプログラマーとして、キャラクターの操作感と、レベルを構成するギミックを中心に担当しています。</p>
+      <p class="facts">Unity 6 · C# · 2022年 — 現在 · Steamでプレイテスト公開中</p>
+      <a class="btn btn-primary" href="https://store.steampowered.com/app/4137850/Ryze/">Steamページ</a>
+      <a class="btn" href="https://idomigames.itch.io/ryze">itch.io</a>
+    </div>
+    <div class="hero-media">
+      <video class="shot" controls preload="metadata" poster="../assets/img/ryze-trailer.webp" width="1280" height="720">
+        <source src="../assets/video/ryze-trailer.mp4" type="video/mp4">
+      </video>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>一つのアクションを磨き上げる</h2>
+        <p>Ryzeの移動はただ一つ。溜めて投げたパールの着地点へワープすることです。キャラクターコントローラーは小さなステートマシン（接地、エイム中、パール飛行中、リスポーン中）で動いており、状態の切り替わりの瞬間を特に丁寧に作っています。着地直前のボタン入力は先行入力として受け付けます。足場から歩いて落ちると、そのまま落下するのではなくパールに変身します。両足の下のプローブが崖際でふらついている状態を検知し、落ちる前にアニメーションが反応します。</p>
+        <p>パールは壁で跳ね返り、坂を転がります。遠投ではカメラがパールを追いかけるので、着地点を見失うことはありません。</p>
+      </div>
+      <figure>
+        <video class="shot" autoplay muted loop playsinline poster="../assets/img/ryze-long-throw.webp" width="800" height="450">
+          <source src="../assets/video/ryze-long-throw.mp4" type="video/mp4">
+        </video>
+        <figcaption>遠投：カメラがパールを追って次のエリアへ</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>投げの溜め</h2>
+        <p>ボタンを押し続けると上限まで溜めが増えて高く飛び、上限に達するか落下し始めると自動で投げます。ゲームで最も調整される部分だからこそ、コアループのコードは読みやすさを重視しています。</p>
+      </div>
+<pre><code><span class="k">if</span> (PlayerInput.Shoot.WasPressedThisFrame())
+    shootPressedAt = Time.unscaledTime;
+
+<span class="c">// A press shortly before landing still counts.</span>
+<span class="k">if</span> (CanShoot &amp;&amp; Mode != ShootingMode.Aiming
+    &amp;&amp; PlayerInput.Shoot.IsPressed() &amp;&amp; HasBufferedShootPress)
+{
+    shootPressedAt = <span class="k">float</span>.NegativeInfinity;
+    chargingFX.ChargeShot();
+    Mode = ShootingMode.Aiming;
+}
+
+<span class="k">if</span> (Mode == ShootingMode.Aiming)
+{
+    aimTime += Time.deltaTime * buildUpSpeed;
+    <span class="k">if</span> (IsFalling || PlayerInput.Shoot.WasReleasedThisFrame()
+        || aimTime &gt;= maxBuildUp)
+        <span class="t">Shoot</span>();
+}</code></pre>
+    </section>
+
+    <hr>
+
+    <section id="test-level">
+      <h2 class="section-title">すべてのギミックのためのテストレベル</h2>
+      <p style="max-width:46rem;margin:0 auto 1.75rem;text-align:center">追加したギミックはすべて、一本の長い技術検証用テストレベルに専用の区画を持ちます。コントローラーを変更したら、全ギミックとの組み合わせを1分で確認でき、デザイナーは実際のレベルで使う前に各コンポーネントの動きを単体で確認できます。どれも独立したコンポーネントで、インスペクターから調整できます。</p>
+      <p style="max-width:46rem;margin:0 auto 1.75rem;text-align:center">タイムバブルもその一つです。キャラクター、パール、ピストンはそれぞれ独自のタイムライン（Chronosプラグインを利用）で動いているので、バブルは中にあるものすべての速度を変えます。移動も物理もアニメーションも一緒に遅く、または速くなります。</p>
+      <div class="clip-grid two">
+        <figure>
+          <video class="shot" autoplay muted loop playsinline poster="../assets/img/ryze-test-throws.webp" width="960" height="540">
+            <source src="../assets/video/ryze-test-throws.mp4" type="video/mp4">
+          </video>
+          <figcaption>短い溜め、中くらいの溜め、最大まで溜めた投げ</figcaption>
+        </figure>
+        <figure>
+          <video class="shot" autoplay muted loop playsinline poster="../assets/img/ryze-test-bubbles.webp" width="960" height="540">
+            <source src="../assets/video/ryze-test-bubbles.mp4" type="video/mp4">
+          </video>
+          <figcaption>時間が2倍になるバブルを歩いて通り抜け、次に時間が半分になるバブルの中を落下</figcaption>
+        </figure>
+        <figure>
+          <video class="shot" autoplay muted loop playsinline poster="../assets/img/ryze-test-conveyor.webp" width="960" height="540">
+            <source src="../assets/video/ryze-test-conveyor.mp4" type="video/mp4">
+          </video>
+          <figcaption>ベルトコンベアの流れに逆らって歩き、次に流れに乗って歩く</figcaption>
+        </figure>
+        <figure>
+          <video class="shot" autoplay muted loop playsinline poster="../assets/img/ryze-test-crumble.webp" width="960" height="540">
+            <source src="../assets/video/ryze-test-crumble.mp4" type="video/mp4">
+          </video>
+          <figcaption>崩れる足場が落ち、世界が光と闇の間で切り替わると元に戻る</figcaption>
+        </figure>
+      </div>
+      <p class="caption" style="margin-top:1rem">テストレベルで録画。そのほか、動く足場や滑る足場、ピストン、会話トリガー、エリアバナー、日本語テキストの区画があります。</p>
+    </section>
+
+    <hr>
+
+    <section class="detail">
+      <div>
+        <h2>プロジェクトをまたいで使える会話システム</h2>
+        <p>この会話システムは以前のプロジェクトのために作ったもので、中核部分は変えずにRyzeに持ち込みました。それを可能にしたのは、三つの設計判断です。</p>
+        <ul>
+          <li><b>UIのことを何も知らない。</b>各セリフはRippleのイベントとして送られます。NPCはそれぞれこのイベントを受け取り、自分のセリフでプレイヤーが近くにいるときだけ吹き出しを表示します。会話のサウンドも同じイベントを受け取ります。新しいプロジェクトでは、表示部分を作るだけで済みます。</li>
+          <li><b>次のセリフに進むタイミングは呼び出し側が決める。</b>会話の開始は、進む条件を受け取るawait可能な呼び出し一つだけです。トリガー範囲、歩いて近づくカットシーン、同じチェックポイントで失敗を繰り返したときのセリフは、どれもこの呼び出しを包む小さなコンポーネントです。</li>
+          <li><b>会話はデータ。</b>ライターはセリフと話者をアセットとしてインスペクターで編集し、すべてのセリフに英語の原文にフォールバックする多言語版があります。</li>
+        </ul>
+      </div>
+      <figure>
+        <video class="shot" autoplay muted loop playsinline poster="../assets/img/ryze-dialogue.webp" width="800" height="450">
+          <source src="../assets/video/ryze-dialogue.mp4" type="video/mp4">
+        </video>
+        <figcaption>ゲーム内のNPCとの会話</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>Rippleの上に構築</h2>
+        <p>Ryzeのゲーム状態は、自作のScriptableObjectフレームワーク<a href="ripple.html">Ripple</a>で動いています。プレイヤーの表示状態、カメラのターゲット、すべてのゲームプレイイベントがアセットです。システム同士は疎結合のまま、プレイテストで問題が起きればインスペクターで誰が何を変えたかを確認できます。</p>
+      </div>
+      <figure>
+        <video class="shot" autoplay muted loop playsinline poster="../assets/img/ryze-ricochet.webp" width="800" height="450">
+          <source src="../assets/video/ryze-ricochet.mp4" type="video/mp4">
+        </video>
+        <figcaption>壁に跳ね返りながら上へ向かうパール</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <p class="credits">Idomi Games：Tristan Metz（プログラミング）、Arjen de Aldrey（プログラミング）、Canozalez（レベルデザイン・シナリオ）、Chaos-1001（アート）、Pierre-Henri Barralis（音楽・サウンド）。</p>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#ryze">← ポートフォリオに戻る</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>
