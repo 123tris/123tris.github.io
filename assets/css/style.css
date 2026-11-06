@@ -39,7 +39,7 @@ hr { border: 0; border-top: 1px solid var(--rule); margin: 3rem 0; }
 .container { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 16px; }
 
 /* ---------- nav ---------- */
-.site-nav { display: flex; justify-content: center; gap: 1.25rem; padding: 1rem 16px; font-size: .95rem; }
+.site-nav { position: relative; display: flex; justify-content: center; gap: 1.25rem; padding: 1rem 16px; font-size: .95rem; }
 .site-nav a { color: var(--muted); }
 .site-nav a:hover { color: var(--text); text-decoration: none; }
 .site-nav a[aria-current="page"] { color: var(--text); font-weight: 600; }
@@ -177,7 +177,7 @@ html:lang(ja) {
 html:lang(ja) body { line-height: 1.75; }
 html:lang(ja) h1, html:lang(ja) h2, html:lang(ja) h3 { word-break: auto-phrase; line-height: 1.35; }
 html:lang(ja) h1 { font-weight: 300; }
-.site-nav .lang { margin-left: 1.25rem; padding-left: 1.25rem; border-left: 1px solid var(--rule); }
+.site-nav .lang { position: absolute; top: 1rem; right: max(16px, env(safe-area-inset-right, 0px)); }
 .bars.wide .bar { grid-template-columns: 7.5rem 1fr 5.5rem; }
 .bar i.alt { background: #8aa8d8; }
 .charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.25rem; }
