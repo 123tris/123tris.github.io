@@ -3,12 +3,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ryze — Tristan Metz</title>
-  <meta name="description" content="Idomi Gamesの2Dプレシジョンプラットフォーマー「Ryze」。トリスタン・メッツはプログラマー・共同創業者。">
-  <meta property="og:image" content="../assets/img/ryze-trailer.webp">
+  <title>Ryze — トリスタン・メッツ</title>
+  <meta name="description" content="Idomi Gamesが開発する2Dアクション「Ryze」。トリスタン・メッツはプログラマー・共同創業者。">
+  <link rel="canonical" href="https://tristanmetz.com/projects/ryze.html">
+  <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/projects/ryze.html">
+  <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/projects/ryze.html">
+  <link rel="alternate" hreflang="x-default" href="https://tristanmetz.com/projects/ryze.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="トリスタン・メッツ">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:url" content="https://tristanmetz.com/projects/ryze.html">
+  <meta property="og:title" content="Ryze — トリスタン・メッツ">
+  <meta property="og:description" content="Idomi Gamesが開発する2Dアクション「Ryze」。トリスタン・メッツはプログラマー・共同創業者。">
+  <meta property="og:image" content="https://tristanmetz.com/assets/img/og/ryze-trailer.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="../assets/img/favicon.png">
   <link rel="stylesheet" href="../assets/css/style.css">
-  <link rel="alternate" hreflang="en" href="../en/projects/ryze.html">
 </head>
 <body>
   <nav class="site-nav" aria-label="Main">
@@ -20,13 +32,13 @@
   <header class="jumbo">
     <div class="container">
       <h1>Ryze</h1>
-      <p class="lead">自分自身を「投げて」登っていく2Dプレシジョンプラットフォーマー。私が共同創業したIdomi Gamesが開発しています。チームのプログラマーとして、キャラクターの操作感と、レベルを構成するギミックを中心に担当しています。</p>
+      <p class="lead">自分自身を「投げて」登っていく、精密な操作が求められる2Dアクション。私が共同創業したIdomi Gamesが開発しています。チームのプログラマーとして、キャラクターの操作感と、レベルを構成するギミックを中心に担当しています。</p>
       <p class="facts">Unity 6 · C# · 2022年 — 現在 · Steamでプレイテスト公開中</p>
       <a class="btn btn-primary" href="https://store.steampowered.com/app/4137850/Ryze/">Steamページ</a>
       <a class="btn" href="https://idomigames.itch.io/ryze">itch.io</a>
     </div>
     <div class="hero-media">
-      <video class="shot" controls preload="metadata" poster="../assets/img/ryze-trailer.webp" width="1280" height="720">
+      <video class="shot" autoplay muted loop playsinline controls preload="auto" poster="../assets/img/ryze-trailer.webp" width="1280" height="720">
         <source src="../assets/video/ryze-trailer.mp4" type="video/mp4">
       </video>
     </div>
@@ -45,34 +57,6 @@
         </video>
         <figcaption>遠投：カメラがパールを追って次のエリアへ</figcaption>
       </figure>
-    </section>
-
-    <hr>
-
-    <section class="detail flip">
-      <div>
-        <h2>投げの溜め</h2>
-        <p>ボタンを押し続けると上限まで溜めが増えて高く飛び、上限に達するか落下し始めると自動で投げます。ゲームで最も調整される部分だからこそ、コアループのコードは読みやすさを重視しています。</p>
-      </div>
-<pre><code><span class="k">if</span> (PlayerInput.Shoot.WasPressedThisFrame())
-    shootPressedAt = Time.unscaledTime;
-
-<span class="c">// A press shortly before landing still counts.</span>
-<span class="k">if</span> (CanShoot &amp;&amp; Mode != ShootingMode.Aiming
-    &amp;&amp; PlayerInput.Shoot.IsPressed() &amp;&amp; HasBufferedShootPress)
-{
-    shootPressedAt = <span class="k">float</span>.NegativeInfinity;
-    chargingFX.ChargeShot();
-    Mode = ShootingMode.Aiming;
-}
-
-<span class="k">if</span> (Mode == ShootingMode.Aiming)
-{
-    aimTime += Time.deltaTime * buildUpSpeed;
-    <span class="k">if</span> (IsFalling || PlayerInput.Shoot.WasReleasedThisFrame()
-        || aimTime &gt;= maxBuildUp)
-        <span class="t">Shoot</span>();
-}</code></pre>
     </section>
 
     <hr>
@@ -132,16 +116,32 @@
 
     <hr>
 
-    <section class="detail flip">
-      <div>
-        <h2>Rippleの上に構築</h2>
-        <p>Ryzeのゲーム状態は、自作のScriptableObjectフレームワーク<a href="ripple.html">Ripple</a>で動いています。プレイヤーの表示状態、カメラのターゲット、すべてのゲームプレイイベントがアセットです。システム同士は疎結合のまま、プレイテストで問題が起きればインスペクターで誰が何を変えたかを確認できます。</p>
-      </div>
-      <figure>
-        <video class="shot" autoplay muted loop playsinline poster="../assets/img/ryze-ricochet.webp" width="800" height="450">
-          <source src="../assets/video/ryze-ricochet.mp4" type="video/mp4">
-        </video>
-        <figcaption>壁に跳ね返りながら上へ向かうパール</figcaption>
+    <section id="ripple">
+      <h2 class="section-title">Rippleによる状態管理</h2>
+      <p class="measure">Ryzeでは、システム間で共有する状態を自作のScriptableObjectフレームワーク<a href="ripple.html">Ripple</a>のアセットで管理しています。値を変える側はアセットに書き込み、必要な側はそのアセットを読むだけなので、システム同士が互いを直接参照することはありません。実際のプロジェクトから、二つのアセットとそれを読み書きするスクリプトを紹介します。</p>
+      <figure class="flow">
+        <div class="flow-row">
+          <div class="flow-node"><small>書き込み</small><b>プレイヤー</b><span>移動するたびに</span></div>
+          <div class="flow-node asset"><small>Ripple変数</small><b>Player_Position</b><span>Vector3</span></div>
+          <div class="flow-node readers"><small>読み取り</small>
+            <ul>
+              <li><b>すべてのNPC</b><span>プレイヤーが近くにいるときだけセリフを話す</span></li>
+              <li><b>オーディオゾーン</b><span>登っていくプレイヤーに合わせ、スプラインに沿ってBGMを切り替える</span></li>
+              <li><b>オーディオリスナー</b><span>カメラとプレイヤーの間に置く</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="flow-row">
+          <div class="flow-node"><small>書き込み</small><b>ポーズメニュー</b><span>開閉するたびに</span></div>
+          <div class="flow-node asset"><small>Ripple変数</small><b>IsPaused</b><span>bool</span></div>
+          <div class="flow-node readers"><small>読み取り</small>
+            <ul>
+              <li><b>BGM</b><span>FMODのイベントを一時停止・再開する</span></li>
+              <li><b>エリアバナー</b><span>ゲームが再開するまで次のエリア名の表示を保留する</span></li>
+            </ul>
+          </div>
+        </div>
+        <figcaption>NPCやオーディオがプレイヤーを、BGMがメニューを直接参照することは一切ありません</figcaption>
       </figure>
     </section>
 

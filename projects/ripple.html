@@ -3,12 +3,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ripple — Tristan Metz</title>
+  <title>Ripple — トリスタン・メッツ</title>
   <meta name="description" content="トリスタン・メッツが開発したUnity向けオープンソースScriptableObjectフレームワーク「Ripple」。">
-  <meta property="og:image" content="../assets/img/ripple-invoked.webp">
+  <link rel="canonical" href="https://tristanmetz.com/projects/ripple.html">
+  <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/projects/ripple.html">
+  <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/projects/ripple.html">
+  <link rel="alternate" hreflang="x-default" href="https://tristanmetz.com/projects/ripple.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="トリスタン・メッツ">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:url" content="https://tristanmetz.com/projects/ripple.html">
+  <meta property="og:title" content="Ripple — トリスタン・メッツ">
+  <meta property="og:description" content="トリスタン・メッツが開発したUnity向けオープンソースScriptableObjectフレームワーク「Ripple」。">
+  <meta property="og:image" content="https://tristanmetz.com/assets/img/og/ripple-invoked.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="../assets/img/favicon.png">
   <link rel="stylesheet" href="../assets/css/style.css">
-  <link rel="alternate" hreflang="en" href="../en/projects/ripple.html">
 </head>
 <body>
   <nav class="site-nav" aria-label="Main">
@@ -20,7 +32,7 @@
   <header class="jumbo">
     <div class="container">
       <h1>Ripple</h1>
-      <p class="lead">Unity向けのオープンソースScriptableObjectフレームワーク。このパターンが普段答えられない「誰が変えたのか、誰が聞いているのか」という問いを中心に設計しました。</p>
+      <p class="lead">Unity向けのオープンソースScriptableObjectフレームワーク。このパターンでは見えにくい「誰が値を変えたのか」「誰がイベントを受け取っているのか」がすぐに分かるよう設計しました。</p>
       <p class="facts">Unity · C# · エディター拡張 · 2024年 — 現在</p>
       <a class="btn btn-primary" href="https://github.com/123tris/Ripple">GitHub</a>
     </div>
@@ -33,8 +45,8 @@
     <section class="detail">
       <div>
         <h2>考え方</h2>
-        <p>共有変数、型付きイベント、ランタイムセットはアセットとして存在します。たとえばHPバーはプレイヤーへの参照を持たず、プレイヤーのHPアセットを読むだけ。配線はインスペクターで行い、シーンの読み込み順にも依存しません。</p>
-        <p>変数はトグル一つでセッションをまたいで保存でき、参照は定数とアセットを切り替えられるので、プロトタイプはシンプルに始めて後から育てられます。</p>
+        <p>共有変数、型付きイベント、ランタイムセットはすべてアセットとして扱います。たとえばHPバーはプレイヤーへの参照を持たず、プレイヤーのHPアセットを読むだけ。配線はインスペクターで行い、シーンの読み込み順にも依存しません。</p>
+        <p>変数はトグル一つでセッションをまたいで保存でき、参照は定数とアセットを切り替えられるので、プロトタイプはシンプルに始めて、後から拡張できます。</p>
       </div>
 <pre><code><span class="c">// Gameplay code only holds references to assets.</span>
 [SerializeField] FloatVariableSO shotsFired;
@@ -60,7 +72,7 @@
       </div>
       <figure>
         <img class="shot contain" src="../assets/img/ripple-listeners.webp" alt="Scan Listeners on the Player_Shoot event finds the gun in the scene and in the player prefab" width="1600" height="900">
-        <figcaption>Scan listeners on <code>Player_Shoot</code>: the gun in the scene and in the player prefab</figcaption>
+        <figcaption><code>Player_Shoot</code>でScan listenersを実行すると、シーン内とプレイヤーのプレハブ内の銃が見つかる</figcaption>
       </figure>
     </section>
 
@@ -70,7 +82,7 @@
       <div>
         <h2>チーム全員のためのツール</h2>
         <p>Ripple Wizardはプロジェクト内のすべてのRippleアセットを種類ごとに一覧表示し、一か所で閲覧・編集できます。イベントロガーは発火したイベントを送信元とともに即座に表示するので、プレイテストのバグ報告がずっと追いやすくなります。</p>
-        <p>診断機能はすべてビルドから除外され、ランタイムはIL2CPPにも対応。出荷したゲームではツールのコストはゼロです。</p>
+        <p>診断機能はすべてビルドから除外され、ランタイムはIL2CPPにも対応。リリースしたゲームにツールの負荷は一切残りません。</p>
       </div>
       <figure>
         <img class="shot contain" src="../assets/img/ripple-logger.webp" alt="Ripple Event Logger listing events raised during play and who raised them" width="1600" height="900">
@@ -82,7 +94,7 @@
 
     <section class="detail flip">
       <div>
-        <h2>実案件での実績</h2>
+        <h2>実際のゲームで使用中</h2>
         <p>Rippleは自分のゲームの土台として始まり、最近の作品である<a href="ryze.html">Ryze</a>、<a href="shroomer.html">Shroomer</a>、<a href="this-side-up.html">This Side Up</a>のすべてで使われています。</p>
       </div>
       <figure>

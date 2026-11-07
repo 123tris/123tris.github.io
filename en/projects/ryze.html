@@ -5,10 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ryze — Tristan Metz</title>
   <meta name="description" content="Ryze, a 2D precision platformer by Idomi Games. Tristan Metz is a programmer and co-founder.">
-  <meta property="og:image" content="../../assets/img/ryze-trailer.webp">
+  <link rel="canonical" href="https://tristanmetz.com/en/projects/ryze.html">
+  <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/projects/ryze.html">
+  <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/projects/ryze.html">
+  <link rel="alternate" hreflang="x-default" href="https://tristanmetz.com/projects/ryze.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Tristan Metz">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:url" content="https://tristanmetz.com/en/projects/ryze.html">
+  <meta property="og:title" content="Ryze — Tristan Metz">
+  <meta property="og:description" content="Ryze, a 2D precision platformer by Idomi Games. Tristan Metz is a programmer and co-founder.">
+  <meta property="og:image" content="https://tristanmetz.com/assets/img/og/ryze-trailer.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="../../assets/img/favicon.png">
   <link rel="stylesheet" href="../../assets/css/style.css">
-  <link rel="alternate" hreflang="ja" href="../../projects/ryze.html">
 </head>
 <body>
   <nav class="site-nav" aria-label="Main">
@@ -28,7 +40,7 @@
       <a class="btn" href="https://idomigames.itch.io/ryze">itch.io</a>
     </div>
     <div class="hero-media">
-      <video class="shot" controls preload="metadata" poster="../../assets/img/ryze-trailer.webp" width="1280" height="720">
+      <video class="shot" autoplay muted loop playsinline controls preload="auto" poster="../../assets/img/ryze-trailer.webp" width="1280" height="720">
         <source src="../../assets/video/ryze-trailer.mp4" type="video/mp4">
       </video>
     </div>
@@ -52,36 +64,6 @@
         </video>
         <figcaption>A long throw: the camera follows the pearl up into the next area</figcaption>
       </figure>
-    </section>
-
-    <hr>
-
-    <section class="detail flip">
-      <div>
-        <h2>Charging the throw</h2>
-        <p>Holding the button charges the throw for more height, up to a cap, and the throw goes off by itself
-          when the cap is reached or the player starts to fall. Readable code for the core loop matters: this is the
-          part of the game that gets tuned the most.</p>
-      </div>
-<pre><code><span class="k">if</span> (PlayerInput.Shoot.WasPressedThisFrame())
-    shootPressedAt = Time.unscaledTime;
-
-<span class="c">// A press shortly before landing still counts.</span>
-<span class="k">if</span> (CanShoot &amp;&amp; Mode != ShootingMode.Aiming
-    &amp;&amp; PlayerInput.Shoot.IsPressed() &amp;&amp; HasBufferedShootPress)
-{
-    shootPressedAt = <span class="k">float</span>.NegativeInfinity;
-    chargingFX.ChargeShot();
-    Mode = ShootingMode.Aiming;
-}
-
-<span class="k">if</span> (Mode == ShootingMode.Aiming)
-{
-    aimTime += Time.deltaTime * buildUpSpeed;
-    <span class="k">if</span> (IsFalling || PlayerInput.Shoot.WasReleasedThisFrame()
-        || aimTime &gt;= maxBuildUp)
-        <span class="t">Shoot</span>();
-}</code></pre>
     </section>
 
     <hr>
@@ -153,18 +135,34 @@
 
     <hr>
 
-    <section class="detail flip">
-      <div>
-        <h2>Built on Ripple</h2>
-        <p>Game state in Ryze runs on <a href="ripple.html">Ripple</a>, my ScriptableObject framework: the player's
-          visibility, the camera target and every gameplay event are assets. Systems stay decoupled, and when
-          something goes wrong in a playtest, the inspector shows who changed what.</p>
-      </div>
-      <figure>
-        <video class="shot" autoplay muted loop playsinline poster="../../assets/img/ryze-ricochet.webp" width="800" height="450">
-          <source src="../../assets/video/ryze-ricochet.mp4" type="video/mp4">
-        </video>
-        <figcaption>The pearl bouncing off walls on its way up</figcaption>
+    <section id="ripple">
+      <h2 class="section-title">Built on Ripple</h2>
+      <p class="measure">Ryze keeps its shared state in <a href="ripple.html">Ripple</a> assets, my ScriptableObject
+        framework. Whatever changes a value writes it to an asset, everything that needs it reads that asset, and
+        no system holds a reference to another. Two of those assets, with the scripts that write and read them:</p>
+      <figure class="flow">
+        <div class="flow-row">
+          <div class="flow-node"><small>Written by</small><b>The player</b><span>whenever it moves</span></div>
+          <div class="flow-node asset"><small>Ripple variable</small><b>Player_Position</b><span>Vector3</span></div>
+          <div class="flow-node readers"><small>Read by</small>
+            <ul>
+              <li><b>Every NPC</b><span>only speaks its line when the player is in range</span></li>
+              <li><b>Audio zones</b><span>blend the music along a spline as the player climbs</span></li>
+              <li><b>Audio listener</b><span>sits between the camera and the player</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="flow-row">
+          <div class="flow-node"><small>Written by</small><b>The pause menu</b><span>when it opens and closes</span></div>
+          <div class="flow-node asset"><small>Ripple variable</small><b>IsPaused</b><span>bool</span></div>
+          <div class="flow-node readers"><small>Read by</small>
+            <ul>
+              <li><b>Music</b><span>pauses and resumes the FMOD event</span></li>
+              <li><b>Area banner</b><span>holds the next area's name until the game resumes</span></li>
+            </ul>
+          </div>
+        </div>
+        <figcaption>The NPCs and the audio never look up the player, and the music never looks up the menu</figcaption>
       </figure>
     </section>
 

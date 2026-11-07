@@ -5,12 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>トリスタン・メッツ — ゲームプレイ＆ツールプログラマー</title>
   <meta name="description" content="トリスタン・メッツ — 東京在住のゲームプレイ＆ツールプログラマー。株式会社XR Japanにて内視鏡トレーニングシミュレーター「Lumen」のリードプログラマーを担当。">
+  <link rel="canonical" href="https://tristanmetz.com/">
+  <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/">
+  <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/">
+  <link rel="alternate" hreflang="x-default" href="https://tristanmetz.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="トリスタン・メッツ">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:url" content="https://tristanmetz.com/">
   <meta property="og:title" content="トリスタン・メッツ — ゲームプレイ＆ツールプログラマー">
-  <meta property="og:description" content="東京在住のゲームプレイ＆ツールプログラマー。内視鏡シミュレーター「Lumen」、Ryze、オープンソースのUnityツール、自作C++エンジン。">
-  <meta property="og:image" content="assets/img/ryze-1.webp">
+  <meta property="og:description" content="トリスタン・メッツ — 東京在住のゲームプレイ＆ツールプログラマー。株式会社XR Japanにて内視鏡トレーニングシミュレーター「Lumen」のリードプログラマーを担当。">
+  <meta property="og:image" content="https://tristanmetz.com/assets/img/og/ryze-1.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/img/favicon.png">
   <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="alternate" hreflang="en" href="en/index.html">
 </head>
 <body>
   <nav class="site-nav" aria-label="Main">
@@ -58,7 +68,7 @@
         <h2>スキル</h2>
         <dl class="skills">
           <dt>ゲームプレイ</dt>
-          <dd>キャラクターコントローラーとゲームフィール、物理（自作エンジンを含む）、VRインタラクション、ローカルマルチプレイ、会話・イベントシステム</dd>
+          <dd>キャラクターコントローラーと操作感の作り込み、物理（自作エンジンを含む）、VRインタラクション、ローカルマルチプレイ、会話・イベントシステム</dd>
           <dt>ツール</dt>
           <dd>Unityエディター拡張、レベルエディター、シリアライズとリフレクション、テストレベル・テスト環境</dd>
           <dt>エンジン</dt>
@@ -106,9 +116,9 @@
           <div class="when">2022年1月 — 現在</div>
           <div class="where">Idomi Games（インディースタジオ、本業と並行）</div>
           <ul>
-            <li>Global Game Jam 2022の作品から始まった2Dプレシジョンプラットフォーマー<a href="projects/ryze.html">「Ryze」</a>（Steamでプレイテスト公開中、5人チーム）のプログラマー</li>
+            <li>Global Game Jam 2022の作品から始まった、精密な操作が求められる2Dアクション<a href="projects/ryze.html">「Ryze」</a>（Steamでプレイテスト公開中、5人チーム）のプログラマー</li>
             <li>「パールを投げてワープする」という唯一のアクションを支えるキャラクターコントローラー。小さなステートマシンで、着地直前の投げ入力は先行入力として受け付け、足場から歩いて落ちると落下ではなくパールに変身し、両足のプローブで崖際のふらつきを検知してアニメーションが先に反応します</li>
-            <li>崩れる足場から、オブジェクトごとのタイムライン（Chronos）で物理とアニメーションがまとめて遅くなるタイムバブルまで、作ったギミックすべての区画を持つテストレベル。コントローラーの変更を1分で全ギミックと照合できます</li>
+            <li>崩れる足場から、オブジェクトごとのタイムライン（Chronos）で物理とアニメーションがまとめて遅くなるタイムバブルまで、自分が作ったギミックをすべて並べたテストレベル。コントローラーの変更を1分で全ギミックと照合できます</li>
             <li>以前のプロジェクトから持ち込んだ会話システム。各セリフをイベントとして送るだけでUIには一切触れず、会話の開始は進行条件を受け取るawait可能な呼び出し一つ。トリガー範囲、歩いて近づくカットシーン、失敗が続いたときのセリフはどれも小さなコンポーネントで実装しています</li>
             <li>スタジオのゲームジャム作品のプログラミングをすべて担当。<a href="projects/shroomer.html">Shroomer</a>（GMTK Game Jam 2026、4日間）、<a href="projects/this-side-up.html">This Side Up</a>（Mini Jam 188、72時間）など</li>
           </ul>
@@ -131,7 +141,7 @@
           <div class="where">Damocles Games・オランダ</div>
           <ul>
             <li>10人のチームでUnityの3Dグリッド型ターン制ストラテジー（ファイアーエムブレム風）を開発</li>
-            <li>ビジュアルスクリプティング用のAPIとカスタムユニットを作成し、デザイナーがプログラマーを待たずにゲームプレイの挙動を作れるように。プレイテストの反復が速くなりました</li>
+            <li>ビジュアルスクリプティング用のAPIとカスタムノードを作成し、デザイナーがプログラマーを待たずにゲームプレイの挙動を作れるように。プレイテストの反復が速くなりました</li>
             <li>ユニットのホバー表示の要望をきっかけに、柔軟性に欠けていた選択・ハイライトの仕組みを作り直し、ホバーやターン制のカメラ操作などの機能をすぐに追加できるようにしました</li>
           </ul>
         </div>
