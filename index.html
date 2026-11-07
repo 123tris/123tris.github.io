@@ -25,7 +25,7 @@
         <h1>Tristan Metz</h1>
         <p class="role" style="margin-bottom:.2rem">トリスタン・メッツ</p>
         <p class="role">ゲームプレイ＆ツールプログラマー</p>
-        <p class="tagline">東京の株式会社XR Japanでリードプログラマーを務めています。自作のC++エンジンから医師の研修に使われる医療シミュレーターまで、チームの開発スピードを上げるシステム・エディター・フレームワークを作ってきました。</p>
+        <p class="tagline">操作して気持ちいいキャラクターと、それをチームで素早く調整するためのツールやテストレベルを作っています。東京の株式会社XR Japanでリードプログラマーを務めています。</p>
         <a class="btn no-print" href="cv-ja.pdf">履歴書をダウンロード（PDF）</a>
         <a class="btn no-print" href="portfolio.html">作品を見る</a>
       </div>
@@ -34,7 +34,7 @@
 
     <hr>
 
-    <div class="resume">
+        <div class="resume">
       <aside>
         <h2>基本情報</h2>
         <dl class="info">
@@ -57,18 +57,16 @@
 
         <h2 style="margin-top:2rem">スキル</h2>
         <dl class="skills">
-          <dt>ゲームプレイ・システム</dt>
-          <dd>キャラクターコントローラー、ゲームフィール、VRインタラクション、ローカルマルチプレイ、会話システム、UI、サウンド実装</dd>
-          <dt>ツール・設計</dt>
-          <dd>Unityエディター拡張、ScriptableObjectアーキテクチャ、共通Unityパッケージ、レベルエディター、シリアライズ・リフレクション、デバッグツール</dd>
+          <dt>ゲームプレイ</dt>
+          <dd>キャラクターコントローラーとゲームフィール、物理（自作エンジンを含む）、VRインタラクション、ローカルマルチプレイ、会話・イベントシステム</dd>
+          <dt>ツール</dt>
+          <dd>Unityエディター拡張、レベルエディター、シリアライズとリフレクション、テストレベル・テスト環境</dd>
           <dt>エンジン</dt>
           <dd>Unity（2016年〜）、自作C++エンジン（Vulkan、OpenGL）、Unreal Engine</dd>
           <dt>プログラミング言語</dt>
-          <dd>C#, C++, HLSL/ShaderLab, Lua</dd>
-          <dt>フレームワーク・ライブラリ</dt>
-          <dd>URP, Input System, XR Interaction Toolkit, Mirror, Burst/Jobs, Odin Inspector, DOTween, FMOD, ImGui, Vulkan</dd>
-          <dt>ツール</dt>
-          <dd>Git, Azure DevOps, Rider, Visual Studio, CMake</dd>
+          <dd>C#、C++、HLSL、Lua</dd>
+          <dt>ミドルウェア</dt>
+          <dd>FMOD、Burst/Jobs、Mirror、XR Interaction Toolkit、ImGui、Git</dd>
           <dt>語学</dt>
           <dd>日本語（JLPT N1）、英語（ビジネスレベル）、オランダ語（ネイティブ）</dd>
         </dl>
@@ -76,8 +74,7 @@
 
       <section>
         <h2>概要</h2>
-        <p>ゲームプレイシステムと開発ツールを専門とするゲームプログラマーです。主にC#とUnityで開発しており、C++でのゲームエンジン開発の経験もあります。チーム全体の開発を速くするフレームワークやエディターを作り、それを使ってゲームを完成させることが得意です。</p>
-        <p>株式会社XR Japanでは、医師が専用コントローラーで内視鏡手術を練習できるバーチャル内視鏡トレーニング<a href="projects/lumen.html">「Lumen」</a>をはじめ、クライアント向けのVR・iPadOSアプリのプログラミングを統括しています。設計、シミュレーションとパフォーマンスの改善、共通ライブラリとツールの整備、クライアントとの技術的な打ち合わせ、チームのメンタリングを担当しています。また、Idomi Gamesを共同設立し、Global Game Jamの作品から生まれたSteam向けプラットフォーマー<a href="projects/ryze.html">「Ryze」</a>のプログラマーを務めています。オープンソースのScriptableObjectフレームワーク<a href="projects/ripple.html">「Ripple」</a>の開発者でもあります。</p>
+        <p>ゲームの手触りと、それを支えるツールを専門とするゲームプログラマーです。最近はC#とUnityで開発しており、それ以前は2つの自作C++エンジンで物理、シリアライズ、エディターを書きました。</p>
 
         <h2 style="margin-top:2.5rem">職歴</h2>
 
@@ -86,12 +83,11 @@
           <div class="when">2025年3月 — 現在</div>
           <div class="where">株式会社XR Japan（旧AVR Japan）・東京</div>
           <ul>
-            <li>内視鏡的粘膜下層剥離術（ESD）を練習できるバーチャル内視鏡トレーニング<a href="projects/lumen.html">「Lumen」</a>およびクライアント向けVR・iPadOS研修アプリのリードプログラマー</li>
-            <li>組織シミュレーション、病変のマーキング、Lumen専用内視鏡コントローラーの入力処理。Burstによるソルバーの高速化とメッシュデータ読み込みの高速化</li>
-            <li>クライアント案件の技術面を担当：技術的な打ち合わせ、見積もり、進捗とリスクの管理</li>
-            <li>プログラマーの育成とオンボーディング、プロジェクト共通の設計方針とコーディング規約の策定</li>
-            <li>全プロジェクトで使われる共通Unityパッケージを開発：<a href="portfolio.html#ripple">Ripple</a>（イベントと状態管理）、VRテンプレート、UnityUtilities、AutoAssign</li>
-                        <li>繰り返し作業をなくすテスト環境とツールを整備</li>
+            <li>医師が専用の内視鏡コントローラーとフットペダルで内視鏡的粘膜下層剥離術（ESD）を練習できるバーチャルトレーニング<a href="projects/lumen.html">「Lumen」</a>と、クライアント向けVR・iPadOS研修アプリのリードプログラマー</li>
+            <li>Burstでコンパイルしたソルバーによる組織の挙動（高フレームレートでも滑らかに動作）、病変のマーキング、コントローラーとペダルの入力を内視鏡先端の動き（押し引き・回転・角度）に変換する処理</li>
+            <li>シミュレーションのパフォーマンス計測とフレーム時間の改善、メッシュデータの読み込みの高速化</li>
+            <li>設計方針とコーディング規約の策定、コードレビュー、プログラマーの育成とオンボーディング。医師・パートナー・クライアントとの技術的な打ち合わせ（見積もりとリスク管理を含む）</li>
+            <li>全プロジェクトで使われる共通Unityパッケージ（イベントと状態管理の<a href="portfolio.html#ripple">Ripple</a>、VRテンプレート、UnityUtilities、AutoAssign）と、繰り返しの確認作業をなくすテスト環境を整備</li>
           </ul>
         </div>
 
@@ -101,7 +97,7 @@
           <div class="where">株式会社AVR Japan・東京</div>
           <ul>
             <li>UnityでVR・タブレット向け研修アプリのゲームプレイ、UI、ツールを開発（Unreal Engineでの開発も一部担当）</li>
-            <li>社内VRテンプレートパッケージを作成：再利用可能なインタラクション、フェード、トゥイーン、条件付きイベントのコンポーネント</li>
+            <li>新しいクライアントアプリの出発点となるVRテンプレートパッケージを作成。インタラクション、フェード、トゥイーン、条件付きイベントのコンポーネントを揃え、新しいアプリをコピーしたコードではなく動く部品から始められるようにしました</li>
           </ul>
         </div>
 
@@ -110,11 +106,11 @@
           <div class="when">2022年1月 — 現在</div>
           <div class="where">Idomi Games（インディースタジオ、本業と並行）</div>
           <ul>
-            <li>Steamでプレイテスト公開中の2Dプレシジョンプラットフォーマー<a href="projects/ryze.html">「Ryze」</a>のプログラマー</li>
-            <li>ゲームの手触りを決めるキャラクターコントローラーと「投げてワープする」移動システム</li>
-            <li>動く足場、崩れる足場、ピストン、ベルトコンベアなどのレベルギミックと、それらをすべて検証できるテストレベル</li>
-            <li>NPC、カットシーン、多言語対応を備えた再利用可能な会話システム</li>
-            <li>スタジオのゲームジャム作品のプログラマー：<a href="projects/shroomer.html">Shroomer</a>（GMTK Game Jam 2026）、<a href="projects/this-side-up.html">This Side Up</a>（Mini Jam 188）など</li>
+            <li>Global Game Jam 2022の作品から始まった2Dプレシジョンプラットフォーマー<a href="projects/ryze.html">「Ryze」</a>（Steamでプレイテスト公開中、5人チーム）のプログラマー</li>
+            <li>「パールを投げてワープする」という唯一のアクションを支えるキャラクターコントローラー。小さなステートマシンで、着地直前の投げ入力は先行入力として受け付け、足場から歩いて落ちると落下ではなくパールに変身し、両足のプローブで崖際のふらつきを検知してアニメーションが先に反応します</li>
+            <li>崩れる足場から、オブジェクトごとのタイムライン（Chronos）で物理とアニメーションがまとめて遅くなるタイムバブルまで、作ったギミックすべての区画を持つテストレベル。コントローラーの変更を1分で全ギミックと照合できます</li>
+            <li>以前のプロジェクトから持ち込んだ会話システム。各セリフをイベントとして送るだけでUIには一切触れず、会話の開始は進行条件を受け取るawait可能な呼び出し一つ。トリガー範囲、歩いて近づくカットシーン、失敗が続いたときのセリフはどれも小さなコンポーネントで実装しています</li>
+            <li>スタジオのゲームジャム作品のプログラミングをすべて担当。<a href="projects/shroomer.html">Shroomer</a>（GMTK Game Jam 2026、4日間）、<a href="projects/this-side-up.html">This Side Up</a>（Mini Jam 188、72時間）など</li>
           </ul>
         </div>
 
@@ -123,9 +119,9 @@
           <div class="when">2021年9月 — 2022年4月</div>
           <div class="where">VR Amsterdam・オランダ アムステルダム</div>
           <ul>
-            <li>フリーローム型マルチプレイVRアーケードゲーム<a href="portfolio.html#ghostebash">「Ghostebash」</a>を、空のプロジェクトから一人でプログラミング</li>
-            <li>Mirrorによるリアルタイムのローカルマルチプレイ、プレイヤーの実際の体をゲーム内に再現するIKリグ、XR Interaction Toolkitによる物理インタラクション</li>
-            <li>フリーロームVRのハードウェア、ネットワーク、リピーター獲得に関する卒業研究（同時接続プレイヤー数ごとのネットワーク負荷の計測を含む）</li>
+            <li>複数人が一つの実空間を共有するマルチプレイVRアーケードゲーム<a href="portfolio.html#ghostebash">「Ghostebash」</a>を、空のプロジェクトから一人でプログラミング</li>
+            <li>クライアント・ホスト型のMirrorによるローカルマルチプレイ、プレイヤーの実際の体をゲーム内に再現するIKリグ、XR Interaction Toolkitによる物理ベースのつかみ操作とインタラクション</li>
+            <li>フリーロームVRに関する卒業研究。ネットワーク処理の1フレームあたりの負荷はクライアント0人で0.08ms、4人で0.40ms、10人で1.33msと計測し、クライアント・ホスト型で十分であることを確認しました</li>
           </ul>
         </div>
 
@@ -135,23 +131,35 @@
           <div class="where">Damocles Games・オランダ</div>
           <ul>
             <li>10人のチームでUnityの3Dグリッド型ターン制ストラテジー（ファイアーエムブレム風）を開発</li>
-            <li>デザイナーが自分でゲームプレイの挙動を作れるよう、APIとビジュアルスクリプティングのカスタムユニットを作成し、プレイテストの反復を高速化</li>
-            <li>選択・ハイライトの仕組みを作り直し、ユニットのホバーやターン制カメラ操作などの機能をすぐに追加できるように</li>
-            <li>既存コードを縮小しつつ柔軟性を向上。UXデザイナー、ゲームデザイナーと直接連携</li>
+            <li>ビジュアルスクリプティング用のAPIとカスタムユニットを作成し、デザイナーがプログラマーを待たずにゲームプレイの挙動を作れるように。プレイテストの反復が速くなりました</li>
+            <li>ユニットのホバー表示の要望をきっかけに、柔軟性に欠けていた選択・ハイライトの仕組みを作り直し、ホバーやターン制のカメラ操作などの機能をすぐに追加できるようにしました</li>
           </ul>
         </div>
 
-        <h2 style="margin-top:2.5rem">主な作品</h2>
-        <ul>
-          <li><a href="projects/lumen.html">Lumen</a> — バーチャル内視鏡トレーニング、XR Japan（ベータ版）</li>
-          <li><a href="projects/ryze.html">Ryze</a> — 2Dプレシジョンプラットフォーマー、Unity 6（2022年 — 現在）</li>
-          <li><a href="projects/ripple.html">Ripple</a> — Unity向けオープンソースScriptableObjectフレームワーク</li>
-          <li><a href="projects/botbandjazz.html">BotBandJazz</a> — Dutch Game Gardenで展示されたVRゲーム（2017年）</li>
-          <li><a href="projects/tristeon.html">Tristeon</a> — VulkanレンダラーとエディターをもつC++ゲームエンジン（2017年）</li>
-          <li><a href="projects/ctb-editor.html">osu!catch レベルエディター</a> — コミュニティ向けツール、Unity（2018年 — 2019年）</li>
-        </ul>
+        <h2 style="margin-top:2.5rem">エンジン・ツールの作品</h2>
+        <div class="job">
+          <h3><a href="projects/tristeon.html">Tristeon</a></h3>
+          <div class="where">VulkanレンダラーのC++エンジン · 2人・5か月 · 2017年 · GitHubスター70以上</div>
+          <p>ImGuiによるエディターと、それを支えるリフレクションを担当。C++にはリフレクションがないため、各型がmainの前にファクトリーを登録します。シーンには型名を保存し、同じ情報で専用UIなしにあらゆるコンポーネントを編集できるインスペクターを動かしています。</p>
+        </div>
+        <div class="job">
+          <h3><a href="projects/orb.html">Orb</a></h3>
+          <div class="where">初の自作C++エンジン（OpenGL）で動くパズルゲーム · 2017年</div>
+          <p>物理エンジンを担当。抵抗・摩擦・反発をもつリジッドボディ、速い物体が壁をすり抜けない連続衝突判定付きのAABB衝突、トリガー、レイキャスト。Unityをレベルエディターにし、エクスポートしたデータをエンジンがオブジェクト単位で復元します。</p>
+        </div>
+        <div class="job">
+          <h3><a href="projects/ctb-editor.html">osu!catch レベルエディター</a></h3>
+          <div class="where">Unity · 個人開発 · 2018年 — 2019年</div>
+          <p>ビートグリッドを1枚のフラグメントシェーダーでピクセル単位に描画し、数千本の線オブジェクトでは遅くなるところを、どのテンポやズームでも正確に表示。自分自身を元に戻すメメントによるUndo/Redo。マッパーのフィードバックをもとに改良しました。</p>
+        </div>
+        <div class="job">
+          <h3><a href="projects/wren.html">C# vs. Wren</a></h3>
+          <div class="where">C++エンジン向けスクリプト言語のベンチマーク · 2023年</div>
+          <p>採用前に両方を計測。C#は6〜15倍速く動作し、Wrenはコンパイルが1000倍以上速く、C++の呼び出しもほぼゼロコストでした。</p>
+        </div>
       </section>
     </div>
+
   </main>
 
   <footer>© 2026 Tristan Metz</footer>

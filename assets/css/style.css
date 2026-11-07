@@ -216,7 +216,9 @@ html:lang(ja) h1 { font-weight: 300; }
   hr { margin: .9rem 0; }
   .resume { grid-template-columns: 1fr 2.7fr; gap: 1.4rem; }
   .info dt, .skills dt { margin-top: .45rem; }
-  .job { break-inside: avoid; margin-bottom: .7rem; }
+  .job { margin-bottom: .7rem; }
+  .job h3, .job .when, .job .where { break-after: avoid; }
+  .job li, .job p { break-inside: avoid; }
   .job h3 { font-size: 11pt; }
   .job .when, .job .where { font-size: 8.5pt; }
   .job .where { margin-bottom: .15rem; }
