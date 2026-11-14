@@ -47,9 +47,9 @@
   <main class="container">
     <section class="detail wide">
       <div>
-        <h2>An editor like the ones we used</h2>
-        <p>Tristeon 3D was built in five months by two students. I wrote its complete editor in ImGui: a scene view
-          with transform gizmos, a hierarchy, an inspector that edits any component, and an asset browser.</p>
+        <h2>Editor</h2>
+        <p>I wrote the whole editor in ImGui: a scene view with transform gizmos, a hierarchy, an inspector that
+          edits any component, and an asset browser.</p>
         <p>The asset browser scans the project folder and generates a metadata file for every asset, holding its
           import settings, so assets can be renamed and moved without breaking references. The editor lives in its
           own layer, separate from the engine and game code, so a game ships without it.</p>
@@ -63,8 +63,8 @@
         <h2>Reflection and serialization</h2>
         <p>C++ has no reflection, so we built our own. Every serializable type registers a factory in a static map before
           <code>main</code> runs. Scenes and prefabs are stored as JSON with the type name of each object, and the
-          deserializer rebuilds any component from that name, including types the engine has never heard of, written
-          by the game.</p>
+          deserializer rebuilds any component from that name, including types defined in game code that the engine
+          itself does not know about.</p>
         <p>The same introspection drives the inspector: it can show and edit any component without hand-written UI.</p>
       </div>
 <pre><code><span class="k">template</span> &lt;<span class="k">typename</span> T&gt;
@@ -93,10 +93,10 @@ REGISTER_TYPE_H(MeshRenderer)</code></pre>
 
     <section class="detail">
       <div>
-        <h2>Where it came from</h2>
-        <p>Tristeon grew out of our first engine, built earlier that year for the puzzle game
-          <a href="orb.html">Orb</a>. There I wrote the physics and made Unity the level editor; Tristeon was the
-          step to a real editor of our own.</p>
+        <h2>Background</h2>
+        <p>Tristeon followed our first engine, built earlier that year for the puzzle game
+          <a href="orb.html">Orb</a>. There I wrote the physics and used Unity as the level editor; Tristeon
+          replaced that setup with an editor of its own.</p>
         <p>Choosing a scripting language for the engine led to a separate study:
           <a href="wren.html">C# vs. Wren</a>.</p>
       </div>

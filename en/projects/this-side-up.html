@@ -33,8 +33,8 @@
     <div class="container">
       <h1>This Side Up</h1>
       <p class="lead">A pixel-art platformer about delivering a package, made in 72 hours for Mini Jam 188 under the
-        limitation "All in a box". You cannot jump: a boxing glove punches you through the level instead. I did all of
-        the programming.</p>
+        limitation "All in a box". There is no jump; the player moves by punching with a boxing glove and riding the
+        recoil. I did all of the programming.</p>
       <p class="facts">Unity · C# · FMOD · 72 hours · team of 5</p>
       <a class="btn btn-primary" href="https://phbarralis.itch.io/this-side-up">Play in browser</a>
       <a class="btn" href="https://www.youtube.com/watch?v=FLGi_JpEl58">Full playthrough</a>
@@ -49,15 +49,15 @@
   <main class="container">
     <section class="detail">
       <div>
-        <h2>A movement verb in a weekend</h2>
-        <p>Aim with the mouse or the right stick and punch: the glove shoots out, and a fraction of a second later the
-          recoil launches you the other way. Punch again in mid-air and the glove snaps back with a second, stronger
-          kick, which works as a double jump. The glove recharges when you touch the ground, with a short coyote time so
-          a punch just after walking off a ledge still counts.</p>
-        <p>The level adds sticky walls that catch you mid-flight and let you slide down slowly, moving platforms and
-          conveyor belts, all tuned with the designers during the jam. Rotate triggers turn gravity by 90 degrees and
-          the view turns with it, so parts of the level are played on their side or upside down, and the music
-          changes with each orientation through an FMOD parameter.</p>
+        <h2>Boxing-glove movement</h2>
+        <p>The player aims with the mouse or the right stick and punches: the glove extends, and after a short delay
+          the recoil launches the player the other way. A second punch in mid-air retracts the glove with a stronger
+          kick, which works as a double jump. The glove recharges on ground contact, with a short coyote time so a
+          punch just after walking off a ledge still registers.</p>
+        <p>The level also has sticky walls that stop the player mid-flight and let them slide down slowly, moving
+          platforms and conveyor belts, tuned with the designers during the jam. Rotate triggers turn gravity by 90
+          degrees and the camera turns with it, so parts of the level are played sideways or upside down; an FMOD
+          parameter changes the music for each orientation.</p>
       </div>
 <pre><code><span class="k">if</span> (protracted &amp;&amp; activateGloves.WasPressedThisFrame())
 {
@@ -81,7 +81,7 @@
 
     <section class="detail flip">
       <div>
-        <h2>The rest of the jam</h2>
+        <h2>Other systems</h2>
         <p>Besides the movement I built the dialogue view, the pause menu and the FMOD audio hookup, with
           state and events running on <a href="ripple.html">Ripple</a> so designers could wire up triggers without code.</p>
       </div>

@@ -32,7 +32,7 @@
   <header class="jumbo">
     <div class="container">
       <h1>Lumen</h1>
-      <p class="lead">内視鏡手術のためのバーチャルトレーニングプラットフォーム。医師は自社開発の内視鏡コントローラーとフットペダルを使い、患者へのリスクなしに内視鏡的粘膜下層剥離術（ESD）の全工程を練習できます。私はXR Japanでリードプログラマーを務めています。</p>
+      <p class="lead">内視鏡的粘膜下層剥離術（ESD）のトレーニングシミュレーター。医師は自社開発の内視鏡コントローラーとフットペダルを使い、手技の全工程を練習します。私はXR Japanでリードプログラマーを務めています。</p>
       <p class="facts">Unity · C# · Burst · 専用ハードウェア · ベータ版</p>
       <a class="btn btn-primary" href="https://xrjapan.co.jp/">製品ページ</a>
     </div>
@@ -46,9 +46,9 @@
   <main class="container">
     <section class="detail">
       <div>
-        <h2>なぜ必要なのか</h2>
-        <p>内視鏡手技の習得には何年もかかりますが、若手医師には練習の時間も指導者も足りていません。Lumenは、PCとコントローラーさえあればどこでも、質の高い練習環境を誰にでも同じように提供します。シナリオは都立駒込病院の消化器内科部長が監修しています。</p>
-        <p>ベータ版は食道のESDに対応しており、今後さらに多くの手技とシナリオを予定しています。</p>
+        <h2>背景</h2>
+        <p>内視鏡手技の習得には何年もかかり、若手医師が指導を受けられる時間は限られています。LumenはPCとコントローラーで動作し、すべての研修者が同じシナリオを繰り返し練習できます。シナリオは都立駒込病院の消化器内科部長が監修しています。</p>
+        <p>ベータ版は食道のESDに対応しています。ほかの手技とシナリオも予定しています。</p>
       </div>
       <figure>
         <img class="shot contain" src="../assets/img/lumen-hero.webp" alt="Lumen running on a monitor next to the endoscope controller" width="1100" height="942" style="aspect-ratio:auto">
@@ -58,7 +58,7 @@
     <hr>
 
     <section>
-      <h2 class="section-title">手技の全工程を順を追って</h2>
+      <h2 class="section-title">手技の工程</h2>
       <div class="clip-grid">
         <figure>
           <video class="shot" autoplay muted loop playsinline poster="../assets/img/lumen-marking.webp" width="1280" height="720">
@@ -93,9 +93,9 @@
       <div>
         <h2>担当した部分</h2>
         <ul>
-          <li><b>組織の挙動。</b>手技の各工程に対する組織の反応。Burstでコンパイルしたソルバーで、高いフレームレートでも滑らかに動きます。</li>
+          <li><b>組織の挙動。</b>手技の各工程に対する組織の反応。Burstでコンパイルしたソルバーで計算します。</li>
           <li><b>病変のマーキング。</b>切開の目印となるマーキングの配置と表示。</li>
-          <li><b>コントローラー入力。</b>自社開発の内視鏡コントローラーとフットペダルの操作を、押し引き・回転・アングルといった内視鏡先端の正確な動きに変換。</li>
+          <li><b>コントローラー入力。</b>自社開発の内視鏡コントローラーとフットペダルの操作を、内視鏡先端の動き（押し引き・回転・アングル）に変換。</li>
           <li><b>パフォーマンス。</b>メッシュデータ読み込みの高速化と、シミュレーションのフレームタイム改善。</li>
           <li><b>リードプログラマー。</b>設計と規約、コードレビュー、メンタリング、医師やパートナーとの技術的な打ち合わせ。</li>
         </ul>
@@ -112,8 +112,8 @@
 
     <section class="detail">
       <div>
-        <h2>本物のように動く食道</h2>
-        <p>環境は実際の内視鏡映像から再構成されており、食道は自然な蠕動運動で動きます。実際の手技と同じように、動く対象に合わせて操作する必要があります。</p>
+        <h2>食道モデル</h2>
+        <p>環境は内視鏡映像から再構成されており、食道は蠕動運動で動きます。そのため研修者は、実際の手技と同じく動く対象に対して操作します。</p>
       </div>
       <figure>
         <video class="shot" autoplay muted loop playsinline poster="../assets/img/lumen-peristalsis.webp" width="1280" height="720">

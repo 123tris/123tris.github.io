@@ -32,8 +32,8 @@
   <header class="jumbo">
     <div class="container">
       <h1>Shroomer</h1>
-      <p class="lead">A psychedelic movement shooter set in a dream, made in four days for GMTK Game Jam 2026. Your alarm
-        clock is counting down, and only kills buy you more time to stay asleep. I did all of the programming.</p>
+      <p class="lead">A first-person movement shooter set in a dream, made in four days for GMTK Game Jam 2026. An
+        alarm clock counts down, and killing enemies is the only way to add time. I did all of the programming.</p>
       <p class="facts">Unity 6 · C# · 4 days · team of 4</p>
       <a class="btn btn-primary" href="https://123tris.itch.io/shroomer">Play in browser</a>
       <a class="btn" href="https://www.youtube.com/watch?v=AhwISvN-oZg">Full playthrough</a>
@@ -48,13 +48,13 @@
   <main class="container">
     <section class="detail">
       <div>
-        <h2>Movement with momentum</h2>
-        <p>The controller follows the Quake and Titanfall school: instead of setting the velocity every frame, it
-          accelerates toward where you want to go and only friction takes speed away. Speed is kept across jumps, so
-          players can build it with air-strafing, wall-runs and slide-hops.</p>
+        <h2>Momentum-based controller</h2>
+        <p>The controller is modelled on Quake and Titanfall movement: instead of setting the velocity every frame,
+          it accelerates toward the input direction, and only friction removes speed. Speed is kept across jumps, so
+          players can build it up with air-strafing, wall-runs and slide-hops.</p>
         <p>A small state machine (grounded, airborne, wall-running, sliding, mantling) owns the rigidbody, and the
-          camera leans and kicks its field of view from the controller's signals. The core math is pure functions,
-          so it can be unit-tested outside of play mode.</p>
+          camera tilt and field-of-view kicks are driven by the controller's signals. The core math is pure
+          functions, so it can be unit-tested outside of play mode.</p>
       </div>
 <pre><code><span class="c">// Only adds speed along the wish direction, and only up to
 // wishSpeed along that axis. Total speed is never clamped,
@@ -75,13 +75,13 @@
 
     <section class="detail flip">
       <div>
-        <h2>Enemies built from blocks</h2>
-        <p>In a jam, the designers need new enemies faster than a programmer can write them. So there is exactly one
-          enemy component. It handles targeting and aggro, and everything else is picked from dropdowns in the
-          inspector: one movement (stationary, ground chase, hover chase) and any number of abilities (shoot, explode),
-          with shot patterns (single, burst, spread, radial, wave, sequence) as swappable assets.</p>
-        <p>A flying kamikaze and a turret that fires spirals are the same component with different blocks, built
-          without writing a line of code.</p>
+        <h2>Composable enemies</h2>
+        <p>So that designers could add enemy types during the jam without new code, there is one enemy component. It
+          handles targeting and aggro, and everything else is picked from dropdowns in the inspector: one movement
+          (stationary, ground chase, hover chase) and any number of abilities (shoot, explode), with shot patterns
+          (single, burst, spread, radial, wave, sequence) as swappable assets.</p>
+        <p>A flying kamikaze and a turret that fires spirals are the same component with different modules; neither
+          needed new code.</p>
       </div>
 <pre><code><span class="k">public sealed class</span> <span class="t">EnemyBrain</span> : MonoBehaviour
 {

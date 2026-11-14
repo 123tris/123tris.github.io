@@ -32,8 +32,8 @@
   <header class="jumbo">
     <div class="container">
       <h1>BotBandJazz</h1>
-      <p class="lead">A VR game made by six students in ten weeks: explore an old theatre and play mini-games to bring a
-        robot jazz band back to the stage. It was exhibited at the Dutch Game Garden and entered in the Dutch Game
+      <p class="lead">A VR game made by six students in ten weeks, set in an old theatre where the player completes
+        mini-games to bring a robot jazz band back to the stage. It was exhibited at the Dutch Game Garden and entered in the Dutch Game
         Awards 2017. I was the team's generalist programmer: gameplay, VR physics and tools.</p>
       <p class="facts">Unity · C# · HTC Vive · 10 weeks · team of 6 · 2017</p>
     </div>
@@ -45,13 +45,13 @@
   <main class="container">
     <section class="detail">
       <div>
-        <h2>Getting around a theatre in VR</h2>
-        <p>The theatre is far bigger than a living room, so players move by teleporting. Pointing a Vive controller
-          draws an arc: a projectile curve traced segment by segment until it hits the world. Only flat, walkable
-          surfaces count as a landing spot, so nobody ends up inside a prop or stuck to a wall, and the target marker
-          shows exactly where you will stand.</p>
-        <p>Instant teleporting keeps players comfortable, and the arc makes distant balconies and the stage
-          reachable without any instructions.</p>
+        <h2>Teleport locomotion</h2>
+        <p>The theatre is much larger than the play area, so players move by teleporting. Pointing a Vive controller
+          draws an arc: a projectile curve traced segment by segment until it hits geometry. Only flat, walkable
+          surfaces are valid landing spots, which keeps players out of props and off walls, and a target marker
+          shows where the player will stand.</p>
+        <p>An instant teleport avoids the motion sickness that smooth locomotion can cause, and the arc reaches the
+          balconies and the stage.</p>
       </div>
       <figure>
         <img class="shot contain" src="../../assets/img/botbandjazz-teleport.webp" alt="The teleport target on the floor in front of the theatre's music machine" width="1014" height="498">
@@ -63,19 +63,19 @@
 
     <section class="detail flip">
       <div>
-        <h2>Designers wire up the game themselves</h2>
-        <p>With six people and ten weeks, programmers could not be the bottleneck for every door, switch and puzzle.
-          I built a trigger system the designers used directly: give any object a trigger, pick what should happen
-          from a dropdown of functions, and type in the parameters. On enter or on collision, it runs.</p>
-        <p>That let the designers set up interactions themselves while I worked on the systems underneath.</p>
+        <h2>Trigger system for designers</h2>
+        <p>So that doors, switches and puzzles did not each need a programmer, I built a trigger system the
+          designers used directly: add a trigger to any object, choose a function from a dropdown and enter its
+          parameters. It runs on trigger enter or on collision.</p>
+        <p>The designers set up the interactions themselves while I worked on the systems underneath.</p>
       </div>
       <figure class="panel">
         <div class="stack">
           <div><b>On trigger enter</b><span>Object tagged "Player" enters the area</span></div>
-          <div class="own"><b>Function: dropdown</b><span>Chosen from a list, no code needed</span></div>
-          <div><b>Parameters</b><span>Typed straight into the inspector</span></div>
+          <div class="own"><b>Function: dropdown</b><span>Chosen from a list of functions</span></div>
+          <div><b>Parameters</b><span>Entered in the inspector</span></div>
         </div>
-        <figcaption style="margin-top:.75rem">How a designer sets up an interaction, without code</figcaption>
+        <figcaption style="margin-top:.75rem">The steps to set up an interaction in the inspector</figcaption>
       </figure>
     </section>
 
@@ -83,11 +83,11 @@
 
     <section class="detail">
       <div>
-        <h2>A level editor for the rhythm game</h2>
-        <p>One of the mini-games is a rhythm game played to the band's music. Placing notes by hand in seconds would
-          never line up, so I built an editor inside Unity that works in beats instead: set the song's BPM, and notes
-          snap to a beat grid that stays in time with the track.</p>
-        <p>A year later I built a full rhythm-game editor of my own, the
+        <h2>Rhythm mini-game editor</h2>
+        <p>One of the mini-games is a rhythm game played to the band's music. Notes are placed in beats rather than
+          seconds: in the editor I built inside Unity, the designer sets the song's BPM and notes snap to a beat grid
+          aligned with the track.</p>
+        <p>A year later I built a standalone rhythm-game editor, the
           <a href="ctb-editor.html">osu!catch level editor</a>.</p>
       </div>
       <figure>

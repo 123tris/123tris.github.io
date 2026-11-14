@@ -32,7 +32,7 @@
   <header class="jumbo">
     <div class="container">
       <h1>Ripple</h1>
-      <p class="lead">Unity向けのオープンソースScriptableObjectフレームワーク。このパターンでは見えにくい「誰が値を変えたのか」「誰がイベントを受け取っているのか」がすぐに分かるよう設計しました。</p>
+      <p class="lead">Unity向けのオープンソースScriptableObjectフレームワーク。共有変数とイベントをアセットとして扱い、実行中に各アセットを変更したオブジェクトと、各アセットを受け取るオブジェクトをエディター上で確認できます。</p>
       <p class="facts">Unity · C# · エディター拡張 · 2024年 — 現在</p>
       <a class="btn btn-primary" href="https://github.com/123tris/Ripple">GitHub</a>
     </div>
@@ -44,9 +44,9 @@
   <main class="container">
     <section class="detail">
       <div>
-        <h2>考え方</h2>
-        <p>共有変数、型付きイベント、ランタイムセットはすべてアセットとして扱います。たとえばHPバーはプレイヤーへの参照を持たず、プレイヤーのHPアセットを読むだけ。配線はインスペクターで行い、シーンの読み込み順にも依存しません。</p>
-        <p>変数はトグル一つでセッションをまたいで保存でき、参照は定数とアセットを切り替えられるので、プロトタイプはシンプルに始めて、後から拡張できます。</p>
+        <h2>概要</h2>
+        <p>共有変数、型付きイベント、ランタイムセットはすべてアセットとして扱います。たとえばHPバーはプレイヤーへの参照を持たず、プレイヤーのHPアセットを読むだけです。配線はインスペクターで行い、シーンの読み込み順にも依存しません。</p>
+        <p>変数はトグルでセッションをまたいで保存でき、参照フィールドには定数とアセットのどちらも設定できます。最初は定数で始め、後からアセットに置き換えられます。</p>
       </div>
 <pre><code><span class="c">// Gameplay code only holds references to assets.</span>
 [SerializeField] FloatVariableSO shotsFired;
@@ -66,8 +66,8 @@
 
     <section class="detail flip">
       <div>
-        <h2>デバッグしやすさを前提に設計</h2>
-        <p>このパターンへのよくある不満は、処理の流れが見えなくなること。イベントが発火しても、どこから呼ばれたのか分かりません。Rippleはその答えをインスペクターに直接表示します。プレイ中、すべてのアセットに呼び出し元、回数、値が並びます。</p>
+        <h2>呼び出し元の記録とリスナー検索</h2>
+        <p>このパターンの欠点としてよく挙げられるのは、処理の流れが見えにくいことです。イベントが発火しても、どこから呼ばれたのか分かりません。Rippleでは、プレイ中に各アセットのインスペクターに呼び出し元、回数、値が表示されます。</p>
         <p>「Scan listeners」はその逆方向。シリアライズされたイベント呼び出し、ランタイムの購読者、すべてのシーンとプレハブのリスナーコンポーネントから、そのアセットに反応するものをすべて見つけます。</p>
       </div>
       <figure>
@@ -80,9 +80,9 @@
 
     <section class="detail">
       <div>
-        <h2>チーム全員のためのツール</h2>
-        <p>Ripple Wizardはプロジェクト内のすべてのRippleアセットを種類ごとに一覧表示し、一か所で閲覧・編集できます。イベントロガーは発火したイベントを送信元とともに即座に表示するので、プレイテストのバグ報告がずっと追いやすくなります。</p>
-        <p>診断機能はすべてビルドから除外され、ランタイムはIL2CPPにも対応。リリースしたゲームにツールの負荷は一切残りません。</p>
+        <h2>エディターツール</h2>
+        <p>Ripple Wizardはプロジェクト内のすべてのRippleアセットを種類ごとに一覧表示し、一つのウィンドウで閲覧・編集できます。イベントロガーは発火したイベントを送信元とともに表示し、プレイテストで報告されたバグの調査に使えます。</p>
+        <p>診断機能はすべてプレイヤービルドから除外され、ランタイムはIL2CPPに対応しています。そのため、リリースしたゲームにツールによる負荷はかかりません。</p>
       </div>
       <figure>
         <img class="shot contain" src="../assets/img/ripple-logger.webp" alt="Ripple Event Logger listing events raised during play and who raised them" width="1600" height="900">
@@ -94,8 +94,8 @@
 
     <section class="detail flip">
       <div>
-        <h2>実際のゲームで使用中</h2>
-        <p>Rippleは自分のゲームの土台として始まり、最近の作品である<a href="ryze.html">Ryze</a>、<a href="shroomer.html">Shroomer</a>、<a href="this-side-up.html">This Side Up</a>のすべてで使われています。</p>
+        <h2>使用しているプロジェクト</h2>
+        <p>Rippleは最近の自作ゲーム<a href="ryze.html">Ryze</a>、<a href="shroomer.html">Shroomer</a>、<a href="this-side-up.html">This Side Up</a>で使われているほか、XR Japanでも各プロジェクト共通のパッケージとして使用しています。</p>
       </div>
       <figure>
         <img class="shot contain" src="../assets/img/ripple-wizard.webp" alt="The Ripple Wizard listing every Ripple asset in the project by type" width="1600" height="900">

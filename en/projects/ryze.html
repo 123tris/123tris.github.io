@@ -32,10 +32,10 @@
   <header class="jumbo">
     <div class="container">
       <h1>Ryze</h1>
-      <p class="lead">A 2D precision platformer about climbing by throwing yourself, made by Idomi Games, the studio I
-        co-founded. As a programmer on the team I focus on how the character feels to control and on the mechanics
-        the levels are built from.</p>
-      <p class="facts">Unity 6 · C# · 2022 — present · Steam playtest out now</p>
+      <p class="lead">A 2D precision platformer by Idomi Games, the studio I co-founded. The player climbs by
+        throwing a pearl and teleporting to where it lands. I am one of its two programmers; my work covers the
+        character controller, level mechanics and their test level, and the dialogue system.</p>
+      <p class="facts">Unity 6 · C# · 2022 — present · playtest on Steam</p>
       <a class="btn btn-primary" href="https://store.steampowered.com/app/4137850/Ryze/">Steam page</a>
       <a class="btn" href="https://idomigames.itch.io/ryze">itch.io</a>
     </div>
@@ -49,14 +49,18 @@
   <main class="container">
     <section class="detail">
       <div>
-        <h2>One verb, done well</h2>
-        <p>Ryze has a single movement verb: charge a throw, release a pearl, and teleport to wherever it lands. The
-          character controller runs on a small state machine (grounded, aiming, pearl in flight, respawning), and
-          a lot of care goes into the moments between states. A press just before landing is buffered, so it still
-          counts. Walking off an edge turns you into the pearl instead of dropping you. Probes under each foot notice
-          when you are teetering on a ledge, so the animation can react before you fall.</p>
-        <p>The pearl bounces off walls and rolls down slopes, and on long throws the camera hands over to it, so the
-          player never loses sight of where they will land.</p>
+        <h2>Character controller</h2>
+        <p>Movement consists of one action: charge a throw, release a pearl and teleport to where it lands. The
+          controller is a small state machine (grounded, aiming, pearl in flight, respawning), and the transitions
+          between states handle these cases:</p>
+        <ul>
+          <li>A throw pressed shortly before landing is buffered and applied on landing.</li>
+          <li>Walking off a ledge turns the player into the pearl instead of starting a fall.</li>
+          <li>A probe under each foot detects when the character stands on the edge of a ledge, so the animation
+            can react before a fall.</li>
+        </ul>
+        <p>The pearl bounces off walls and rolls down slopes. On long throws the camera switches its target to the
+          pearl, which keeps the landing point on screen.</p>
       </div>
       <figure>
         <video class="shot" autoplay muted loop playsinline poster="../../assets/img/ryze-long-throw.webp" width="800" height="450">
@@ -69,14 +73,14 @@
     <hr>
 
     <section id="test-level">
-      <h2 class="section-title">A test level for every mechanic</h2>
-      <p class="measure">Every mechanic I add gets its own station in
-        one long technical test level. A change to the controller can be checked against all of them in a minute,
-        and designers see each component working on its own before they use it in a real level. Each one is a
-        self-contained component, tuned from the inspector.</p>
-      <p class="measure">Time bubbles are one of them. The character,
-        the pearl and the pistons each run on their own timeline (built on the Chronos plugin), so a bubble changes
-        the speed of everything inside it: movement, physics and animation slow down or speed up together.</p>
+      <h2 class="section-title">Mechanics test level</h2>
+      <p class="measure">Each mechanic I add gets its own station in a single technical test level. A controller
+        change can be checked against every station in about a minute, and designers can try each mechanic in
+        isolation before using it in a level. Each mechanic is a self-contained component configured in the
+        inspector.</p>
+      <p class="measure">Time bubbles are one of these mechanics. The character, the pearl and the pistons each run
+        on their own timeline (Chronos plugin), so a bubble scales time for every object inside it: movement,
+        physics and animation slow down or speed up together.</p>
       <div class="clip-grid two">
         <figure>
           <video class="shot" autoplay muted loop playsinline poster="../../assets/img/ryze-test-throws.webp" width="960" height="540">
@@ -111,18 +115,18 @@
 
     <section class="detail">
       <div>
-        <h2>A dialogue system that travels</h2>
-        <p>I wrote this dialogue system for an earlier project and brought it into Ryze with its core unchanged. Three
-          decisions made that possible:</p>
+        <h2>Dialogue system</h2>
+        <p>I wrote this dialogue system for an earlier project and reused it in Ryze without changes to its core.
+          Three design decisions make it reusable:</p>
         <ul>
-          <li><b>It knows nothing about the UI.</b> Each line goes out as a Ripple event. Every NPC listens and shows
-            its speech bubble only when the line is theirs and the player is close, and the dialogue sounds listen
-            to the same event. A new project only needs a new view.</li>
-          <li><b>The caller decides when a line moves on.</b> Starting a dialogue is one awaitable call that takes
-            the condition for advancing. Trigger zones, walk-up cutscenes and lines that react when the player keeps
-            failing at a checkpoint are each a small component around that call.</li>
-          <li><b>Dialogues are data.</b> Writers edit lines and speakers as assets in the inspector, and every line
-            has a localized version that falls back to the English text.</li>
+          <li><b>No UI dependency.</b> Each line is raised as a Ripple event. Every NPC listens and shows its speech
+            bubble only when the line is its own and the player is in range; the dialogue sounds listen to the same
+            event. Another project only needs its own view.</li>
+          <li><b>The caller controls advancing.</b> Starting a dialogue is a single awaitable call that takes the
+            condition for moving to the next line. Trigger zones, walk-up cutscenes and lines that play after
+            repeated failures at a checkpoint are each a small component around that call.</li>
+          <li><b>Content is data.</b> Writers edit lines and speakers as assets in the inspector. Each line has a
+            localized version that falls back to the English text.</li>
         </ul>
       </div>
       <figure>
@@ -136,10 +140,10 @@
     <hr>
 
     <section id="ripple">
-      <h2 class="section-title">Built on Ripple</h2>
-      <p class="measure">Ryze keeps its shared state in <a href="ripple.html">Ripple</a> assets, my ScriptableObject
-        framework. Whatever changes a value writes it to an asset, everything that needs it reads that asset, and
-        no system holds a reference to another. Two of those assets, with the scripts that write and read them:</p>
+      <h2 class="section-title">State management with Ripple</h2>
+      <p class="measure">Ryze stores shared state in assets from <a href="ripple.html">Ripple</a>, my ScriptableObject
+        framework. A system that changes a value writes it to an asset, systems that need the value read that asset,
+        and no system references another directly. Two of these assets and the scripts that write and read them:</p>
       <figure class="flow">
         <div class="flow-row">
           <div class="flow-node"><small>Written by</small><b>The player</b><span>whenever it moves</span></div>
@@ -162,7 +166,7 @@
             </ul>
           </div>
         </div>
-        <figcaption>The NPCs and the audio never look up the player, and the music never looks up the menu</figcaption>
+        <figcaption>The NPCs and the audio hold no reference to the player, and the music holds none to the pause menu</figcaption>
       </figure>
     </section>
 

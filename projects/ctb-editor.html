@@ -32,7 +32,7 @@
   <header class="jumbo">
     <div class="container">
       <h1>osu!catch レベルエディター</h1>
-      <p class="lead">osu!は数百万人のプレイヤーがいるリズムゲームですが、catchモード専用のエディターはありませんでした。譜面制作者は別のモード向けのツールで工夫しながら作業していたため、専用のエディターを作りました。</p>
+      <p class="lead">リズムゲーム「osu!」のcatchモード向けのレベルエディター。ゲーム内のエディターは別のモード向けに作られており、譜面制作者はそれで工夫しながら作業していたため、専用のエディターを作りました。</p>
       <p class="facts">Unity · C# · ShaderLab · 2018年 — 2019年 · 個人開発</p>
       <a class="btn btn-primary" href="https://github.com/123tris/CTB-Editor">GitHub</a>
     </div>
@@ -46,9 +46,9 @@
   <main class="container">
     <section class="detail">
       <div>
-        <h2>常に正確なビートグリッド</h2>
-        <p>リズムゲームでは、全音符から16分音符まで、どんなテンポや拡大率でもすべてが拍の上に置かれます。何千本もの線オブジェクトでグリッドを描くと重く、ずれも生じるため、タイムライン全体を一枚のクアッドとフラグメントシェーダーで描画しています。</p>
-        <p>シェーダーはUV空間ではなくピクセル空間で計算するので、線は常に正しい位置にちょうど1ピクセルで描かれます。分割ごとに色を変え、譜面制作者が見慣れた配色にしています。</p>
+        <h2>ビートグリッドのシェーダー</h2>
+        <p>ノーツは全音符から16分音符までの拍の分割の上に、どのテンポや拡大率でも置かれます。何千本もの線オブジェクトでグリッドを描くと重く、ずれも生じるため、タイムライン全体を一枚のクアッドとフラグメントシェーダーで描画しています。</p>
+        <p>シェーダーはUV空間ではなくピクセル空間で計算するので、各線は正確なピクセル位置に描かれます。分割ごとの色は、osu!の譜面制作者が使っている配色に合わせています。</p>
       </div>
 <pre><code><span class="c">// Grid Shader.shader (excerpt)</span>
 <span class="k">float</span> y = i.uv.y * _RectSize.y; <span class="c">// UV to pixels: no rounding</span>
@@ -67,7 +67,7 @@ y += _RowOffset;                  <span class="c">// scrolls with the song</span
 
     <section class="detail flip">
       <div>
-        <h2>すべての操作にアンドゥとリドゥ</h2>
+        <h2>アンドゥとリドゥ</h2>
         <p>編集のたびに、自分を元に戻す方法を知っているメメントを積みます。元に戻すと逆向きのメメントが返るので、アンドゥとリドゥは同じ操作を逆方向に実行するだけ。新しい種類の編集を追加するのも小さなクラス一つで済みます。</p>
       </div>
 <pre><code><span class="k">static</span> Stack&lt;IMemento&lt;<span class="k">object</span>&gt;&gt; changes = <span class="k">new</span>();
@@ -98,9 +98,9 @@ y += _RowOffset;                  <span class="c">// scrolls with the song</span
 
     <section class="detail wide">
       <div>
-        <h2>ユーザーと一緒に作る</h2>
-        <p>リズムエディターはタイミングがすべてです。曲はNAudioでデコードし、<code>PlayScheduled</code>で再生を開始。タイムラインはフレームの時計ではなくオーディオの時計（<code>AudioSettings.dspTime</code>）に従うので、再生がずれることはありません。ヒットサウンドはオーディオソースのプールから鳴らすので、重なっても途切れません。内蔵のプレイモードで編集とプレイを瞬時に切り替えられ、譜面はosu!形式でインポート・エクスポートできるのでそのままゲームで遊べます。</p>
-        <p>機能はcatchコミュニティから生まれました。Discordでビルドを共有して譜面制作者からフィードバックを集め、要望の多いワークフローを機能にしていきました。</p>
+        <h2>オーディオのタイミングとワークフロー</h2>
+        <p>曲はNAudioでデコードし、<code>PlayScheduled</code>で再生を開始します。タイムラインはフレームの時計ではなくオーディオの時計（<code>AudioSettings.dspTime</code>）に従うので、表示が音声からずれません。ヒットサウンドはオーディオソースのプールから鳴らすので、重なっても途切れません。内蔵のプレイモードでエディター内で編集とプレイを切り替えられ、譜面はosu!形式でインポート・エクスポートできます。</p>
+        <p>機能はcatchの譜面制作者の要望をもとに決めました。Discordでビルドを共有してフィードバックを集め、要望の多いワークフローを実装しました。</p>
       </div>
     </section>
 

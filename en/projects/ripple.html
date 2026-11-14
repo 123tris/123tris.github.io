@@ -32,8 +32,9 @@
   <header class="jumbo">
     <div class="container">
       <h1>Ripple</h1>
-      <p class="lead">An open-source ScriptableObject framework for Unity, built around one question the pattern
-        usually cannot answer: who changed this, and who is listening?</p>
+      <p class="lead">An open-source ScriptableObject framework for Unity. Shared variables and events are stored
+        as assets, and the editor tooling shows which objects changed each asset at runtime and which objects
+        listen to it.</p>
       <p class="facts">Unity · C# · editor tooling · 2024 — present</p>
       <a class="btn btn-primary" href="https://github.com/123tris/Ripple">GitHub</a>
     </div>
@@ -45,12 +46,12 @@
   <main class="container">
     <section class="detail">
       <div>
-        <h2>The idea</h2>
-        <p>Shared variables, typed events and runtime sets live in assets. A health bar does not need a reference to
-          the player: both point at the same <code>Player_Health</code> asset. Systems stay decoupled, designers can
-          wire things up in the inspector, and scenes load in any order.</p>
-        <p>Variables can persist between sessions with one toggle, and references switch between a constant and an
-          asset, so prototypes can start simple and grow.</p>
+        <h2>Overview</h2>
+        <p>Shared variables, typed events and runtime sets are stored in assets. A health bar holds no reference to
+          the player: both point at the same <code>Player_Health</code> asset. Systems stay decoupled, designers
+          connect them in the inspector, and scenes can load in any order.</p>
+        <p>A variable can be persisted between sessions with a toggle, and a reference field can hold either a
+          constant or an asset, so a value can start as a constant and move to an asset later.</p>
       </div>
 <pre><code><span class="c">// Gameplay code only holds references to assets.</span>
 [SerializeField] FloatVariableSO shotsFired;
@@ -70,12 +71,12 @@
 
     <section class="detail flip">
       <div>
-        <h2>Debuggable by design</h2>
-        <p>The usual complaint about this pattern is that it hides control flow: an event fires and nobody knows
-          from where. Ripple answers that directly in the inspector. During play, every asset lists who invoked it,
-          how many times and with what value.</p>
-        <p>"Scan listeners" goes the other way: it finds everything that reacts to an asset, across serialized event
-          calls, runtime subscribers, and listener components in every scene and prefab.</p>
+        <h2>Caller tracking and listener search</h2>
+        <p>A known drawback of this pattern is that it hides control flow: when an event fires, the sender is not
+          visible. In Ripple, each asset's inspector lists during play who invoked it, how many times and with
+          which value.</p>
+        <p>"Scan listeners" is the reverse lookup: it finds everything that reacts to an asset, across serialized
+          event calls, runtime subscribers, and listener components in every scene and prefab.</p>
       </div>
       <figure>
         <img class="shot contain" src="../../assets/img/ripple-listeners.webp" alt="Scan Listeners on the Player_Shoot event finds the gun in the scene and in the player prefab" width="1600" height="900">
@@ -87,12 +88,12 @@
 
     <section class="detail">
       <div>
-        <h2>Tools for the whole team</h2>
-        <p>The Ripple Wizard lists every Ripple asset in the project by type, to browse and edit them in one place.
-          The event logger shows each event the moment it fires, with its sender, which makes bug reports from
-          playtests far easier to follow.</p>
-        <p>All diagnostics compile out of player builds, and the runtime is IL2CPP-safe, so the tooling costs nothing
-          in a shipped game.</p>
+        <h2>Editor tools</h2>
+        <p>The Ripple Wizard lists every Ripple asset in the project by type, to browse and edit them in one window.
+          The event logger lists each event as it fires, with its sender, which helps when tracing bug reports from
+          playtests.</p>
+        <p>All diagnostics compile out of player builds, and the runtime is IL2CPP-safe, so the tooling adds no
+          overhead to a shipped game.</p>
       </div>
       <figure>
         <img class="shot contain" src="../../assets/img/ripple-logger.webp" alt="Ripple Event Logger listing events raised during play and who raised them" width="1600" height="900">
@@ -104,9 +105,10 @@
 
     <section class="detail flip">
       <div>
-        <h2>Proven in production</h2>
-        <p>Ripple started as the backbone of my own games and runs in all of my recent ones: <a href="ryze.html">Ryze</a>, <a href="shroomer.html">Shroomer</a> and
-          <a href="this-side-up.html">This Side Up</a>.</p>
+        <h2>Projects using Ripple</h2>
+        <p>Ripple is used in my recent games, <a href="ryze.html">Ryze</a>, <a href="shroomer.html">Shroomer</a> and
+          <a href="this-side-up.html">This Side Up</a>, and is one of the shared packages used across projects at
+          XR Japan.</p>
       </div>
       <figure>
         <img class="shot contain" src="../../assets/img/ripple-wizard.webp" alt="The Ripple Wizard listing every Ripple asset in the project by type" width="1600" height="900">

@@ -34,10 +34,10 @@
       <div class="hero-text">
         <h1>Tristan Metz</h1>
         <p class="role">Gameplay &amp; Tools Programmer</p>
-        <p class="tagline">I make characters feel good to control, and build the tools and test levels that let a team tune
-          them fast. Lead programmer at XR Japan in Tokyo.</p>
+        <p class="tagline">I write character controllers, gameplay systems and editor tools. Lead programmer at
+          XR&nbsp;Japan in Tokyo.</p>
         <a class="btn no-print" href="../cv.pdf">CV (PDF)</a>
-        <a class="btn no-print" href="portfolio.html">See my work</a>
+        <a class="btn no-print" href="portfolio.html">Portfolio</a>
       </div>
       <img class="hero-photo" src="../assets/img/profile.jpg" alt="Photo of Tristan Metz" width="230" height="230">
     </header>
@@ -84,7 +84,7 @@
 
       <section>
         <h2>Summary</h2>
-        <p>Game programmer with 10 years of making games, focused on how a game feels to play and on the tools behind it. My recent work is in C# and Unity; before that I wrote the physics, serialization and editor code of two custom C++ engines.</p>
+        <p>Game programmer with 10 years of making games, working on gameplay systems and tools. My recent work is in C# and Unity; before that I wrote the physics, serialization and editor code of two custom C++ engines.</p>
 
         <h2>Work history</h2>
 
@@ -94,10 +94,10 @@
           <div class="where">XR Japan (formerly AVR Japan), Tokyo, Japan</div>
           <ul>
             <li>Lead programmer on <a href="projects/lumen.html">Lumen</a>, a virtual trainer in which doctors practise endoscopic submucosal dissection (ESD) with an endoscope controller XR Japan built in-house and a foot pedal, and on VR and iPadOS training apps for clients</li>
-            <li>Tissue behaviour on Burst-compiled solvers, so the simulation stays smooth at a high frame rate; lesion marking; and the mapping from the controller and pedal to the endoscope tip (push and pull, rotation, angle)</li>
+            <li>Tissue behaviour on Burst-compiled solvers; lesion marking; and the mapping from the controller and pedal to the endoscope tip (push and pull, rotation, angle)</li>
             <li>Performance measurement and frame-time work on the simulation, and faster loading of its mesh data</li>
             <li>Architecture, conventions and code reviews; mentoring and onboarding programmers; the technical side of conversations with doctors, partners and clients, including estimates and risk tracking</li>
-            <li>Built the shared Unity packages used across projects (<a href="portfolio.html#ripple">Ripple</a> for events and state, a VR template, UnityUtilities, AutoAssign) and test environments that take repetitive checks off the team</li>
+            <li>Built the shared Unity packages used across projects (<a href="portfolio.html#ripple">Ripple</a> for events and state, a VR template, UnityUtilities, AutoAssign) and test environments that replace repetitive manual checks</li>
           </ul>
         </div>
 
@@ -107,7 +107,7 @@
           <div class="where">AVR Japan, Tokyo, Japan</div>
           <ul>
             <li>Gameplay, UI and tools for VR and tablet training apps in Unity, with some Unreal Engine work</li>
-            <li>Wrote the VR template package new client apps start from: interaction, fade, tween and conditional-event components, so each new client app starts from working parts instead of copied code</li>
+            <li>Wrote the VR template package that new client apps start from: interaction, fade, tween and conditional-event components, replacing code that was copied between projects</li>
           </ul>
         </div>
 
@@ -117,9 +117,9 @@
           <div class="where">Idomi Games (indie studio, alongside full-time work)</div>
           <ul>
             <li>Programmer of <a href="projects/ryze.html">Ryze</a>, a 2D precision platformer with a Steam playtest, which began as our Global Game Jam 2022 entry; team of five</li>
-            <li>The character controller around Ryze's one verb, throwing a pearl and teleporting to it: a small state machine where a throw pressed just before landing is buffered, walking off a ledge turns you into the pearl instead of dropping you, and probes under each foot let the animation react before you slip off an edge</li>
-            <li>A test level with a station for every mechanic I built, from crumbling platforms to time bubbles that slow physics and animation together through per-object timelines (Chronos), so a controller change is checked against all of them in a minute</li>
-            <li>A dialogue system carried over from an earlier project: it sends each line as an event and never touches the UI, and starting a dialogue is one awaitable call that takes the condition for advancing, so trigger zones, walk-up cutscenes and lines for repeated deaths are each a small component</li>
+            <li>The character controller for Ryze's throw-and-teleport movement: a small state machine that buffers a throw pressed just before landing, turns the player into the pearl when they walk off a ledge, and uses probes under each foot so the animation reacts at a ledge's edge</li>
+            <li>A test level with a station for each mechanic I built, from crumbling platforms to time bubbles that scale physics and animation together through per-object timelines (Chronos); a controller change can be checked against all of them in about a minute</li>
+            <li>A dialogue system reused from an earlier project: it sends each line as an event and has no dependency on the UI, and starting a dialogue is one awaitable call that takes the condition for advancing, so trigger zones, walk-up cutscenes and lines for repeated deaths are each a small component</li>
             <li>All programming on the studio's jam games, including <a href="projects/shroomer.html">Shroomer</a> (GMTK Game Jam 2026, 4 days) and <a href="projects/this-side-up.html">This Side Up</a> (Mini Jam 188, 72 hours)</li>
           </ul>
         </div>
@@ -131,7 +131,7 @@
           <ul>
             <li>Sole programmer of <a href="portfolio.html#ghostebash">Ghostebash</a>, a multiplayer VR arcade game where groups share one real room, starting from an empty project</li>
             <li>Local multiplayer with Mirror on a client-host model, IK rigs that map each player's real body into the game, and physics-based grabbing and interaction with the XR Interaction Toolkit</li>
-            <li>Graduation research on free-roaming VR: the network code cost 0.08 ms per frame with no clients, 0.40 ms with four and 1.33 ms with ten, which showed a client-host model was good enough</li>
+            <li>Graduation research on free-roaming VR: the network code cost 0.08 ms per frame with no clients, 0.40 ms with four and 1.33 ms with ten, which showed a client-host model was sufficient</li>
           </ul>
         </div>
 
@@ -141,8 +141,8 @@
           <div class="where">Damocles Games, the Netherlands</div>
           <ul>
             <li>Turn-based strategy game on a 3D grid (Fire Emblem-like) in Unity, in a team of ten</li>
-            <li>An API and custom units for a visual-scripting plugin, so designers could build gameplay behaviours without waiting for a programmer, which sped up playtest iteration</li>
-            <li>A request for pawn hover highlighting showed how rigid the selection code was, so I rewrote the selection and highlight framework; after that, features like hovering and turn-based camera controls were quick to add</li>
+            <li>An API and custom units for a visual-scripting plugin, so designers could build gameplay behaviours without a programmer</li>
+            <li>Rewrote the pawn selection and highlight framework, which could not support a requested hover highlight; hover highlighting and turn-based camera controls were then built on the new version</li>
           </ul>
         </div>
 
@@ -155,17 +155,17 @@
         <div class="job">
           <h3><a href="projects/orb.html">Orb</a></h3>
           <div class="where">Puzzle game on our first C++ engine (OpenGL) · 2017</div>
-          <p>Wrote the physics engine: rigidbodies with drag, friction and bounciness, AABB collision with continuous collision detection so fast objects never tunnel through walls, triggers and raycasts. Made Unity the level editor with an exporter that the engine reads back object by object.</p>
+          <p>Wrote the physics engine: rigidbodies with drag, friction and bounciness, AABB collision with continuous collision detection to stop fast objects tunnelling through walls, triggers and raycasts. Made Unity the level editor with an exporter that the engine reads back object by object.</p>
         </div>
         <div class="job">
           <h3><a href="projects/ctb-editor.html">osu!catch level editor</a></h3>
           <div class="where">Unity · solo · 2018 — 2019</div>
-          <p>A beat grid drawn by one fragment shader in pixel space, so lines stay exact at any tempo and zoom where thousands of line objects would be slow; undo and redo built from mementos that revert themselves; shaped by feedback from the game's mappers.</p>
+          <p>A beat grid drawn by one fragment shader in pixel space, so lines stay exact at any tempo and zoom without thousands of line objects; undo and redo built from mementos that revert themselves; features based on feedback from the game's mappers.</p>
         </div>
         <div class="job">
           <h3><a href="projects/wren.html">C# vs. Wren</a></h3>
           <div class="where">Scripting benchmark for a C++ engine · 2023</div>
-          <p>Measured both before choosing one: C# ran 6 to 15 times faster, while Wren compiled over a thousand times faster and its calls into C++ were close to free.</p>
+          <p>Measured both before choosing one: C# ran 6 to 15 times faster, while Wren compiled over a thousand times faster and its calls into C++ took under 1 ms against 117 ms for C#.</p>
         </div>
       </section>
     </div>

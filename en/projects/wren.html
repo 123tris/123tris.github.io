@@ -33,8 +33,8 @@
     <div class="container">
       <h1>C# vs. Wren</h1>
       <p class="lead">Our C++ engine <a href="tristeon.html">Tristeon</a> had no scripting layer. Before picking one, I
-        measured the two strongest candidates: Wren, a small embeddable language in the spirit of Lua, and C#, the
-        industry standard that is much harder to embed in C++.</p>
+        benchmarked two candidates: Wren, a small embeddable language similar to Lua, and C#, which is widely used
+        in games but harder to embed in C++.</p>
       <p class="facts">C++ · C# · Wren · benchmarking</p>
     </div>
   </header>
@@ -42,15 +42,15 @@
   <main class="container">
     <section class="detail">
       <div>
-        <h2>Three questions</h2>
-        <p>Runtime speed is the obvious one, but for an engine it is not the whole story. I measured three things:</p>
+        <h2>What was measured</h2>
+        <p>For an engine, runtime speed is only one factor. I measured three:</p>
         <ul>
           <li><b>Runtime performance:</b> arithmetic, filling a list, and allocating user-defined types, each 100,000
             times.</li>
           <li><b>Compile time:</b> how long a change takes to become runnable, which decides how fast designers can
             iterate.</li>
-          <li><b>C++ interop cost:</b> what each call across the language boundary costs, since engine scripts do
-            little else.</li>
+          <li><b>C++ interop cost:</b> what each call across the language boundary costs, since engine scripts
+            mostly call into the engine.</li>
         </ul>
         <p>Wren is a C library and needs only a thin C++ wrapper. For C# the options were P/Invoke, COM interop,
           embedded interop types and hosting through Mono.</p>
@@ -120,12 +120,12 @@
 
     <section class="detail wide">
       <div>
-        <h2>A trade-off, not a winner</h2>
-        <p>C# ran 6 to 15 times faster. Wren compiled over a thousand times faster, and its calls into C++ were close
-          to free, where C# paid a real price for every crossing.</p>
-        <p>So the right choice depends on what the scripts do. Gameplay scripts in an engine mostly glue engine
-          systems together, calling into C++ constantly and changing all the time, which favours Wren's cheap interop
-          and instant iteration. Heavy computation belongs in C++ either way.</p>
+        <h2>Conclusion</h2>
+        <p>C# ran 6 to 15 times faster. Wren compiled over a thousand times faster (53 µs against 88 ms), and calling
+          into C++ took under 1 ms against 117 ms for C#.</p>
+        <p>The better choice depends on what the scripts do. Gameplay scripts in an engine mostly connect engine
+          systems, call into C++ often and change often, which favours Wren's low interop cost and short compile
+          times. Heavy computation would be written in C++ in either case.</p>
       </div>
     </section>
 

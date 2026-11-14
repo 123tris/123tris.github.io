@@ -30,7 +30,7 @@
   </nav>
 
   <main class="container">
-    <h1 class="page-title">Here's some of my work</h1>
+    <h1 class="page-title">Projects</h1>
 
     <!-- ===================== RYZE ===================== -->
     <article class="project" id="ryze">
@@ -41,19 +41,20 @@
       </div>
       <div class="project-info">
         <h2>Ryze</h2>
-        <p class="subtitle">Idomi Games · on Steam, playtest out now</p>
+        <p class="subtitle">Idomi Games · playtest on Steam</p>
         <dl>
           <dt>Description</dt>
-          <dd>A 2D precision platformer where you climb by throwing yourself: charge a throw, launch a pearl and teleport
-            to wherever it lands, while platforms shift between two dimensions.</dd>
+          <dd>A 2D precision platformer. The player charges and throws a pearl, then teleports to where it lands;
+            platforms shift between two dimensions.</dd>
           <dt>Duration</dt>
-          <dd>2022 — present. It began as our Global Game Jam entry and grew into a commercial release.</dd>
+          <dd>2022 — present. Started as our Global Game Jam 2022 entry, Equilibrium, and is now in development as a
+            commercial game.</dd>
           <dt>What I did</dt>
           <dd><ul>
             <li>Programmer and co-founder</li>
-            <li>The character controller and throw-to-teleport movement, the game's core feel</li>
-            <li>Level mechanics, from moving and crumbling platforms to pistons and conveyor belts, plus a test level that exercises every one</li>
-            <li>A reusable dialogue system with NPCs, walk-up cutscenes and localization</li>
+            <li>Character controller and throw-to-teleport movement</li>
+            <li>Level mechanics (moving and crumbling platforms, pistons, conveyor belts, time bubbles) and a test level with a station for each</li>
+            <li>A dialogue system reused from an earlier project, with NPCs, walk-up cutscenes and localization</li>
           </ul></dd>
           <dt>What I used</dt>
           <dd>Unity 6, C#, Input System, Odin Inspector, <a href="projects/ripple.html">Ripple</a></dd>
@@ -73,16 +74,16 @@
         <video class="shot" autoplay muted loop playsinline preload="metadata" poster="../assets/img/lumen-dissection.webp" width="1280" height="720">
           <source src="../assets/video/lumen-dissection.mp4" type="video/mp4">
         </video>
-        <p class="caption">Submucosal dissection in Lumen, driven by XR Japan's in-house endoscope controller</p>
+        <p class="caption">Submucosal dissection in Lumen, operated with XR Japan's in-house endoscope controller</p>
       </div>
       <div class="project-info">
         <h2>Lumen</h2>
         <p class="subtitle">XR Japan · endoscopy simulator</p>
         <dl>
           <dt>Description</dt>
-          <dd>A virtual training platform where doctors practise endoscopic submucosal dissection (ESD) on a realistic,
-            moving esophagus, using an endoscope controller XR Japan built in-house and a foot pedal. Supervised by a leading
-            endoscopist and now in beta.</dd>
+          <dd>A training simulator for endoscopic submucosal dissection (ESD) on a moving esophagus, operated with an
+            endoscope controller XR Japan built in-house and a foot pedal. Scenarios are supervised by the head of
+            gastroenterology at Tokyo Metropolitan Komagome Hospital. In beta.</dd>
           <dt>Duration</dt>
           <dd>Ongoing, as lead programmer</dd>
           <dt>What I did</dt>
@@ -120,16 +121,16 @@
         <p class="subtitle">Open-source Unity framework</p>
         <dl>
           <dt>Description</dt>
-          <dd>A ScriptableObject framework: shared variables, typed events and runtime sets live in assets, so systems
-            talk to data instead of to each other. Unlike other takes on the pattern, it shows you who changed what.</dd>
+          <dd>A ScriptableObject framework: shared variables, typed events and runtime sets are stored in assets, so
+            systems reference data instead of each other. Each asset records at runtime which objects changed or raised it.</dd>
           <dt>Duration</dt>
           <dd>2024 — present</dd>
           <dt>Features</dt>
           <dd><ul>
             <li>An "Invoked by" table on every asset: caller, call count and last value</li>
-            <li>One click finds every listener across code, scenes and prefabs</li>
-            <li>A wizard to browse every asset, and a live event logger</li>
-            <li>Runs in all of my recent games, including Ryze</li>
+            <li>Listener search across code, scenes and prefabs</li>
+            <li>An editor window listing every Ripple asset, and a runtime event logger</li>
+            <li>Used in Ryze, Shroomer and This Side Up, and across projects at XR Japan</li>
           </ul></dd>
           <dt>What I used</dt>
           <dd>Unity, C#, Odin Inspector, UltEvents, reflection, UPM</dd>
@@ -158,8 +159,8 @@
         <p class="subtitle">HTC Vive · shown at the Dutch Game Garden</p>
         <dl>
           <dt>Description</dt>
-          <dd>A VR game set in an old theatre: play mini-games around the hall to get a robot jazz band back on stage.
-            It was exhibited at the Dutch Game Garden and entered in the Dutch Game Awards 2017.</dd>
+          <dd>A VR game set in an old theatre, in which the player completes mini-games around the hall to bring a
+            robot jazz band back on stage. Exhibited at the Dutch Game Garden and entered in the Dutch Game Awards 2017.</dd>
           <dt>Duration</dt>
           <dd>10 weeks in 2017, team of 6</dd>
           <dt>What I did</dt>
@@ -196,7 +197,7 @@
           <dd>2017</dd>
           <dt>What I did</dt>
           <dd><ul>
-            <li>The complete editor: scene view, hierarchy, inspector and asset browser</li>
+            <li>The whole editor: scene view, hierarchy, inspector and asset browser</li>
             <li>Reflection and serialization: scenes and prefabs saved as JSON, objects rebuilt by type name</li>
             <li>An inspector that edits any component without hand-written UI</li>
           </ul></dd>
@@ -225,8 +226,8 @@
         <p class="subtitle">GMTK Game Jam 2026 · theme "Countdown"</p>
         <dl>
           <dt>Description</dt>
-          <dd>A psychedelic movement shooter set in a dream. Your alarm clock is counting down, and only kills buy you more
-            time to stay asleep.</dd>
+          <dd>A first-person movement shooter set in a dream. An alarm clock counts down, and killing enemies is the
+            only way to add time.</dd>
           <dt>Duration</dt>
           <dd>4 days, team of 4</dd>
           <dt>What I did</dt>
@@ -261,16 +262,16 @@
         <p class="subtitle">Community tool</p>
         <dl>
           <dt>Description</dt>
-          <dd>The rhythm game osu! has millions of players but no proper editor for its catch mode, so I built one:
-            a beat-accurate timeline, editing tools and a built-in play mode to test a map instantly.</dd>
+          <dd>A level editor for the catch mode of the rhythm game osu!, which had no dedicated editor. It has a
+            beat-accurate timeline, editing tools and a built-in play mode for testing a map.</dd>
           <dt>Duration</dt>
           <dd>2018 — 2019, solo</dd>
           <dt>Features</dt>
           <dd><ul>
             <li>A shader-drawn beat grid that stays exact at any zoom level and BPM</li>
             <li>Undo/redo for every edit, plus importing and exporting osu! beatmaps</li>
-            <li>Playback on the audio clock, so timing never drifts</li>
-            <li>Built with constant feedback from the player community</li>
+            <li>A timeline driven by the audio DSP clock instead of the frame clock</li>
+            <li>Features based on mapper feedback on builds shared through Discord</li>
           </ul></dd>
           <dt>What I used</dt>
           <dd>Unity, C#, ShaderLab, NAudio</dd>
@@ -296,8 +297,8 @@
         <p class="subtitle">Mini Jam 188 · limitation "All in a box"</p>
         <dl>
           <dt>Description</dt>
-          <dd>A pixel-art platformer about delivering a package, except you cannot jump. A boxing glove launches you
-            through the level instead.</dd>
+          <dd>A pixel-art platformer about delivering a package. There is no jump; the player moves by punching with a
+            boxing glove and riding the recoil.</dd>
           <dt>Duration</dt>
           <dd>72 hours, team of 5</dd>
           <dt>What I did</dt>
@@ -334,14 +335,14 @@
           <img src="../assets/img/thumbs/islandrevolution.webp" alt="Island Revolution title screen" loading="lazy">
           <h3>Island Revolution</h3>
           <div class="meta">Kenney Jam 2024 · with MindNoMore</div>
-          <p>Connect your city to nearby islands for resources, before unmet demands spark a revolt.</p>
+          <p>A strategy game about connecting a city to nearby islands for resources; unmet demand leads to a revolt.</p>
           <a href="https://123tris.itch.io/island-revolution">itch.io</a>
         </div>
         <div class="card">
           <img src="../assets/img/thumbs/consumption.webp" alt="Consumption key art" loading="lazy">
           <h3>Consumption</h3>
           <div class="meta">Ludum Dare 52 · programming</div>
-          <p>An action game: harvest enemies to survive, harvest ores to get stronger.</p>
+          <p>An action game in which the player harvests enemies to survive and ores to get stronger.</p>
           <a href="https://123tris.itch.io/consumption">itch.io</a>
         </div>
         <div class="card">
@@ -355,7 +356,7 @@
           <img src="../assets/img/thumbs/rocktheboat.webp" alt="Rock the Boat: pirate ships on the waves" loading="lazy">
           <h3>Rock the Boat</h3>
           <div class="meta">Global Game Jam 2017 · buoyancy physics &amp; UI</div>
-          <p>Rocking pirates. My first game jam.</p>
+          <p>A battle between pirate ships on rocking waves. My first game jam.</p>
           <a href="https://leon-brands.itch.io/rock-the-boat">itch.io</a>
         </div>
       </div>
@@ -379,8 +380,8 @@
           <img src="../assets/img/thumbs/wren.webp" alt="Benchmark chart comparing C# and Wren" loading="lazy">
           <h3>C# vs. Wren</h3>
           <div class="meta">Research · scripting for a C++ engine</div>
-          <p>Which scripting language should a C++ engine embed? I measured runtime speed, compile time and the cost of
-            calling into C++.</p>
+          <p>A comparison of two scripting languages to embed in a C++ engine: runtime speed, compile time and the cost
+            of calling into C++.</p>
           <a class="btn btn-primary" href="projects/wren.html">More info</a>
         </div>
         <div class="card" id="ghostebash">

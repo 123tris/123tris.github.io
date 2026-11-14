@@ -32,10 +32,10 @@
   <header class="jumbo">
     <div class="container">
       <h1>Orb</h1>
-      <p class="lead">A first-person puzzle game about a test subject in a lab who moves glowing orbs to open the way
+      <p class="lead">A first-person puzzle game in which a test subject in a lab moves glowing orbs to open the way
         forward. It runs on our first C++ engine, which two of us built alongside the game. I wrote the engine's
-        physics, scene management and serialization, the pipeline that turned Unity into our level editor, and the
-        gameplay on top.</p>
+        physics, scene management and serialization, the pipeline that let us use Unity as our level editor, and the
+        gameplay.</p>
       <p class="facts">C++ · OpenGL · Unity as level editor · 2017 · with Leon Brands</p>
     </div>
     <div class="hero-media">
@@ -47,11 +47,12 @@
     <section class="detail">
       <div>
         <h2>Unity as the level editor</h2>
-        <p>A custom engine with no editor means levels written by hand, and we had one school project to build both an engine and a game. So I made Unity the
-          editor instead. Designers built levels in Unity with our own components: a manager, a player controller,
-          rigidbodies and colliders that mirrored the C++ ones field for field.</p>
+        <p>Without an editor, levels for a custom engine have to be written by hand, and one school project had to
+          cover both the engine and the game. I used Unity as the editor instead. Designers built levels in Unity with
+          our own components: a manager, a player controller, rigidbodies and colliders that mirrored the C++ ones
+          field for field.</p>
         <p>A custom exporter serialized the scene, and the engine loaded it and rebuilt every object by type name.
-          The designers kept the tool they knew, and we never had to write an editor.</p>
+          The designers worked in a tool they already knew, and no editor had to be written for the engine.</p>
       </div>
       <figure>
         <img class="shot contain" src="../../assets/img/orb-unity.webp" alt="A level in the Unity editor on the left, running live in our C++ engine on the right" width="1600" height="900">
@@ -63,10 +64,10 @@
 
     <section class="detail flip">
       <div>
-        <h2>A physics engine from scratch</h2>
-        <p>Orb is a physics puzzle game, so the physics had to be solid. I wrote it myself: rigidbodies with gravity,
-          drag, bounciness and friction, AABB collision with continuous collision detection so fast objects never
-          tunnel through walls, triggers for the puzzles, and raycasts.</p>
+        <h2>Physics engine</h2>
+        <p>Orb's puzzles are physics-based, and I wrote the physics engine: rigidbodies with gravity, drag,
+          bounciness and friction, AABB collision with continuous collision detection to stop fast objects tunnelling
+          through walls, triggers for the puzzles, and raycasts.</p>
         <p>Serialization handles polymorphic objects and shared pointers, so the same code saves scenes and prefabs
           and loads what Unity exported.</p>
       </div>
@@ -80,7 +81,7 @@
 
     <section class="detail">
       <div>
-        <h2>The game on top</h2>
+        <h2>Gameplay</h2>
         <p>On the gameplay side I wrote the character and camera controller, the trigger logic that drives each puzzle
           and the orbs themselves. The designers planned every room on paper first, and those plans became Unity
           scenes, then levels in the engine.</p>
