@@ -33,7 +33,7 @@
     <div class="container">
       <h1>3D rendering</h1>
       <p class="lead">OpenGL work in C++: a fragment shader that draws a checkerboard in a moving quad's own space and
-        lights it around the mouse cursor, and a camera in a small engine whose look-at transform is built by hand
+        lights it around the mouse cursor, and a camera for a small engine whose look-at transform I built by hand
         from three vectors.</p>
       <p class="facts">C++ · OpenGL · GLSL · 2016, 2019 · solo</p>
     </div>
@@ -49,11 +49,11 @@
     <section class="detail">
       <div>
         <h2>Checkerboard and spotlight</h2>
-        <p>A 2019 OpenGL 3.3 program draws a quad of two triangles from a vertex and an index buffer with position,
-          colour and UV attributes, and moves it around the window through an offset uniform set from the elapsed
-          time. The fragment shader draws the checkerboard in the quad's own UV space, so the pattern moves with it:
-          the tile index on each axis is the floored UV times the tile count, and an even sum picks the first colour.
-          The tile counts and both colours are uniforms set from C++.</p>
+        <p>In 2019 I wrote an OpenGL 3.3 program that draws a quad of two triangles from a vertex and an index buffer
+          with position, colour and UV attributes, and moves it around the window through an offset uniform set from
+          the elapsed time. Its fragment shader draws the checkerboard in the quad's own UV space, so the pattern
+          moves with it: the tile index on each axis is the floored UV times the tile count, and an even sum picks the
+          first colour. The tile counts and both colours are uniforms set from C++.</p>
         <p>The light is a falloff around the mouse: the colour is multiplied by one minus the fragment's distance to
           the cursor divided by 20, so it is brightest at the cursor and black from 20 pixels away. GLFW reports the
           cursor's y from the top of the window while gl_FragCoord counts from the bottom, so the host flips y before
@@ -93,10 +93,10 @@
     <section class="detail flip">
       <div>
         <h2>Look-at camera</h2>
-        <p>In a small C++ engine (2016), the camera behaviour builds its matrix instead of calling glm::lookAt:
-          forward is the normalized vector from the target to the camera, right is the cross product of world up and
-          forward, and up is forward × right. These three vectors and the camera's position are the columns of its
-          transform.</p>
+        <p>In 2016 I wrote a camera behaviour for a small C++ engine. Instead of calling glm::lookAt, it builds its
+          matrix itself: forward is the normalized vector from the target to the camera, right is the cross product of
+          world up and forward, and up is forward × right. These three vectors and the camera's position are the
+          columns of its transform.</p>
       </div>
 <pre><code><span class="k">void</span> CameraBehaviour::update(<span class="k">float</span> pStep)
 {

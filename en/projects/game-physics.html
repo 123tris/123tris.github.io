@@ -33,8 +33,9 @@
     <div class="container">
       <h1>Game physics</h1>
       <p class="lead">2D physics on a vector class I wrote from scratch: a ball launched like a slingshot that falls
-        under gravity and bounces off walls, and a tank that steers and aims with vector angles. A separate test in
-        Unity checks axis-aligned bounding boxes with custom rigidbodies, outside Unity's own physics.</p>
+        under gravity and bounces off walls, and a tank that steers and aims with vector angles. In Unity I also wrote
+        a separate test of axis-aligned bounding box collision with custom rigidbodies, outside Unity's own
+        physics.</p>
       <p class="facts">C# · GXPEngine · Unity · 2016 · solo</p>
     </div>
     <div class="hero-media">
@@ -95,10 +96,10 @@
     <section class="detail">
       <div>
         <h2>AABB collision in Unity</h2>
-        <p>A separate test in Unity that doesn't use Unity's physics. Each box takes its extents from its position and
-          its BoxCollider's size, and two boxes overlap only if their extents overlap on x, y and z. Custom
-          rigidbodies integrate gravity and velocity in FixedUpdate, and a physics manager tests every rigidbody
-          against the static objects and reverses its velocity when they overlap.</p>
+        <p>I also wrote a separate test in Unity that doesn't use Unity's physics. Each box takes its extents from its
+          position and its BoxCollider's size, and two boxes overlap only if their extents overlap on x, y and z.
+          Custom rigidbodies integrate gravity and velocity in FixedUpdate, and a physics manager tests every
+          rigidbody against the static objects and reverses its velocity when they overlap.</p>
       </div>
       <figure>
         <video class="shot" autoplay muted loop playsinline poster="../../assets/img/aabb-bounce.webp" width="960" height="540">
