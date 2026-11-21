@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ゲーム物理 — トリスタン・メッツ</title>
-  <meta name="description" content="トリスタン・メッツによるC#の2Dゲーム物理：ベクトルクラス、壁と衝突するボール、ベクトルの角度で操作する戦車。">
+  <meta name="description" content="トリスタン・メッツによるC#の2Dゲーム物理：ベクトルクラス、壁と衝突するボール、ベクトルの角度で操作する戦車、UnityでのAABBの衝突判定と独自のリジッドボディ。">
   <link rel="canonical" href="https://tristanmetz.com/projects/game-physics.html">
   <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/projects/game-physics.html">
   <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/projects/game-physics.html">
@@ -14,7 +14,7 @@
   <meta property="og:locale" content="ja_JP">
   <meta property="og:url" content="https://tristanmetz.com/projects/game-physics.html">
   <meta property="og:title" content="ゲーム物理 — トリスタン・メッツ">
-  <meta property="og:description" content="トリスタン・メッツによるC#の2Dゲーム物理：ベクトルクラス、壁と衝突するボール、ベクトルの角度で操作する戦車。">
+  <meta property="og:description" content="トリスタン・メッツによるC#の2Dゲーム物理：ベクトルクラス、壁と衝突するボール、ベクトルの角度で操作する戦車、UnityでのAABBの衝突判定と独自のリジッドボディ。">
   <meta property="og:image" content="https://tristanmetz.com/assets/img/og/physics-slingshot.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -32,8 +32,8 @@
   <header class="jumbo">
     <div class="container">
       <h1>ゲーム物理</h1>
-      <p class="lead">一から書いたベクトルクラスを土台にした2D物理。スリングショットのように飛ばしたボールが重力で落ちて壁で跳ね返り、戦車はベクトルの角度で進む向きと砲塔の向きを決めます。</p>
-      <p class="facts">C# · GXPEngine · 2016年 · 個人開発</p>
+      <p class="lead">一から書いたベクトルクラスを土台にした2D物理。スリングショットのように飛ばしたボールが重力で落ちて壁で跳ね返り、戦車はベクトルの角度で進む向きと砲塔の向きを決めます。Unityでは別のテストとして、Unity標準の物理を使わずに独自のリジッドボディと軸平行境界ボックス（AABB）の判定を作りました。</p>
+      <p class="facts">C# · GXPEngine · Unity · 2016年 · 個人開発</p>
     </div>
     <div class="hero-media">
       <video class="shot" autoplay muted loop playsinline poster="../assets/img/physics-slingshot.webp" width="960" height="540">
@@ -46,7 +46,7 @@
     <section class="detail">
       <div>
         <h2>壁との衝突</h2>
-        <p>毎ステップ、速度に重力を加え、位置に速度を加えます。ボールが壁を越えた場合は、そのステップのうち壁を越えた割合だけ速度の逆方向に戻し、壁の中ではなく衝突点から跳ね返るようにしています。その後、壁に向かう速度成分を反転します。</p>
+        <p>毎ステップ、速度に重力を加え、位置に速度を加えます。ボールが壁を越えた場合は、そのステップのうち壁を越えた割合だけ速度の逆方向に戻し、壁の中ではなく衝突点から跳ね返るようにしています。その後、壁に向かう速度成分を反転します。抜粋は左の壁の処理で、残りの3つの壁も同じです。</p>
         <p>ボールをドラッグすると距離の平方根に比例して引き戻され、離すと逆向きに発射されて重力が有効になります。赤い線は毎フレームの前の位置から現在位置までの軌跡、緑の矢印は速度です。</p>
       </div>
 <pre><code><span class="k">public</span> <span class="k">void</span> Step()
@@ -54,11 +54,10 @@
     oldPosition = _position.Clone();
     _velocity.Add(gravity);
     _position.Add(_velocity);
-
-    <span class="c">// Left wall (the other three work the same way)</span>
+    ...
+    <span class="c">// Left boundary collision</span>
     <span class="k">if</span> (_position.x - _radius &lt; <span class="s">100</span> &amp;&amp; _velocity.x &lt; <span class="s">0</span>)
     {
-        <span class="c">// fraction of this step that went past the wall</span>
         <span class="k">float</span> ratio = (-_position.x + <span class="s">100</span> + _radius) / (oldPosition.x - _position.x);
         _position.Add(_velocity.Clone().Scale(-ratio));
         _velocity.x *= -elasticity;
@@ -79,6 +78,21 @@
           <source src="../assets/video/physics-tank.mp4" type="video/mp4">
         </video>
         <figcaption>円を描いて走りながら、砲塔がマウスを追って発射する</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <section class="detail">
+      <div>
+        <h2>UnityでのAABB衝突判定</h2>
+        <p>Unity標準の物理を使わない、Unityでの別のテストです。各箱は自分の位置とBoxColliderのサイズから範囲を求め、2つの箱はx・y・zのすべてで範囲が重なるときだけ重なっています。独自のリジッドボディはFixedUpdateで重力と速度を積分し、物理マネージャーが各リジッドボディを静的なオブジェクトと判定して、重なったら速度を反転します。</p>
+      </div>
+      <figure>
+        <video class="shot" autoplay muted loop playsinline poster="../assets/img/aabb-bounce.webp" width="960" height="540">
+          <source src="../assets/video/aabb-bounce.mp4" type="video/mp4">
+        </video>
+        <figcaption>上の箱が下の箱に落ちて跳ね返る</figcaption>
       </figure>
     </section>
 

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Audio programming — Tristan Metz</title>
-  <meta name="description" content="A polyphonic software synthesizer in C# that renders MIDI files to WAV, with effect classes and waveform and keyboard views. By Tristan Metz.">
+  <meta name="description" content="Sound synthesis in C# for a synthesizer that renders MIDI files to WAV: oscillators, note frequencies, decay, polyphony and delay feedback. By Tristan Metz.">
   <link rel="canonical" href="https://tristanmetz.com/en/projects/audio.html">
   <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/projects/audio.html">
   <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/projects/audio.html">
@@ -14,7 +14,7 @@
   <meta property="og:locale" content="en_US">
   <meta property="og:url" content="https://tristanmetz.com/en/projects/audio.html">
   <meta property="og:title" content="Audio programming — Tristan Metz">
-  <meta property="og:description" content="A polyphonic software synthesizer in C# that renders MIDI files to WAV, with effect classes and waveform and keyboard views. By Tristan Metz.">
+  <meta property="og:description" content="Sound synthesis in C# for a synthesizer that renders MIDI files to WAV: oscillators, note frequencies, decay, polyphony and delay feedback. By Tristan Metz.">
   <meta property="og:image" content="https://tristanmetz.com/assets/img/og/synth-furelise.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -32,8 +32,9 @@
   <header class="jumbo">
     <div class="container">
       <h1>Audio programming</h1>
-      <p class="lead">A software synthesizer that renders MIDI files to a WAV file, sample by sample, and plays the
-        result back with a waveform view and a keyboard view of the notes.</p>
+      <p class="lead">The parts of a C# synthesizer that produce the sound, for a program that renders MIDI files to a
+        WAV file sample by sample: oscillators, note frequencies, velocity and decay, polyphony and delay
+        feedback.</p>
       <p class="facts">C# · GXPEngine · 2016 · solo</p>
     </div>
     <div class="hero-media">
@@ -45,39 +46,16 @@
   </header>
 
   <main class="container">
-    <section class="detail">
+    <section class="detail wide">
       <div>
-        <h2>Polyphony</h2>
-        <p>The polyphonic synth owns one mono synth per voice (16 here). A note-on takes the first free voice and a
-          note-off frees the voice playing that note. Each output sample is the sum of all voices, scaled by the
-          volume and clamped to −1…1.</p>
-        <p>The mono synths generate sine, square, triangle and sawtooth waves. Effects wrap any sound source and can
-          be chained: a delay with feedback, a low-pass filter, a bit crusher, fuzz and tremolo.</p>
+        <h2>Synthesis</h2>
+        <p>The synthesizer is built on an existing C# audio framework. I implemented the parts that produce the sound:
+          note numbers to equal-tempered frequencies, amplitude from note velocity, per-sample decay, the square,
+          triangle and sawtooth oscillators, polyphony, feedback in the delay effect, and rendering a MIDI file's
+          note-on and note-off events into the WAV file.</p>
+        <p>For polyphony the synth owns one mono synth per voice (16 here). A note-on takes the first free voice and
+          is dropped when every voice is busy; a note-off frees the voice playing that note.</p>
       </div>
-<pre><code><span class="k">public</span> <span class="k">override</span> <span class="k">double</span> getSample()
-{
-    <span class="k">double</span> sampleval = <span class="s">0</span>;
-    <span class="k">for</span> (<span class="k">int</span> i = <span class="s">0</span>; i &lt; tonesynthArray.Length; i++)
-        sampleval += tonesynthArray[i].getSample();
-
-    sampleval *= volume;
-    <span class="k">if</span> (sampleval &gt; <span class="s">1</span>) sampleval = <span class="s">1</span>;
-    <span class="k">if</span> (sampleval &lt; -<span class="s">1</span>) sampleval = -<span class="s">1</span>;
-    <span class="k">return</span> sampleval;
-}
-
-<span class="k">public</span> <span class="k">override</span> <span class="k">void</span> playNote(<span class="k">byte</span> notenum, <span class="k">byte</span> velocity)
-{
-    <span class="k">for</span> (<span class="k">int</span> i = <span class="s">0</span>; i &lt; playingnoteArray.Length; i++)
-    {
-        <span class="k">if</span> (playingnoteArray[i] == -<span class="s">1</span>)   <span class="c">// first free voice</span>
-        {
-            tonesynthArray[i].playNote(notenum, velocity);
-            playingnoteArray[i] = notenum;
-            <span class="k">break</span>;
-        }
-    }
-}</code></pre>
     </section>
 
     <hr>

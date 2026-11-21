@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>プロシージャルメッシュ — トリスタン・メッツ</title>
-  <meta name="description" content="Unityでコードから生成するメッシュ：メッシュビルダー、2Dの断面を回転させる旋盤、パラメーターで形が変わるキノコ。トリスタン・メッツ作。">
+  <meta name="description" content="2Dの断面を回転させてUnityのコードで生成するキノコのメッシュ。柄と傘の大きさはインスペクターで設定します。トリスタン・メッツ作。">
   <link rel="canonical" href="https://tristanmetz.com/projects/procedural-meshes.html">
   <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/projects/procedural-meshes.html">
   <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/projects/procedural-meshes.html">
@@ -14,7 +14,7 @@
   <meta property="og:locale" content="ja_JP">
   <meta property="og:url" content="https://tristanmetz.com/projects/procedural-meshes.html">
   <meta property="og:title" content="プロシージャルメッシュ — トリスタン・メッツ">
-  <meta property="og:description" content="Unityでコードから生成するメッシュ：メッシュビルダー、2Dの断面を回転させる旋盤、パラメーターで形が変わるキノコ。トリスタン・メッツ作。">
+  <meta property="og:description" content="2Dの断面を回転させてUnityのコードで生成するキノコのメッシュ。柄と傘の大きさはインスペクターで設定します。トリスタン・メッツ作。">
   <meta property="og:image" content="https://tristanmetz.com/assets/img/og/procedural-mushroom.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -32,7 +32,7 @@
   <header class="jumbo">
     <div class="container">
       <h1>プロシージャルメッシュ</h1>
-      <p class="lead">Unityでコードから組み立てるメッシュ。頂点・UV・三角形をまとめるメッシュビルダー、2Dの断面を縦軸の周りに回転させる旋盤、インスペクターで形を決めるキノコ。</p>
+      <p class="lead">Unityのコードで生成するキノコのメッシュ。2Dの断面を縦軸の周りに回転させる旋盤のスクリプトをもとに、柄と傘を別々に拡大縮小するので、それぞれの幅と高さをインスペクターで個別に設定できます。</p>
       <p class="facts">C# · Unity · 2016年 · 個人開発</p>
     </div>
     <div class="hero-media">
@@ -46,39 +46,29 @@
     <section class="detail">
       <div>
         <h2>断面の回転</h2>
-        <p>断面は2D点のリストです。N個のスライスそれぞれで、点をY軸の周りにスライス番号×360°/Nだけ回転させて頂点として追加し、UVはスライスと点の番号から求めます。最初のスライスは360°の位置にもう一度置くので、テクスチャのUは折り返さずに0から1まで進みます。隣り合うスライスは四角形ごとに2つの三角形でつなぎます。</p>
-        <p>キノコは柄の点と傘の点を別々に拡大縮小するため、柄の幅・高さと傘の幅・高さはそれぞれ独立したインスペクターの値です。映像では実行中にこれらの値を変えています。スライス数が3から32になり、その後で柄と傘が大きくなり、値を変えるたびにメッシュを作り直します。</p>
+        <p>断面は2D点のリストで、Y軸の周りにN個のスライスとして回転させます。各スライスで点をスライス番号×360°/Nだけ回転させて頂点として追加し、最初のスライスは360°の位置にもう一度置くので、テクスチャのUは折り返さずに0から1まで進みます。キノコでは各頂点にスライスと点の番号からUVを付け、最初の5点を柄、残りを傘として別々に拡大縮小し、傘は拡大縮小した柄の上端から始まります。</p>
+        <p>柄の幅・高さと傘の幅・高さはそれぞれ独立したインスペクターの値です。映像では実行中にこれらの値を変えています。スライス数が3から32になり、その後で柄と傘が大きくなり、値を変えるたびにメッシュを作り直します。</p>
       </div>
-<pre><code><span class="k">for</span> (<span class="k">int</span> splineIndex = <span class="s">0</span>; splineIndex &lt;= splineCount; splineIndex++)
+<pre><code><span class="c">//generate vertices</span>
+<span class="k">for</span> (<span class="k">int</span> splineIndex = <span class="s">0</span>; splineIndex &lt;= splineCount; splineIndex++)
 {
     Matrix4x4 mat = Matrix4x4.TRS(Vector3.zero,
         Quaternion.Euler(<span class="s">0</span>, splineIndex * <span class="s">360.0f</span> / splineCount, <span class="s">0</span>), Vector3.one);
     <span class="k">for</span> (<span class="k">int</span> j = <span class="s">0</span>; j &lt; splineVertexCount; j++)
     {
         Vector3 vertex;
-        <span class="k">if</span> (j &gt; <span class="s">4</span>)   <span class="c">// cap points</span>
+        <span class="k">if</span> (j &gt; <span class="s">4</span>)
         {
             <span class="k">float</span> capYOffset = (_points[j].y - _points[<span class="s">4</span>].y) * capHeight;
+            <span class="c">//Cap vertice position</span>
             vertex = <span class="k">new</span> Vector3(_points[j].x * capWidth, (_points[<span class="s">4</span>].y * stemHeight) + capYOffset);
         }
-        <span class="k">else</span>         <span class="c">// stem points</span>
+        <span class="k">else</span>
+            <span class="c">//Stem vertice position</span>
             vertex = <span class="k">new</span> Vector3(_points[j].x * stemWidth, _points[j].y * stemHeight);
         vertex = mat.MultiplyPoint(vertex);
         meshBuilder.AddVertex(vertex, <span class="k">new</span> Vector2((<span class="k">float</span>)splineIndex / splineCount,
                                                   (<span class="k">float</span>)j / (splineVertexCount - <span class="s">1</span>)));
-    }
-}
-
-<span class="k">for</span> (<span class="k">int</span> splineIndex = <span class="s">1</span>; splineIndex &lt;= splineCount; splineIndex++)
-{
-    <span class="k">for</span> (<span class="k">int</span> vertexIndex = <span class="s">1</span>; vertexIndex &lt; splineVertexCount; vertexIndex++)
-    {
-        <span class="k">int</span> v0 = getIndex(splineIndex - <span class="s">1</span>, vertexIndex - <span class="s">1</span>, splineVertexCount);
-        <span class="k">int</span> v1 = getIndex(splineIndex, vertexIndex - <span class="s">1</span>, splineVertexCount);
-        <span class="k">int</span> v2 = getIndex(splineIndex, vertexIndex, splineVertexCount);
-        <span class="k">int</span> v3 = getIndex(splineIndex - <span class="s">1</span>, vertexIndex, splineVertexCount);
-        meshBuilder.AddTriangle(v0, v1, v2);
-        meshBuilder.AddTriangle(v0, v2, v3);
     }
 }</code></pre>
     </section>

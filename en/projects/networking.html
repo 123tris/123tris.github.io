@@ -48,18 +48,31 @@
       <div>
         <h2>Message framing</h2>
         <p>TCP delivers a stream of bytes, so every message starts with a 4-byte length followed by the text encoded
-          as UTF-16. The receiver reads the length first and then the message bytes.</p>
+          as UTF-16. The receiver reads the length first and then the message bytes. When a write fails, the client
+          shows that it was disconnected and connects again.</p>
         <p>The server accepts connections on port 6969 and starts a thread per client. Each message it receives is
           sent to every other connected client. In the clip the Unity client is connected together with two scripted
           test clients, whose replies arrive through the server.</p>
       </div>
-<pre><code><span class="c">// Unity client: length prefix, then the text</span>
+<pre><code><span class="c">// TcpChatClient.cs (Unity)</span>
 <span class="k">byte</span>[] packet = Encoding.Unicode.GetBytes(UserName + <span class="s">" "</span> + input);
 <span class="k">byte</span>[] number = BitConverter.GetBytes(packet.Length);
-stream.Write(number, <span class="s">0</span>, number.Length);
-stream.Write(packet, <span class="s">0</span>, packet.Length);
 
-<span class="c">// Server: relay to everyone except the sender</span>
+try
+{
+    <span class="k">if</span> (stream.CanWrite)
+    {
+        stream.Write(number, <span class="s">0</span>, number.Length);
+        stream.Write(packet, <span class="s">0</span>, packet.Length);
+    }
+}
+catch (Exception)
+{
+    _chatBoxScreen.AddChatLine(<span class="s">"Disconnected from the server!"</span>);
+    client = Connect();
+}
+
+<span class="c">// TCPServer.cs</span>
 <span class="k">public</span> <span class="k">void</span> SendMessageToClients(<span class="k">string</span> message, <span class="k">params</span> HandleClient[] ignoreClients)
 {
     <span class="k">foreach</span> (HandleClient client <span class="k">in</span> clientList)

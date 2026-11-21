@@ -45,7 +45,7 @@
   </header>
 
   <main class="container">
-    <section class="detail">
+    <section class="detail wide">
       <div>
         <h2>Components looked up by type</h2>
         <p>GetComponent<T> returns the first component of type T on an object. The loop updates input and physics at a
@@ -55,22 +55,6 @@
           pastry. Both movements come from their input components; the physics component only adds the velocity to the
           position.</p>
       </div>
-<pre><code><span class="k">public</span> T GetComponent&lt;T&gt;() <span class="k">where</span> T : Component
-{
-    <span class="k">return</span> Components.OfType&lt;T&gt;().Select(component =&gt; component).FirstOrDefault();
-}
-
-<span class="k">private</span> <span class="k">void</span> UpdatePhysics()
-{
-    <span class="k">foreach</span> (GameObject gameObject <span class="k">in</span> GameObjects)
-        gameObject.GetComponent&lt;PhysicsComponent&gt;()?.Update(gameObject);
-}
-
-<span class="k">private</span> <span class="k">void</span> UpdateInput()
-{
-    <span class="k">foreach</span> (GameObject gameObject <span class="k">in</span> GameObjects)
-        gameObject.GetComponent&lt;InputComponent&gt;()?.Update(gameObject);
-}</code></pre>
     </section>
 
     <hr>

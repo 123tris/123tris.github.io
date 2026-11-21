@@ -46,16 +46,28 @@
     <section class="detail">
       <div>
         <h2>メッセージの区切り</h2>
-        <p>TCPはバイトの連続として届くので、各メッセージの先頭に4バイトの長さを付け、その後にUTF-16のテキストを続けます。受信側はまず長さを読み、次にメッセージ本体を読みます。</p>
+        <p>TCPはバイトの連続として届くので、各メッセージの先頭に4バイトの長さを付け、その後にUTF-16のテキストを続けます。受信側はまず長さを読み、次にメッセージ本体を読みます。書き込みに失敗した場合、クライアントは切断されたことを表示して再接続します。</p>
         <p>サーバーはポート6969で接続を受け付け、クライアントごとにスレッドを起動します。受け取ったメッセージは送信元以外のすべてのクライアントに送ります。映像ではUnityクライアントと、スクリプトで動かす2つのテスト用クライアントが接続しており、テスト用クライアントの返信はサーバー経由で届いています。</p>
       </div>
-<pre><code><span class="c">// Unity client: length prefix, then the text</span>
+<pre><code><span class="c">// TcpChatClient.cs (Unity)</span>
 <span class="k">byte</span>[] packet = Encoding.Unicode.GetBytes(UserName + <span class="s">" "</span> + input);
 <span class="k">byte</span>[] number = BitConverter.GetBytes(packet.Length);
-stream.Write(number, <span class="s">0</span>, number.Length);
-stream.Write(packet, <span class="s">0</span>, packet.Length);
 
-<span class="c">// Server: relay to everyone except the sender</span>
+try
+{
+    <span class="k">if</span> (stream.CanWrite)
+    {
+        stream.Write(number, <span class="s">0</span>, number.Length);
+        stream.Write(packet, <span class="s">0</span>, packet.Length);
+    }
+}
+catch (Exception)
+{
+    _chatBoxScreen.AddChatLine(<span class="s">"Disconnected from the server!"</span>);
+    client = Connect();
+}
+
+<span class="c">// TCPServer.cs</span>
 <span class="k">public</span> <span class="k">void</span> SendMessageToClients(<span class="k">string</span> message, <span class="k">params</span> HandleClient[] ignoreClients)
 {
     <span class="k">foreach</span> (HandleClient client <span class="k">in</span> clientList)

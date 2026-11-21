@@ -52,7 +52,6 @@
 <pre><code><span class="k">void</span> CameraBehaviour::update(<span class="k">float</span> pStep)
 {
     getInput();
-
     glm::vec3 forward = glm::normalize(_owner-&gt;getLocalPosition() - target-&gt;getLocalPosition());
     glm::vec3 right = glm::cross(glm::vec3(<span class="s">0</span>, <span class="s">1</span>, <span class="s">0</span>), forward);
     glm::vec3 up = glm::cross(forward, right);
@@ -62,6 +61,7 @@
                   glm::vec4(_owner-&gt;getLocalPosition(), <span class="s">1</span>))
     );
 
+    _owner-&gt;getWorldPosition();
     <span class="k">if</span> (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Q)) _owner-&gt;translate(glm::vec3(<span class="s">0</span>, speed, <span class="s">0</span>));
     <span class="k">if</span> (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::E)) _owner-&gt;translate(glm::vec3(<span class="s">0</span>, -speed, <span class="s">0</span>));
     _owner-&gt;translate(glm::vec3(-inputH * speed, <span class="s">0</span>, -inputV * speed));

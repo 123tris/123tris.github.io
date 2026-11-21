@@ -44,7 +44,7 @@
   </header>
 
   <main class="container">
-    <section class="detail">
+    <section class="detail wide">
       <div>
         <h2>From TMX to game objects</h2>
         <p>The .tmx file is XML and is deserialized with XmlSerializer into classes that mirror Tiled's format. Every
@@ -55,25 +55,6 @@
         <p>In the clip the player picks up the key, is walked toward the door, opens it and talks to the NPC. The
           messages at the top come from the properties set in Tiled.</p>
       </div>
-<pre><code><span class="c">// in Player.OnCollision(GameObject other)</span>
-<span class="k">if</span> (item.GetItemType() == Item.TYPE_DOOR)
-{
-    <span class="k">if</span> (inventory.Contains(<span class="s">"key"</span>))
-    {
-        item.Activate();
-        level.ShowMessage(<span class="s">"You've opened the door with id "</span> + item.properties[<span class="s">"id"</span>] + <span class="s">"!"</span>);
-    }
-}
-
-<span class="k">if</span> (item.GetItemType() == Item.TYPE_KEY)
-{
-    item.Destroy();
-    destination.x = Convert.ToInt32(item.properties[<span class="s">"destinationX"</span>]) - x;
-    destination.y = Convert.ToInt32(item.properties[<span class="s">"destinationY"</span>]) - y;
-    destinationReached = <span class="k">false</span>;
-    inventory.Add(<span class="s">"key"</span>);
-    level.ShowMessage(<span class="s">"You found a key with id "</span> + item.properties[<span class="s">"id"</span>] + <span class="s">"!"</span>);
-}</code></pre>
     </section>
 
     <hr>

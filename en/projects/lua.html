@@ -48,32 +48,47 @@
       <div>
         <h2>Binding C++ methods</h2>
         <p>Lua calls plain C functions, so each method is registered through a template that recovers the parser
-          object from the Lua state's extra space and calls the member function on it. The host registers image,
-          button and visit, and every frame it calls the Lua function named after the current room.</p>
+          object from the Lua state's extra space and calls the member function on it. The host registers write,
+          visit, image, button and loadImage, loads program.lua, and from then on calls the Lua function named after
+          the current room every frame, starting with main.</p>
       </div>
-<pre><code><span class="k">template</span> &lt;<span class="k">int</span> (LuaParser::*func)(lua_State* L)&gt;
-<span class="k">int</span> dispatch(lua_State* L)
-{
-    <span class="c">// the LuaParser instance is stored in the state's extra space</span>
-    LuaParser* ptr = *static_cast&lt;LuaParser**&gt;(lua_getextraspace(L));
+<pre><code><span class="c">// LuaParser.hpp</span>
+<span class="k">template</span> &lt;<span class="k">int</span> (LuaParser::*func)(lua_State * L)&gt;
+<span class="k">int</span> dispatch(lua_State * L) {
+    <span class="c">//reference to class instance in lua extraspace</span>
+    LuaParser * ptr = *static_cast&lt;LuaParser**&gt;(lua_getextraspace(L));
+    <span class="c">//call member function and return its result</span>
     <span class="k">return</span> (*ptr.*func)(L);
 }
 
-<span class="k">void</span> LuaParser::setup()
-{
-    lua_pushcfunction(lua, &amp;dispatch&lt;&amp;LuaParser::image&gt;);
-    lua_setglobal(lua, <span class="s">"image"</span>);
-    lua_pushcfunction(lua, &amp;dispatch&lt;&amp;LuaParser::button&gt;);
-    lua_setglobal(lua, <span class="s">"button"</span>);
-    lua_pushcfunction(lua, &amp;dispatch&lt;&amp;LuaParser::visit&gt;);
-    lua_setglobal(lua, <span class="s">"visit"</span>);
+<span class="c">// LuaParser.cpp</span>
+#define CheckError(result) <span class="k">if</span> (result != LUA_OK) { printError(lua); <span class="k">return</span>;}
+
+LuaParser::LuaParser() {
+    lua = luaL_newstate();
+    luaL_openlibs(lua);
+    <span class="c">//store 'this' in lua extra space</span>
+    *static_cast&lt;LuaParser**&gt;(lua_getextraspace(lua)) = &amp;*<span class="k">this</span>;
+    setup();
+    <span class="k">int</span> result = luaL_dofile(lua, <span class="s">"program.lua"</span>);
+    CheckError(result);
+    currentFunction = <span class="s">"main"</span>;
 }
 
-<span class="k">void</span> LuaParser::step()   <span class="c">// called once per frame</span>
+<span class="k">void</span> LuaParser::step()
 {
     lua_getglobal(lua, currentFunction);
     <span class="k">int</span> result = lua_pcall(lua, <span class="s">0</span>, <span class="s">0</span>, <span class="s">0</span>);
     CheckError(result)
+}
+
+<span class="k">void</span> LuaParser::setup()
+{
+    <span class="c">//binding to c++ member via 'dispatch' wrapper</span>
+    lua_pushcfunction(lua, &amp;dispatch&lt;&amp;LuaParser::write&gt;);
+    <span class="c">//function name in lua</span>
+    lua_setglobal(lua, <span class="s">"write"</span>);
+    ...
 }</code></pre>
     </section>
 
@@ -98,6 +113,11 @@
 
 <span class="k">function</span> dragonroom()
     image(<span class="s">"empty_room.png"</span>, <span class="s">0</span>, <span class="s">0</span>)
+    <span class="k">if</span> button(<span class="s">"window.png"</span>, <span class="s">389</span>, <span class="s">197</span>) <span class="k">then</span>
+        <span class="k">if</span> monsterIsDead == <span class="k">true</span> <span class="k">then</span>
+            visit(<span class="s">"win"</span>)
+        <span class="k">end</span>
+    <span class="k">end</span>
     time = time + <span class="s">1</span>
     <span class="k">if</span> monsterIsDead == <span class="k">false</span> <span class="k">then</span>
         <span class="k">if</span> button(<span class="s">"dragon.png"</span>, <span class="s">0</span>, math.sin(time*<span class="s">0.1</span>)*<span class="s">25</span>) <span class="k">then</span>
@@ -107,6 +127,8 @@
                 visit(<span class="s">"dead"</span>)
             <span class="k">end</span>
         <span class="k">end</span>
+    <span class="k">else</span>
+        image(<span class="s">"dragon_dead.png"</span>, <span class="s">0</span>, <span class="s">0</span>)
     <span class="k">end</span>
 <span class="k">end</span></code></pre>
     </section>

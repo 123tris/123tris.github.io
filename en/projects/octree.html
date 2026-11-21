@@ -35,7 +35,7 @@
       <p class="lead">An octree for the physics of our first C++ engine. It is rebuilt every frame, and each box
         collider is stored in the smallest node that fully contains it. A test scene fills the tree with randomly
         placed, moving colliders.</p>
-      <p class="facts">C++ · our first engine · 2017 · solo</p>
+      <p class="facts">C++ · first engine · 2017 · solo</p>
     </div>
     <div class="hero-media">
       <video class="shot" autoplay muted loop playsinline poster="../../assets/img/octree.webp" width="960" height="540">
@@ -48,9 +48,47 @@
   <main class="container">
     <section class="detail">
       <div>
+        <h2>Subdivision</h2>
+        <p>The root node is subdivided to a fixed depth up front. Each node has eight children, and a child's index
+          encodes its octant in three bits: 4 for the upper half, 2 for the right half and 1 for the back half. Each
+          bit moves the child's centre a quarter of the parent's size along its axis, and every child is half the
+          parent's size.</p>
+      </div>
+<pre><code><span class="k">void</span> OctNode::subDivide(<span class="k">int</span> depth)
+{
+    subNodes = std::vector&lt;OctNode*&gt;(<span class="s">8</span>);
+    <span class="k">for</span> (<span class="k">int</span> i = <span class="s">0</span>; i &lt; subNodes.size(); ++i)
+    {
+        Vector3 newPos = position;
+        <span class="k">if</span> ((i &amp; <span class="s">4</span>) == <span class="s">4</span>)
+            newPos.y += size * <span class="s">0.25f</span>;
+        <span class="k">else</span>
+            newPos.y -= size * <span class="s">0.25f</span>;
+
+        <span class="k">if</span> ((i &amp; <span class="s">2</span>) == <span class="s">2</span>)
+            newPos.x += size * <span class="s">0.25f</span>;
+        <span class="k">else</span>
+            newPos.x -= size * <span class="s">0.25f</span>;
+
+        <span class="k">if</span> ((i &amp; <span class="s">1</span>) == <span class="s">1</span>)
+            newPos.z += size * <span class="s">0.25f</span>;
+        <span class="k">else</span>
+            newPos.z -= size * <span class="s">0.25f</span>;
+
+        subNodes[i] = <span class="k">new</span> OctNode(newPos, size * <span class="s">0.5f</span>);
+        subNodes[i]-&gt;parent = <span class="k">this</span>;
+        <span class="k">if</span> (depth &gt; <span class="s">0</span>) subNodes[i]-&gt;subDivide(depth - <span class="s">1</span>);
+    }
+}</code></pre>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
         <h2>Insertion</h2>
-        <p>The root node is subdivided to a fixed depth up front. Each node has eight children, indexed by three bits
-          (up, right, back). A collider descends into the child whose bounds contain both corners of its AABB; when no
+        <p>The tree is rebuilt every frame: the old tree is deleted, a new root is subdivided and every collider is
+          inserted again. A collider descends into the child whose bounds contain both corners of its AABB; when no
           child contains it, it stays in the current node, so colliders that straddle a boundary are stored higher up
           the tree.</p>
         <p>The debug view draws nodes that hold colliders in green, empty nodes in blue and the colliders in red. F
@@ -64,17 +102,15 @@
         colliders.push_back(collider);
         <span class="k">return</span>;
     }
-
-    <span class="c">// Find the child that contains the whole collider</span>
     OctNode* foundNode = <span class="k">nullptr</span>;
     <span class="k">for</span> (OctNode* node : subNodes)
     {
         AABB nodeAABB = node-&gt;getBoundary();
+        <span class="c">//Continue if it doesn't find</span>
         <span class="k">if</span> (!nodeAABB.AABBvsPoint(collider-&gt;aabb.min) ||
             !nodeAABB.AABBvsPoint(collider-&gt;aabb.max)) <span class="k">continue</span>;
         foundNode = node;
     }
-
     <span class="k">if</span> (foundNode == <span class="k">nullptr</span>) colliders.push_back(collider);
     <span class="k">else</span> foundNode-&gt;addCollider(collider);
 }</code></pre>

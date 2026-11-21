@@ -58,42 +58,13 @@
 
     <hr>
 
-    <section class="detail flip">
+    <section class="detail wide">
       <div>
         <h2>Type registration</h2>
         <p>C++ has no reflection, so a deserializer can't create an object from a type name on its own. Each
           serializable type registers a factory function in a static map under its name, and deserialization looks the
           name up and calls the factory. Tristeon's reflection uses the same structure.</p>
       </div>
-<pre><code><span class="k">template</span> &lt;<span class="k">typename</span> T&gt; Serializable* CreateInstance() { <span class="k">return</span> <span class="k">new</span> T; }
-
-<span class="k">struct</span> TypeRegister
-{
-    <span class="k">using</span> TypeMap = std::map&lt;std::string, Serializable*(*)()&gt;;
-
-    <span class="k">static</span> Serializable* createInstance(<span class="k">const</span> std::string&amp; s)
-    {
-        <span class="k">const</span> <span class="k">auto</span> it = getMap()-&gt;find(s);
-        <span class="k">if</span> (it == getMap()-&gt;end())
-            <span class="k">return</span> <span class="k">nullptr</span>;
-        <span class="k">return</span> it-&gt;second();
-    }
-
-    <span class="k">inline</span> <span class="k">static</span> TypeMap* getMap()
-    {
-        <span class="k">static</span> TypeMap instance;
-        <span class="k">return</span> &amp;instance;
-    }
-};
-
-<span class="k">template</span> &lt;<span class="k">typename</span> T&gt;
-<span class="k">struct</span> DerivedRegister : TypeRegister
-{
-    DerivedRegister(<span class="k">const</span> std::string&amp; s)
-    {
-        getMap()-&gt;emplace(s, &amp;CreateInstance&lt;T&gt;);
-    }
-};</code></pre>
     </section>
 
     <hr>

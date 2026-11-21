@@ -43,32 +43,12 @@
   </header>
 
   <main class="container">
-    <section class="detail">
+    <section class="detail wide">
       <div>
         <h2>ステートマシン</h2>
         <p>各状態は独自のUpdateを持つクラスです。睡眠状態は、木が残っていれば探索状態に移ります。探索状態は最初に見つかった木のあるノードまでの経路を計画し、到着すると木を取り除いて帰宅状態に切り替えます。帰宅状態はノード0までの経路を計画し、到着すると再び探索状態に戻ります。</p>
         <p>映像では、エージェント（小さな緑の四角）が家から水色の木のノードへ歩き、木を切って（ノードが青になる）家に戻ります。</p>
       </div>
-<pre><code><span class="c">// SearchWoodState</span>
-<span class="k">public</span> <span class="k">override</span> <span class="k">void</span> Update()
-{
-    <span class="k">if</span> (_agent.lastNode == _treeTarget)
-    {
-        _treeTarget.hasTree = <span class="k">false</span>;
-        _treeTarget.SetColor(System.Drawing.Color.Blue);
-        _agent.SetState(<span class="k">new</span> ReturnHomeState(_agent, _world));
-    }
-}
-
-<span class="c">// ReturnHomeState</span>
-<span class="k">public</span> <span class="k">override</span> <span class="k">void</span> Update()
-{
-    <span class="k">if</span> (_agent.lastNode == home)
-    {
-        <span class="k">if</span> (_world.GetTreeCount() &gt; <span class="s">0</span>)
-            _agent.SetState(<span class="k">new</span> SearchWoodState(_agent, _world));
-    }
-}</code></pre>
     </section>
 
     <hr>
@@ -76,7 +56,7 @@
     <section class="detail wide">
       <div>
         <h2>A*による経路探索</h2>
-        <p>オープンリストは、そこまでのコストとゴールまでの直線距離の和で並べ替えます。リストから取り出したノードは確定し、現在のノードを経由する方が安い場合は隣接ノードのコストと親を更新します。ゴールが取り出されたら親をたどってスタートまで経路を復元し、エージェントはそれをウェイポイントのリストとして受け取ります。</p>
+        <p>経路は、オープンリストとクローズドリストを1ノードずつ処理するグラフ探索で求めます。オープンリストはコストと推定値の和で並べ替えます。これをA*にするため、現在のノードを経由する方が安い場合に隣接ノードのコストと親を更新し、各隣接ノードの推定値をゴールまでの直線距離にしました。ゴールがリストから取り出されたら親をたどって経路を復元し、ウェイポイントとしてエージェントに渡します。</p>
       </div>
     </section>
 

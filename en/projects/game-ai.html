@@ -44,7 +44,7 @@
   </header>
 
   <main class="container">
-    <section class="detail">
+    <section class="detail wide">
       <div>
         <h2>State machine</h2>
         <p>Each state is a class with its own Update. Sleeping hands over to searching while trees remain. Searching
@@ -53,26 +53,6 @@
         <p>In the clip the agent (the small green square) walks from home to each cyan tree node, cuts the tree (the
           node turns blue) and walks back.</p>
       </div>
-<pre><code><span class="c">// SearchWoodState</span>
-<span class="k">public</span> <span class="k">override</span> <span class="k">void</span> Update()
-{
-    <span class="k">if</span> (_agent.lastNode == _treeTarget)
-    {
-        _treeTarget.hasTree = <span class="k">false</span>;
-        _treeTarget.SetColor(System.Drawing.Color.Blue);
-        _agent.SetState(<span class="k">new</span> ReturnHomeState(_agent, _world));
-    }
-}
-
-<span class="c">// ReturnHomeState</span>
-<span class="k">public</span> <span class="k">override</span> <span class="k">void</span> Update()
-{
-    <span class="k">if</span> (_agent.lastNode == home)
-    {
-        <span class="k">if</span> (_world.GetTreeCount() &gt; <span class="s">0</span>)
-            _agent.SetState(<span class="k">new</span> SearchWoodState(_agent, _world));
-    }
-}</code></pre>
     </section>
 
     <hr>
@@ -80,10 +60,11 @@
     <section class="detail wide">
       <div>
         <h2>A* pathfinding</h2>
-        <p>The open list is sorted by the cost so far plus the straight-line distance to the goal. Nodes taken from
-          the list are closed, and a neighbour's cost and parent are updated when the route through the current node
-          is cheaper. When the goal is taken from the list, the path is rebuilt by following parents back to the
-          start, and the agent receives it as a list of waypoints.</p>
+        <p>The routes come from a step-by-step graph search with an open and a closed list, where the open list is
+          sorted by cost plus estimate. I turned it into A*: a neighbour's cost and parent are updated when the route
+          through the current node is cheaper, and each neighbour's estimate is its straight-line distance to the
+          goal. When the goal is taken from the list, the path is rebuilt from the parents and handed to the agent as
+          waypoints.</p>
       </div>
     </section>
 

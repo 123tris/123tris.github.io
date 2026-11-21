@@ -43,31 +43,12 @@
   </header>
 
   <main class="container">
-    <section class="detail">
+    <section class="detail wide">
       <div>
         <h2>TMXからゲームオブジェクトへ</h2>
         <p>.tmxファイルはXMLで、XmlSerializerでTiledの形式に対応するクラスにデシリアライズします。各オブジェクトはタイルIDを種類（スポーン地点、壁、鍵、NPC、扉など）とするアイテムになり、カスタムプロパティは辞書にコピーします。プレイヤーの衝突処理はこのプロパティを使います。鍵はIDと移動先の座標を持ち、扉はプレイヤーが鍵を持っていれば開き、NPCはtextプロパティの内容を表示します。</p>
         <p>映像では、プレイヤーが鍵を拾って扉の方へ移動させられ、扉を開けてNPCと話します。上部のメッセージはTiledで設定したプロパティの内容です。</p>
       </div>
-<pre><code><span class="c">// in Player.OnCollision(GameObject other)</span>
-<span class="k">if</span> (item.GetItemType() == Item.TYPE_DOOR)
-{
-    <span class="k">if</span> (inventory.Contains(<span class="s">"key"</span>))
-    {
-        item.Activate();
-        level.ShowMessage(<span class="s">"You've opened the door with id "</span> + item.properties[<span class="s">"id"</span>] + <span class="s">"!"</span>);
-    }
-}
-
-<span class="k">if</span> (item.GetItemType() == Item.TYPE_KEY)
-{
-    item.Destroy();
-    destination.x = Convert.ToInt32(item.properties[<span class="s">"destinationX"</span>]) - x;
-    destination.y = Convert.ToInt32(item.properties[<span class="s">"destinationY"</span>]) - y;
-    destinationReached = <span class="k">false</span>;
-    inventory.Add(<span class="s">"key"</span>);
-    level.ShowMessage(<span class="s">"You found a key with id "</span> + item.properties[<span class="s">"id"</span>] + <span class="s">"!"</span>);
-}</code></pre>
     </section>
 
     <hr>

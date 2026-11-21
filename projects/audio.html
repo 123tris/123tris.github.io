@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>オーディオプログラミング — トリスタン・メッツ</title>
-  <meta name="description" content="MIDIファイルをWAVに書き出すC#のポリフォニックなソフトウェアシンセサイザー。エフェクトのクラスと波形・鍵盤の表示付き。トリスタン・メッツ作。">
+  <meta name="description" content="MIDIファイルをWAVに書き出すシンセサイザーのためのC#の音声合成：オシレーター、周波数の計算、減衰、ポリフォニー、ディレイのフィードバック。トリスタン・メッツ作。">
   <link rel="canonical" href="https://tristanmetz.com/projects/audio.html">
   <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/projects/audio.html">
   <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/projects/audio.html">
@@ -14,7 +14,7 @@
   <meta property="og:locale" content="ja_JP">
   <meta property="og:url" content="https://tristanmetz.com/projects/audio.html">
   <meta property="og:title" content="オーディオプログラミング — トリスタン・メッツ">
-  <meta property="og:description" content="MIDIファイルをWAVに書き出すC#のポリフォニックなソフトウェアシンセサイザー。エフェクトのクラスと波形・鍵盤の表示付き。トリスタン・メッツ作。">
+  <meta property="og:description" content="MIDIファイルをWAVに書き出すシンセサイザーのためのC#の音声合成：オシレーター、周波数の計算、減衰、ポリフォニー、ディレイのフィードバック。トリスタン・メッツ作。">
   <meta property="og:image" content="https://tristanmetz.com/assets/img/og/synth-furelise.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -32,7 +32,7 @@
   <header class="jumbo">
     <div class="container">
       <h1>オーディオプログラミング</h1>
-      <p class="lead">MIDIファイルをサンプル単位でWAVファイルに書き出すソフトウェアシンセサイザー。結果を波形表示と鍵盤表示とともに再生します。</p>
+      <p class="lead">MIDIファイルをサンプル単位でWAVファイルに書き出すC#のシンセサイザーで、音を作る部分を実装しました：オシレーター、ノートの周波数、ベロシティと減衰、ポリフォニー、ディレイのフィードバック。</p>
       <p class="facts">C# · GXPEngine · 2016年 · 個人開発</p>
     </div>
     <div class="hero-media">
@@ -44,36 +44,12 @@
   </header>
 
   <main class="container">
-    <section class="detail">
+    <section class="detail wide">
       <div>
-        <h2>ポリフォニー</h2>
-        <p>ポリシンセはボイスごとに1つのモノシンセを持ちます（ここでは16個）。ノートオンでは空いている最初のボイスを使い、ノートオフではそのノートを鳴らしているボイスを解放します。各出力サンプルは全ボイスの和に音量を掛け、−1〜1に収めたものです。</p>
-        <p>モノシンセは正弦波・矩形波・三角波・のこぎり波を生成します。エフェクトは任意の音源を包む形で連結できます：フィードバック付きディレイ、ローパスフィルター、ビットクラッシャー、ファズ、トレモロ。</p>
+        <h2>音声合成</h2>
+        <p>シンセサイザーは既存のC#のオーディオフレームワークの上に作りました。私が実装したのは音を作る部分です：ノート番号から平均律の周波数への変換、ベロシティによる振幅、サンプルごとの減衰、矩形波・三角波・のこぎり波のオシレーター、ポリフォニー、ディレイエフェクトのフィードバック、そしてMIDIファイルのノートオンとノートオフのイベントをWAVファイルに書き出す処理です。</p>
+        <p>ポリフォニーでは、ボイスごとに1つのモノシンセを持ちます（ここでは16個）。ノートオンでは空いている最初のボイスを使い、すべてのボイスが使用中ならそのノートは鳴らしません。ノートオフではそのノートを鳴らしているボイスを解放します。</p>
       </div>
-<pre><code><span class="k">public</span> <span class="k">override</span> <span class="k">double</span> getSample()
-{
-    <span class="k">double</span> sampleval = <span class="s">0</span>;
-    <span class="k">for</span> (<span class="k">int</span> i = <span class="s">0</span>; i &lt; tonesynthArray.Length; i++)
-        sampleval += tonesynthArray[i].getSample();
-
-    sampleval *= volume;
-    <span class="k">if</span> (sampleval &gt; <span class="s">1</span>) sampleval = <span class="s">1</span>;
-    <span class="k">if</span> (sampleval &lt; -<span class="s">1</span>) sampleval = -<span class="s">1</span>;
-    <span class="k">return</span> sampleval;
-}
-
-<span class="k">public</span> <span class="k">override</span> <span class="k">void</span> playNote(<span class="k">byte</span> notenum, <span class="k">byte</span> velocity)
-{
-    <span class="k">for</span> (<span class="k">int</span> i = <span class="s">0</span>; i &lt; playingnoteArray.Length; i++)
-    {
-        <span class="k">if</span> (playingnoteArray[i] == -<span class="s">1</span>)   <span class="c">// first free voice</span>
-        {
-            tonesynthArray[i].playNote(notenum, velocity);
-            playingnoteArray[i] = notenum;
-            <span class="k">break</span>;
-        }
-    }
-}</code></pre>
     </section>
 
     <hr>

@@ -46,8 +46,43 @@
   <main class="container">
     <section class="detail">
       <div>
+        <h2>分割</h2>
+        <p>ルートノードはあらかじめ決めた深さまで分割します。各ノードは8つの子を持ち、子の番号は3ビットで八分空間を表します。4が上半分、2が右半分、1が奥半分です。各ビットに応じて子の中心を親のサイズの4分の1だけその軸方向にずらし、子のサイズは親の半分です。</p>
+      </div>
+<pre><code><span class="k">void</span> OctNode::subDivide(<span class="k">int</span> depth)
+{
+    subNodes = std::vector&lt;OctNode*&gt;(<span class="s">8</span>);
+    <span class="k">for</span> (<span class="k">int</span> i = <span class="s">0</span>; i &lt; subNodes.size(); ++i)
+    {
+        Vector3 newPos = position;
+        <span class="k">if</span> ((i &amp; <span class="s">4</span>) == <span class="s">4</span>)
+            newPos.y += size * <span class="s">0.25f</span>;
+        <span class="k">else</span>
+            newPos.y -= size * <span class="s">0.25f</span>;
+
+        <span class="k">if</span> ((i &amp; <span class="s">2</span>) == <span class="s">2</span>)
+            newPos.x += size * <span class="s">0.25f</span>;
+        <span class="k">else</span>
+            newPos.x -= size * <span class="s">0.25f</span>;
+
+        <span class="k">if</span> ((i &amp; <span class="s">1</span>) == <span class="s">1</span>)
+            newPos.z += size * <span class="s">0.25f</span>;
+        <span class="k">else</span>
+            newPos.z -= size * <span class="s">0.25f</span>;
+
+        subNodes[i] = <span class="k">new</span> OctNode(newPos, size * <span class="s">0.5f</span>);
+        subNodes[i]-&gt;parent = <span class="k">this</span>;
+        <span class="k">if</span> (depth &gt; <span class="s">0</span>) subNodes[i]-&gt;subDivide(depth - <span class="s">1</span>);
+    }
+}</code></pre>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
         <h2>挿入</h2>
-        <p>ルートノードはあらかじめ決めた深さまで分割します。各ノードは8つの子を持ち、子は3ビット（上・右・奥）で番号付けされます。コライダーは、AABBの両端の点を含む子ノードへ降りていきます。どの子にも収まらない場合は現在のノードに残るので、境界をまたぐコライダーは木の上の方に格納されます。</p>
+        <p>木は毎フレーム作り直します。古い木を削除し、新しいルートを分割して、すべてのコライダーを挿入し直します。コライダーは、AABBの両端の点を含む子ノードへ降りていきます。どの子にも収まらない場合は現在のノードに残るので、境界をまたぐコライダーは木の上の方に格納されます。</p>
         <p>デバッグ表示では、コライダーを持つノードを緑、空のノードを青、コライダーを赤で描きます。Fで空のノードの表示を切り替え（映像では2.5秒後）、J/Kで描画する深さを変えます。このバージョンは木の構築と表示までで、木を使う衝突判定のクエリは実装していません。</p>
       </div>
 <pre><code><span class="k">void</span> OctNode::addCollider(BoxCollider* collider)
@@ -57,17 +92,15 @@
         colliders.push_back(collider);
         <span class="k">return</span>;
     }
-
-    <span class="c">// Find the child that contains the whole collider</span>
     OctNode* foundNode = <span class="k">nullptr</span>;
     <span class="k">for</span> (OctNode* node : subNodes)
     {
         AABB nodeAABB = node-&gt;getBoundary();
+        <span class="c">//Continue if it doesn't find</span>
         <span class="k">if</span> (!nodeAABB.AABBvsPoint(collider-&gt;aabb.min) ||
             !nodeAABB.AABBvsPoint(collider-&gt;aabb.max)) <span class="k">continue</span>;
         foundNode = node;
     }
-
     <span class="k">if</span> (foundNode == <span class="k">nullptr</span>) colliders.push_back(collider);
     <span class="k">else</span> foundNode-&gt;addCollider(collider);
 }</code></pre>

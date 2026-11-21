@@ -43,28 +43,12 @@
   </header>
 
   <main class="container">
-    <section class="detail">
+    <section class="detail wide">
       <div>
         <h2>型によるコンポーネントの取得</h2>
         <p>GetComponent<T>はオブジェクトが持つ型Tの最初のコンポーネントを返します。ループは入力と物理を毎秒144回の固定頻度で更新し、ウィンドウの再描画時に描画します。各処理は、該当するコンポーネントを持つすべてのオブジェクトでそのコンポーネントを呼びます。</p>
         <p>映像では、Pastry（カップケーキ）がウィンドウの中心に引き寄せられてその周りを回り、BjornがPastryを追いかけます。どちらの動きも入力コンポーネントによるもので、物理コンポーネントは速度を位置に加えるだけです。</p>
       </div>
-<pre><code><span class="k">public</span> T GetComponent&lt;T&gt;() <span class="k">where</span> T : Component
-{
-    <span class="k">return</span> Components.OfType&lt;T&gt;().Select(component =&gt; component).FirstOrDefault();
-}
-
-<span class="k">private</span> <span class="k">void</span> UpdatePhysics()
-{
-    <span class="k">foreach</span> (GameObject gameObject <span class="k">in</span> GameObjects)
-        gameObject.GetComponent&lt;PhysicsComponent&gt;()?.Update(gameObject);
-}
-
-<span class="k">private</span> <span class="k">void</span> UpdateInput()
-{
-    <span class="k">foreach</span> (GameObject gameObject <span class="k">in</span> GameObjects)
-        gameObject.GetComponent&lt;InputComponent&gt;()?.Update(gameObject);
-}</code></pre>
     </section>
 
     <hr>
