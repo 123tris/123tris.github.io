@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>3D rendering — Tristan Metz</title>
-  <meta name="description" content="Camera code on a small C++/OpenGL engine: a look-at transform built from vectors and a camera that moves around its target. By Tristan Metz.">
+  <meta name="description" content="OpenGL in C++ by Tristan Metz: a GLSL fragment shader with a procedural checkerboard and a spotlight that follows the mouse, and a look-at camera built from three vectors.">
   <link rel="canonical" href="https://tristanmetz.com/en/projects/rendering.html">
   <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/projects/rendering.html">
   <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/projects/rendering.html">
@@ -14,8 +14,8 @@
   <meta property="og:locale" content="en_US">
   <meta property="og:url" content="https://tristanmetz.com/en/projects/rendering.html">
   <meta property="og:title" content="3D rendering — Tristan Metz">
-  <meta property="og:description" content="Camera code on a small C++/OpenGL engine: a look-at transform built from vectors and a camera that moves around its target. By Tristan Metz.">
-  <meta property="og:image" content="https://tristanmetz.com/assets/img/og/opengl-camera.jpg">
+  <meta property="og:description" content="OpenGL in C++ by Tristan Metz: a GLSL fragment shader with a procedural checkerboard and a spotlight that follows the mouse, and a look-at camera built from three vectors.">
+  <meta property="og:image" content="https://tristanmetz.com/assets/img/og/opengl-spotlight.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
@@ -32,28 +32,71 @@
   <header class="jumbo">
     <div class="container">
       <h1>3D rendering</h1>
-      <p class="lead">Camera code on a small C++ and OpenGL engine: a look-at transform built by hand from three
-        vectors, and a camera that keeps its target in view while it moves.</p>
-      <p class="facts">C++ · OpenGL · SFML · 2016 · solo</p>
+      <p class="lead">OpenGL work in C++: a fragment shader that draws a checkerboard in a moving quad's own space and
+        lights it around the mouse cursor, and a camera in a small engine whose look-at transform is built by hand
+        from three vectors.</p>
+      <p class="facts">C++ · OpenGL · GLSL · 2016, 2019 · solo</p>
     </div>
     <div class="hero-media">
-      <video class="shot" autoplay muted loop playsinline poster="../../assets/img/opengl-camera.webp" width="960" height="540">
-        <source src="../../assets/video/opengl-camera.mp4" type="video/mp4">
+      <video class="shot" autoplay muted loop playsinline poster="../../assets/img/opengl-spotlight.webp" width="960" height="540">
+        <source src="../../assets/video/opengl-spotlight.mp4" type="video/mp4">
       </video>
+      <p class="caption">The quad circles the window while the light follows the mouse. Recorded with the light radius raised from 20 to 150 pixels so the effect is visible at this size.</p>
     </div>
   </header>
 
   <main class="container">
     <section class="detail">
       <div>
-        <h2>Look-at transform</h2>
-        <p>Instead of calling glm::lookAt, the camera builds its matrix itself: forward is the normalized vector from
-          the target to the camera, right is the cross product of world up and forward, and up is forward × right.
-          These three vectors and the camera's position are the columns of its transform.</p>
-        <p>The camera behaviour does this every update and then moves the camera in its own space: W/S toward and away
-          from the target, A/D sideways, Q/E up and down. Moving sideways while turning back toward the target each
-          frame makes it circle the target. In the clip it circles the brick teapot; the monkey's rotation is a
-          separate behaviour.</p>
+        <h2>Checkerboard and spotlight</h2>
+        <p>A 2019 OpenGL 3.3 program draws a quad of two triangles from a vertex and an index buffer with position,
+          colour and UV attributes, and moves it around the window through an offset uniform set from the elapsed
+          time. The fragment shader draws the checkerboard in the quad's own UV space, so the pattern moves with it:
+          the tile index on each axis is the floored UV times the tile count, and an even sum picks the first colour.
+          The tile counts and both colours are uniforms set from C++.</p>
+        <p>The light is a falloff around the mouse: the colour is multiplied by one minus the fragment's distance to
+          the cursor divided by 20, so it is brightest at the cursor and black from 20 pixels away. GLFW reports the
+          cursor's y from the top of the window while gl_FragCoord counts from the bottom, so the host flips y before
+          passing the position in.</p>
+      </div>
+<pre><code>#version <span class="s">330</span> core
+<span class="k">out</span> <span class="k">vec4</span> fragColor;
+
+<span class="k">in</span> <span class="k">vec3</span> vertexColour;
+<span class="k">in</span> <span class="k">vec2</span> UV;
+
+<span class="k">uniform</span> <span class="k">uvec2</span> tiles;
+<span class="k">uniform</span> <span class="k">vec3</span> tileColourA;
+<span class="k">uniform</span> <span class="k">vec3</span> tileColourB;
+<span class="k">uniform</span> <span class="k">vec2</span> mousePos;
+
+<span class="k">void</span> main()
+{
+    <span class="k">vec3</span> colour;
+    <span class="k">float</span> sum = floor(UV.x * tiles.x) + floor(UV.y * tiles.y);
+    <span class="k">bool</span> isEven = mod(sum,<span class="s">2.0</span>) == <span class="s">0.0</span>;
+    <span class="k">if</span> (isEven) {
+        colour = tileColourA;
+    } <span class="k">else</span> {
+        colour = tileColourB;
+    }
+
+    <span class="k">vec2</span> difference = mousePos - gl_FragCoord.xy;
+    colour *= <span class="s">1</span>-length(difference)/<span class="s">20</span>;
+
+    fragColor = <span class="k">vec4</span>(colour,<span class="s">1</span>);
+}</code></pre>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>Look-at camera</h2>
+        <p>In a small C++ engine (2016), the camera behaviour builds its matrix instead of calling glm::lookAt:
+          forward is the normalized vector from the target to the camera, right is the cross product of world up and
+          forward, and up is forward × right. These three vectors and the camera's position are the columns of its
+          transform.</p>
       </div>
 <pre><code><span class="k">void</span> CameraBehaviour::update(<span class="k">float</span> pStep)
 {
@@ -72,6 +115,24 @@
     <span class="k">if</span> (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::E)) _owner-&gt;translate(glm::vec3(<span class="s">0</span>, -speed, <span class="s">0</span>));
     _owner-&gt;translate(glm::vec3(-inputH * speed, <span class="s">0</span>, -inputV * speed));
 }</code></pre>
+    </section>
+
+    <hr>
+
+    <section class="detail">
+      <div>
+        <h2>Moving around the target</h2>
+        <p>The behaviour applies this every update and then moves the camera in its own space: W/S toward and away
+          from the target, A/D sideways, Q/E up and down. Moving sideways while turning back toward the target each
+          frame makes it circle the target. In the clip it circles the brick teapot; the monkey's rotation is a
+          separate behaviour.</p>
+      </div>
+      <figure>
+        <video class="shot" autoplay muted loop playsinline poster="../../assets/img/opengl-camera.webp" width="960" height="540">
+          <source src="../../assets/video/opengl-camera.mp4" type="video/mp4">
+        </video>
+        <figcaption>The camera circling the teapot in the engine's demo scene</figcaption>
+      </figure>
     </section>
 
     <hr>

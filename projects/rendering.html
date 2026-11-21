@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>3Dレンダリング — トリスタン・メッツ</title>
-  <meta name="description" content="小さなC++/OpenGLエンジン上のカメラ処理：ベクトルから組み立てるルックアット変換と、対象の周りを動くカメラ。トリスタン・メッツ作。">
+  <meta name="description" content="トリスタン・メッツによるC++のOpenGL：手続き的なチェッカー模様とマウスを追うスポットライトのGLSLフラグメントシェーダーと、3つのベクトルから組み立てるルックアットカメラ。">
   <link rel="canonical" href="https://tristanmetz.com/projects/rendering.html">
   <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/projects/rendering.html">
   <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/projects/rendering.html">
@@ -14,8 +14,8 @@
   <meta property="og:locale" content="ja_JP">
   <meta property="og:url" content="https://tristanmetz.com/projects/rendering.html">
   <meta property="og:title" content="3Dレンダリング — トリスタン・メッツ">
-  <meta property="og:description" content="小さなC++/OpenGLエンジン上のカメラ処理：ベクトルから組み立てるルックアット変換と、対象の周りを動くカメラ。トリスタン・メッツ作。">
-  <meta property="og:image" content="https://tristanmetz.com/assets/img/og/opengl-camera.jpg">
+  <meta property="og:description" content="トリスタン・メッツによるC++のOpenGL：手続き的なチェッカー模様とマウスを追うスポットライトのGLSLフラグメントシェーダーと、3つのベクトルから組み立てるルックアットカメラ。">
+  <meta property="og:image" content="https://tristanmetz.com/assets/img/og/opengl-spotlight.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
@@ -32,22 +32,59 @@
   <header class="jumbo">
     <div class="container">
       <h1>3Dレンダリング</h1>
-      <p class="lead">小さなC++/OpenGLエンジン上のカメラ処理。3つのベクトルから手で組み立てるルックアット変換と、移動しながら対象を画面に収め続けるカメラ。</p>
-      <p class="facts">C++ · OpenGL · SFML · 2016年 · 個人開発</p>
+      <p class="lead">C++でのOpenGL。動く四角形自身の空間にチェッカー模様を描き、マウスカーソルの周りを照らすフラグメントシェーダーと、3つのベクトルから手でルックアット変換を組み立てる小さなエンジン上のカメラ。</p>
+      <p class="facts">C++ · OpenGL · GLSL · 2016年、2019年 · 個人開発</p>
     </div>
     <div class="hero-media">
-      <video class="shot" autoplay muted loop playsinline poster="../assets/img/opengl-camera.webp" width="960" height="540">
-        <source src="../assets/video/opengl-camera.mp4" type="video/mp4">
+      <video class="shot" autoplay muted loop playsinline poster="../assets/img/opengl-spotlight.webp" width="960" height="540">
+        <source src="../assets/video/opengl-spotlight.mp4" type="video/mp4">
       </video>
+      <p class="caption">四角形がウィンドウ内を回り、光がマウスを追います。この大きさでも見えるよう、光の半径を20ピクセルから150ピクセルに広げて録画しています。</p>
     </div>
   </header>
 
   <main class="container">
     <section class="detail">
       <div>
-        <h2>ルックアット変換</h2>
-        <p>glm::lookAtを使わず、カメラ自身が行列を組み立てます。forwardは対象からカメラへの正規化ベクトル、rightはワールドの上方向とforwardの外積、upはforward×rightです。この3つのベクトルとカメラの位置を変換行列の列にします。</p>
-        <p>カメラの挙動は毎回これを適用したうえで、カメラ自身の座標系で移動します。W/Sで対象に近づく・離れる、A/Dで横移動、Q/Eで上下。毎フレーム対象の方へ向き直りながら横に動くので、対象の周りを回ります。映像ではレンガのティーポットの周りを回っており、猿の回転は別の挙動です。</p>
+        <h2>チェッカー模様とスポットライト</h2>
+        <p>2019年のOpenGL 3.3のプログラムで、2つの三角形からなる四角形を、位置・色・UVの属性を持つ頂点バッファーとインデックスバッファーから描き、経過時間から求めたoffsetのuniformでウィンドウ内を動かします。フラグメントシェーダーは四角形自身のUV空間にチェッカー模様を描くので、模様は四角形と一緒に動きます。各軸のタイル番号はUVにタイル数を掛けて切り捨てた値で、その和が偶数なら1つ目の色になります。タイル数と2つの色はC++から設定するuniformです。</p>
+        <p>光はマウスの周りの減衰です。色に「1 − カーソルまでの距離 ÷ 20」を掛けるので、カーソルの位置が最も明るく、20ピクセル離れると黒になります。GLFWはカーソルのyをウィンドウの上端から、gl_FragCoordは下端から数えるため、ホスト側でyを反転してから渡しています。</p>
+      </div>
+<pre><code>#version <span class="s">330</span> core
+<span class="k">out</span> <span class="k">vec4</span> fragColor;
+
+<span class="k">in</span> <span class="k">vec3</span> vertexColour;
+<span class="k">in</span> <span class="k">vec2</span> UV;
+
+<span class="k">uniform</span> <span class="k">uvec2</span> tiles;
+<span class="k">uniform</span> <span class="k">vec3</span> tileColourA;
+<span class="k">uniform</span> <span class="k">vec3</span> tileColourB;
+<span class="k">uniform</span> <span class="k">vec2</span> mousePos;
+
+<span class="k">void</span> main()
+{
+    <span class="k">vec3</span> colour;
+    <span class="k">float</span> sum = floor(UV.x * tiles.x) + floor(UV.y * tiles.y);
+    <span class="k">bool</span> isEven = mod(sum,<span class="s">2.0</span>) == <span class="s">0.0</span>;
+    <span class="k">if</span> (isEven) {
+        colour = tileColourA;
+    } <span class="k">else</span> {
+        colour = tileColourB;
+    }
+
+    <span class="k">vec2</span> difference = mousePos - gl_FragCoord.xy;
+    colour *= <span class="s">1</span>-length(difference)/<span class="s">20</span>;
+
+    fragColor = <span class="k">vec4</span>(colour,<span class="s">1</span>);
+}</code></pre>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>ルックアットカメラ</h2>
+        <p>2016年に小さなC++エンジン上で作ったカメラの挙動は、glm::lookAtを使わずに行列を組み立てます。forwardは対象からカメラへの正規化ベクトル、rightはワールドの上方向とforwardの外積、upはforward×rightです。この3つのベクトルとカメラの位置を変換行列の列にします。</p>
       </div>
 <pre><code><span class="k">void</span> CameraBehaviour::update(<span class="k">float</span> pStep)
 {
@@ -66,6 +103,21 @@
     <span class="k">if</span> (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::E)) _owner-&gt;translate(glm::vec3(<span class="s">0</span>, -speed, <span class="s">0</span>));
     _owner-&gt;translate(glm::vec3(-inputH * speed, <span class="s">0</span>, -inputV * speed));
 }</code></pre>
+    </section>
+
+    <hr>
+
+    <section class="detail">
+      <div>
+        <h2>対象の周りの移動</h2>
+        <p>カメラの挙動は毎回これを適用したうえで、カメラ自身の座標系で移動します。W/Sで対象に近づく・離れる、A/Dで横移動、Q/Eで上下。毎フレーム対象の方へ向き直りながら横に動くので、対象の周りを回ります。映像ではレンガのティーポットの周りを回っており、猿の回転は別の挙動です。</p>
+      </div>
+      <figure>
+        <video class="shot" autoplay muted loop playsinline poster="../assets/img/opengl-camera.webp" width="960" height="540">
+          <source src="../assets/video/opengl-camera.mp4" type="video/mp4">
+        </video>
+        <figcaption>エンジンのデモシーンでティーポットの周りを回るカメラ</figcaption>
+      </figure>
     </section>
 
     <hr>
