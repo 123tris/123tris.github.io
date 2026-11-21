@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SATによる衝突判定 — トリスタン・メッツ</title>
+  <meta name="description" content="Unity標準の物理を使わない、分離軸による箱の衝突判定と独自のリジッドボディ。トリスタン・メッツ作。">
+  <link rel="canonical" href="https://tristanmetz.com/projects/sat-collision.html">
+  <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/projects/sat-collision.html">
+  <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/projects/sat-collision.html">
+  <link rel="alternate" hreflang="x-default" href="https://tristanmetz.com/projects/sat-collision.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="トリスタン・メッツ">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:url" content="https://tristanmetz.com/projects/sat-collision.html">
+  <meta property="og:title" content="SATによる衝突判定 — トリスタン・メッツ">
+  <meta property="og:description" content="Unity標準の物理を使わない、分離軸による箱の衝突判定と独自のリジッドボディ。トリスタン・メッツ作。">
+  <meta property="og:image" content="https://tristanmetz.com/assets/img/og/sat-bounce.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../assets/img/favicon.png">
+  <link rel="stylesheet" href="../assets/css/style.css?v=3b6ff8a3">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">履歴書</a>
+    <a href="../portfolio.html" aria-current="page">ポートフォリオ</a>
+    <a class="lang" href="../en/projects/sat-collision.html" hreflang="en" lang="en">English</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>SATによる衝突判定</h1>
+      <p class="lead">Unityの物理を使わない小さな物理ループ。重力をもつ独自のリジッドボディと、分離軸定理に基づく箱同士の衝突判定。</p>
+      <p class="facts">C# · Unity · 2016年 · 個人開発</p>
+    </div>
+    <div class="hero-media">
+      <video class="shot" autoplay muted loop playsinline poster="../assets/img/sat-bounce.webp" width="960" height="540">
+        <source src="../assets/video/sat-bounce.mp4" type="video/mp4">
+      </video>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>軸に平行な箱の重なり判定</h2>
+        <p>軸に平行な箱では、分離軸定理はx・y・zの3つの区間判定になります。どれか1つの軸で範囲が重ならなければ、2つの箱は離れています。各箱は自分の位置とBoxColliderのサイズから範囲を求めます。</p>
+        <p>物理マネージャーが毎フレームすべてのリジッドボディを静的なオブジェクトと判定し、重なったら速度を反転します。リジッドボディ自体はFixedUpdateで重力と速度を積分するだけです。映像では上の箱が下の箱に落ち、上へ跳ね返されます。</p>
+      </div>
+<pre><code><span class="k">public</span> <span class="k">bool</span> AABBvsAABB(AABB a)
+{
+    <span class="c">// Exit with no intersection if separated along an axis</span>
+    <span class="k">if</span> (max.x &lt; a.min.x || min.x &gt; a.max.x) <span class="k">return</span> <span class="k">false</span>;
+    <span class="k">if</span> (max.y &lt; a.min.y || min.y &gt; a.max.y) <span class="k">return</span> <span class="k">false</span>;
+    <span class="k">if</span> (max.z &lt; a.min.z || min.z &gt; a.max.z) <span class="k">return</span> <span class="k">false</span>;
+    <span class="c">// No separating axis found, so the boxes overlap</span>
+    <span class="k">return</span> <span class="k">true</span>;
+}
+
+<span class="c">// PhysicsManager.Update()</span>
+<span class="k">foreach</span> (CustomRigidbody rb <span class="k">in</span> Rigidbodies)
+{
+    <span class="k">foreach</span> (GameObject o <span class="k">in</span> GameObjects)
+    {
+        <span class="k">if</span> (rb.GetComponent&lt;AABB&gt;().AABBvsAABB(o.GetComponent&lt;AABB&gt;()))
+            rb.velocity *= -<span class="s">1</span>;
+    }
+}</code></pre>
+    </section>
+
+    <hr>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#sat-collision">← ポートフォリオに戻る</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>

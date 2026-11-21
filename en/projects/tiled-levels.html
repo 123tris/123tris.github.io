@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tiled level loading — Tristan Metz</title>
+  <meta name="description" content="Levels made in the Tiled editor loaded into a C# game, with object properties driving keys, doors and NPCs, plus a model-view-controller line editor. By Tristan Metz.">
+  <link rel="canonical" href="https://tristanmetz.com/en/projects/tiled-levels.html">
+  <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/projects/tiled-levels.html">
+  <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/projects/tiled-levels.html">
+  <link rel="alternate" hreflang="x-default" href="https://tristanmetz.com/projects/tiled-levels.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Tristan Metz">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:url" content="https://tristanmetz.com/en/projects/tiled-levels.html">
+  <meta property="og:title" content="Tiled level loading — Tristan Metz">
+  <meta property="og:description" content="Levels made in the Tiled editor loaded into a C# game, with object properties driving keys, doors and NPCs, plus a model-view-controller line editor. By Tristan Metz.">
+  <meta property="og:image" content="https://tristanmetz.com/assets/img/og/tiled-level.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css?v=3b6ff8a3">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">Résumé</a>
+    <a href="../portfolio.html" aria-current="page">Portfolio</a>
+    <a class="lang" href="../../projects/tiled-levels.html" hreflang="ja" lang="ja">日本語</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>Tiled level loading</h1>
+      <p class="lead">A loader for levels made in the Tiled map editor. Objects placed in Tiled become game objects by
+        type, and their custom properties drive keys, doors and NPC dialogue.</p>
+      <p class="facts">C# · GXPEngine · Tiled · 2016 · solo</p>
+    </div>
+    <div class="hero-media">
+      <video class="shot" autoplay muted loop playsinline poster="../../assets/img/tiled-level.webp" width="960" height="540">
+        <source src="../../assets/video/tiled-level.mp4" type="video/mp4">
+      </video>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>From TMX to game objects</h2>
+        <p>The .tmx file is XML and is deserialized with XmlSerializer into classes that mirror Tiled's format. Every
+          object becomes an item whose type is its tile ID (spawn, wall, key, NPC, door and so on), and its custom
+          properties are copied into a dictionary. The player's collision code reads those properties: the key carries
+          an id and a point to walk to, the door opens when the player holds a key, and the NPC shows its text
+          property.</p>
+        <p>In the clip the player picks up the key, is walked toward the door, opens it and talks to the NPC. The
+          messages at the top come from the properties set in Tiled.</p>
+      </div>
+<pre><code><span class="c">// in Player.OnCollision(GameObject other)</span>
+<span class="k">if</span> (item.GetItemType() == Item.TYPE_DOOR)
+{
+    <span class="k">if</span> (inventory.Contains(<span class="s">"key"</span>))
+    {
+        item.Activate();
+        level.ShowMessage(<span class="s">"You've opened the door with id "</span> + item.properties[<span class="s">"id"</span>] + <span class="s">"!"</span>);
+    }
+}
+
+<span class="k">if</span> (item.GetItemType() == Item.TYPE_KEY)
+{
+    item.Destroy();
+    destination.x = Convert.ToInt32(item.properties[<span class="s">"destinationX"</span>]) - x;
+    destination.y = Convert.ToInt32(item.properties[<span class="s">"destinationY"</span>]) - y;
+    destinationReached = <span class="k">false</span>;
+    inventory.Add(<span class="s">"key"</span>);
+    level.ShowMessage(<span class="s">"You found a key with id "</span> + item.properties[<span class="s">"id"</span>] + <span class="s">"!"</span>);
+}</code></pre>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>Model-view-controller editor</h2>
+        <p>A separate line editor is split into a model that owns the lines and raises an update event, a view that
+          redraws on that event, and a controller that turns mouse and keyboard input into calls on the model.
+          Dragging near an endpoint moves it, dragging elsewhere adds a line, Backspace deletes the lines at the
+          selected point, and S and L save and load the drawing as XML.</p>
+      </div>
+      <figure>
+        <video class="shot" autoplay muted loop playsinline poster="../../assets/img/mvc-editor.webp" width="960" height="540">
+          <source src="../../assets/video/mvc-editor.mp4" type="video/mp4">
+        </video>
+        <figcaption>Moving the roof's top point, adding lines and deleting one with Backspace</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#tiled-levels">← Back to the portfolio</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>

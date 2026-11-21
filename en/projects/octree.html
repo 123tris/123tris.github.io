@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Octree — Tristan Metz</title>
+  <meta name="description" content="An octree for the physics of a custom C++ engine, rebuilt every frame and drawn with debug lines. By Tristan Metz.">
+  <link rel="canonical" href="https://tristanmetz.com/en/projects/octree.html">
+  <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/projects/octree.html">
+  <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/projects/octree.html">
+  <link rel="alternate" hreflang="x-default" href="https://tristanmetz.com/projects/octree.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Tristan Metz">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:url" content="https://tristanmetz.com/en/projects/octree.html">
+  <meta property="og:title" content="Octree — Tristan Metz">
+  <meta property="og:description" content="An octree for the physics of a custom C++ engine, rebuilt every frame and drawn with debug lines. By Tristan Metz.">
+  <meta property="og:image" content="https://tristanmetz.com/assets/img/og/octree.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css?v=3b6ff8a3">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">Résumé</a>
+    <a href="../portfolio.html" aria-current="page">Portfolio</a>
+    <a class="lang" href="../../projects/octree.html" hreflang="ja" lang="ja">日本語</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>Octree</h1>
+      <p class="lead">An octree for the physics of our first C++ engine. It is rebuilt every frame, and each box
+        collider is stored in the smallest node that fully contains it. A test scene fills the tree with randomly
+        placed, moving colliders.</p>
+      <p class="facts">C++ · our first engine · 2017 · solo</p>
+    </div>
+    <div class="hero-media">
+      <video class="shot" autoplay muted loop playsinline poster="../../assets/img/octree.webp" width="960" height="540">
+        <source src="../../assets/video/octree.mp4" type="video/mp4">
+      </video>
+      <p class="caption">Depth 3, 40 random colliders; empty nodes hidden after 2.5 seconds</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>Insertion</h2>
+        <p>The root node is subdivided to a fixed depth up front. Each node has eight children, indexed by three bits
+          (up, right, back). A collider descends into the child whose bounds contain both corners of its AABB; when no
+          child contains it, it stays in the current node, so colliders that straddle a boundary are stored higher up
+          the tree.</p>
+        <p>The debug view draws nodes that hold colliders in green, empty nodes in blue and the colliders in red. F
+          toggles the empty nodes (in the clip after 2.5 seconds) and J/K change the drawn depth. This version builds
+          and draws the tree; the collision query that would use it is not implemented.</p>
+      </div>
+<pre><code><span class="k">void</span> OctNode::addCollider(BoxCollider* collider)
+{
+    <span class="k">if</span> (isLeaf())
+    {
+        colliders.push_back(collider);
+        <span class="k">return</span>;
+    }
+
+    <span class="c">// Find the child that contains the whole collider</span>
+    OctNode* foundNode = <span class="k">nullptr</span>;
+    <span class="k">for</span> (OctNode* node : subNodes)
+    {
+        AABB nodeAABB = node-&gt;getBoundary();
+        <span class="k">if</span> (!nodeAABB.AABBvsPoint(collider-&gt;aabb.min) ||
+            !nodeAABB.AABBvsPoint(collider-&gt;aabb.max)) <span class="k">continue</span>;
+        foundNode = node;
+    }
+
+    <span class="k">if</span> (foundNode == <span class="k">nullptr</span>) colliders.push_back(collider);
+    <span class="k">else</span> foundNode-&gt;addCollider(collider);
+}</code></pre>
+    </section>
+
+    <hr>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#octree">← Back to the portfolio</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>

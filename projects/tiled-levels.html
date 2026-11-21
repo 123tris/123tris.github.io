@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tiledレベルの読み込み — トリスタン・メッツ</title>
+  <meta name="description" content="Tiledで作ったレベルをC#のゲームに読み込み、オブジェクトのプロパティで鍵・扉・NPCを制御。モデル・ビュー・コントローラー構成の線エディター付き。トリスタン・メッツ作。">
+  <link rel="canonical" href="https://tristanmetz.com/projects/tiled-levels.html">
+  <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/projects/tiled-levels.html">
+  <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/projects/tiled-levels.html">
+  <link rel="alternate" hreflang="x-default" href="https://tristanmetz.com/projects/tiled-levels.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="トリスタン・メッツ">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:url" content="https://tristanmetz.com/projects/tiled-levels.html">
+  <meta property="og:title" content="Tiledレベルの読み込み — トリスタン・メッツ">
+  <meta property="og:description" content="Tiledで作ったレベルをC#のゲームに読み込み、オブジェクトのプロパティで鍵・扉・NPCを制御。モデル・ビュー・コントローラー構成の線エディター付き。トリスタン・メッツ作。">
+  <meta property="og:image" content="https://tristanmetz.com/assets/img/og/tiled-level.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../assets/img/favicon.png">
+  <link rel="stylesheet" href="../assets/css/style.css?v=3b6ff8a3">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">履歴書</a>
+    <a href="../portfolio.html" aria-current="page">ポートフォリオ</a>
+    <a class="lang" href="../en/projects/tiled-levels.html" hreflang="en" lang="en">English</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>Tiledレベルの読み込み</h1>
+      <p class="lead">Tiledマップエディターで作ったレベルの読み込み。Tiledで配置したオブジェクトは種類に応じてゲームオブジェクトになり、カスタムプロパティで鍵・扉・NPCのセリフを制御します。</p>
+      <p class="facts">C# · GXPEngine · Tiled · 2016年 · 個人開発</p>
+    </div>
+    <div class="hero-media">
+      <video class="shot" autoplay muted loop playsinline poster="../assets/img/tiled-level.webp" width="960" height="540">
+        <source src="../assets/video/tiled-level.mp4" type="video/mp4">
+      </video>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>TMXからゲームオブジェクトへ</h2>
+        <p>.tmxファイルはXMLで、XmlSerializerでTiledの形式に対応するクラスにデシリアライズします。各オブジェクトはタイルIDを種類（スポーン地点、壁、鍵、NPC、扉など）とするアイテムになり、カスタムプロパティは辞書にコピーします。プレイヤーの衝突処理はこのプロパティを使います。鍵はIDと移動先の座標を持ち、扉はプレイヤーが鍵を持っていれば開き、NPCはtextプロパティの内容を表示します。</p>
+        <p>映像では、プレイヤーが鍵を拾って扉の方へ移動させられ、扉を開けてNPCと話します。上部のメッセージはTiledで設定したプロパティの内容です。</p>
+      </div>
+<pre><code><span class="c">// in Player.OnCollision(GameObject other)</span>
+<span class="k">if</span> (item.GetItemType() == Item.TYPE_DOOR)
+{
+    <span class="k">if</span> (inventory.Contains(<span class="s">"key"</span>))
+    {
+        item.Activate();
+        level.ShowMessage(<span class="s">"You've opened the door with id "</span> + item.properties[<span class="s">"id"</span>] + <span class="s">"!"</span>);
+    }
+}
+
+<span class="k">if</span> (item.GetItemType() == Item.TYPE_KEY)
+{
+    item.Destroy();
+    destination.x = Convert.ToInt32(item.properties[<span class="s">"destinationX"</span>]) - x;
+    destination.y = Convert.ToInt32(item.properties[<span class="s">"destinationY"</span>]) - y;
+    destinationReached = <span class="k">false</span>;
+    inventory.Add(<span class="s">"key"</span>);
+    level.ShowMessage(<span class="s">"You found a key with id "</span> + item.properties[<span class="s">"id"</span>] + <span class="s">"!"</span>);
+}</code></pre>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>モデル・ビュー・コントローラーのエディター</h2>
+        <p>別に作った線のエディターは、線を管理して更新イベントを発行するモデル、そのイベントで再描画するビュー、マウスとキーボードの入力をモデルの呼び出しに変えるコントローラーに分かれています。端点の近くをドラッグするとその点が動き、それ以外の場所をドラッグすると線を追加し、Backspaceで選択した点の線を削除し、SとLで図をXMLとして保存・読み込みします。</p>
+      </div>
+      <figure>
+        <video class="shot" autoplay muted loop playsinline poster="../assets/img/mvc-editor.webp" width="960" height="540">
+          <source src="../assets/video/mvc-editor.mp4" type="video/mp4">
+        </video>
+        <figcaption>屋根の頂点を動かし、線を追加し、Backspaceで1本削除</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#tiled-levels">← ポートフォリオに戻る</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Editor research — Tristan Metz</title>
+  <meta name="description" content="Research into how engine editors are built: immediate versus retained mode UI, an ImGui asset browser on Vulkan, and type registration for serialization. By Tristan Metz.">
+  <link rel="canonical" href="https://tristanmetz.com/en/projects/editor-research.html">
+  <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/projects/editor-research.html">
+  <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/projects/editor-research.html">
+  <link rel="alternate" hreflang="x-default" href="https://tristanmetz.com/projects/editor-research.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Tristan Metz">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:url" content="https://tristanmetz.com/en/projects/editor-research.html">
+  <meta property="og:title" content="Editor research — Tristan Metz">
+  <meta property="og:description" content="Research into how engine editors are built: immediate versus retained mode UI, an ImGui asset browser on Vulkan, and type registration for serialization. By Tristan Metz.">
+  <meta property="og:image" content="https://tristanmetz.com/assets/img/og/editor-assetbrowser.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css?v=3b6ff8a3">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">Résumé</a>
+    <a href="../portfolio.html" aria-current="page">Portfolio</a>
+    <a class="lang" href="../../projects/editor-research.html" hreflang="ja" lang="ja">日本語</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>Editor research</h1>
+      <p class="lead">Research and prototypes for building an engine editor: a comparison of immediate and retained
+        mode UI, an asset browser in Dear ImGui on Vulkan, and type registration for JSON serialization. The results
+        went into the editor of <a href="tristeon.html">Tristeon</a>.</p>
+      <p class="facts">C++ · Dear ImGui · Vulkan · 2017 · solo</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>Immediate versus retained mode</h2>
+        <p>In an immediate mode UI, widgets are function calls made every frame that draw the widget and return its
+          input at once; hiding a panel means not calling it. In a retained mode UI, widgets are created once as
+          objects and changed through callbacks and events. The prototypes and Tristeon's editor use Dear ImGui, an
+          immediate mode library.</p>
+        <p>The asset browser scans the project's Assets folder: a folder tree on the left, and the contents of the
+          selected folder on the right.</p>
+      </div>
+      <figure>
+        <img class="shot contain" src="../../assets/img/editor-assetbrowser.webp" alt="The asset browser prototype: a folder tree on the left and folder contents on the right" width="732" height="412">
+        <figcaption>The asset browser prototype (Dear ImGui on Vulkan, 2017 build)</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>Type registration</h2>
+        <p>C++ has no reflection, so a deserializer can't create an object from a type name on its own. Each
+          serializable type registers a factory function in a static map under its name, and deserialization looks the
+          name up and calls the factory. Tristeon's reflection uses the same structure.</p>
+      </div>
+<pre><code><span class="k">template</span> &lt;<span class="k">typename</span> T&gt; Serializable* CreateInstance() { <span class="k">return</span> <span class="k">new</span> T; }
+
+<span class="k">struct</span> TypeRegister
+{
+    <span class="k">using</span> TypeMap = std::map&lt;std::string, Serializable*(*)()&gt;;
+
+    <span class="k">static</span> Serializable* createInstance(<span class="k">const</span> std::string&amp; s)
+    {
+        <span class="k">const</span> <span class="k">auto</span> it = getMap()-&gt;find(s);
+        <span class="k">if</span> (it == getMap()-&gt;end())
+            <span class="k">return</span> <span class="k">nullptr</span>;
+        <span class="k">return</span> it-&gt;second();
+    }
+
+    <span class="k">inline</span> <span class="k">static</span> TypeMap* getMap()
+    {
+        <span class="k">static</span> TypeMap instance;
+        <span class="k">return</span> &amp;instance;
+    }
+};
+
+<span class="k">template</span> &lt;<span class="k">typename</span> T&gt;
+<span class="k">struct</span> DerivedRegister : TypeRegister
+{
+    DerivedRegister(<span class="k">const</span> std::string&amp; s)
+    {
+        getMap()-&gt;emplace(s, &amp;CreateInstance&lt;T&gt;);
+    }
+};</code></pre>
+    </section>
+
+    <hr>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#editor-research">← Back to the portfolio</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>3D rendering — Tristan Metz</title>
+  <meta name="description" content="Camera code on a small C++/OpenGL engine: a look-at transform built from vectors and a camera that moves around its target. By Tristan Metz.">
+  <link rel="canonical" href="https://tristanmetz.com/en/projects/rendering.html">
+  <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/projects/rendering.html">
+  <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/projects/rendering.html">
+  <link rel="alternate" hreflang="x-default" href="https://tristanmetz.com/projects/rendering.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Tristan Metz">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:url" content="https://tristanmetz.com/en/projects/rendering.html">
+  <meta property="og:title" content="3D rendering — Tristan Metz">
+  <meta property="og:description" content="Camera code on a small C++/OpenGL engine: a look-at transform built from vectors and a camera that moves around its target. By Tristan Metz.">
+  <meta property="og:image" content="https://tristanmetz.com/assets/img/og/opengl-camera.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css?v=3b6ff8a3">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">Résumé</a>
+    <a href="../portfolio.html" aria-current="page">Portfolio</a>
+    <a class="lang" href="../../projects/rendering.html" hreflang="ja" lang="ja">日本語</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>3D rendering</h1>
+      <p class="lead">Camera code on a small C++ and OpenGL engine: a look-at transform built by hand from three
+        vectors, and a camera that keeps its target in view while it moves.</p>
+      <p class="facts">C++ · OpenGL · SFML · 2016 · solo</p>
+    </div>
+    <div class="hero-media">
+      <video class="shot" autoplay muted loop playsinline poster="../../assets/img/opengl-camera.webp" width="960" height="540">
+        <source src="../../assets/video/opengl-camera.mp4" type="video/mp4">
+      </video>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>Look-at transform</h2>
+        <p>Instead of calling glm::lookAt, the camera builds its matrix itself: forward is the normalized vector from
+          the target to the camera, right is the cross product of world up and forward, and up is forward × right.
+          These three vectors and the camera's position are the columns of its transform.</p>
+        <p>The camera behaviour does this every update and then moves the camera in its own space: W/S toward and away
+          from the target, A/D sideways, Q/E up and down. Moving sideways while turning back toward the target each
+          frame makes it circle the target. In the clip it circles the brick teapot; the monkey's rotation is a
+          separate behaviour.</p>
+      </div>
+<pre><code><span class="k">void</span> CameraBehaviour::update(<span class="k">float</span> pStep)
+{
+    getInput();
+
+    glm::vec3 forward = glm::normalize(_owner-&gt;getLocalPosition() - target-&gt;getLocalPosition());
+    glm::vec3 right = glm::cross(glm::vec3(<span class="s">0</span>, <span class="s">1</span>, <span class="s">0</span>), forward);
+    glm::vec3 up = glm::cross(forward, right);
+
+    _owner-&gt;setTransform(
+        glm::mat4(glm::vec4(right, <span class="s">0</span>), glm::vec4(up, <span class="s">0</span>), glm::vec4(forward, <span class="s">0</span>),
+                  glm::vec4(_owner-&gt;getLocalPosition(), <span class="s">1</span>))
+    );
+
+    <span class="k">if</span> (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Q)) _owner-&gt;translate(glm::vec3(<span class="s">0</span>, speed, <span class="s">0</span>));
+    <span class="k">if</span> (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::E)) _owner-&gt;translate(glm::vec3(<span class="s">0</span>, -speed, <span class="s">0</span>));
+    _owner-&gt;translate(glm::vec3(-inputH * speed, <span class="s">0</span>, -inputV * speed));
+}</code></pre>
+    </section>
+
+    <hr>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#rendering">← Back to the portfolio</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>

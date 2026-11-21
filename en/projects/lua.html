@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lua scripting — Tristan Metz</title>
+  <meta name="description" content="A C++ host that runs a point-and-click adventure written in Lua, through C++ functions registered with the Lua state. By Tristan Metz.">
+  <link rel="canonical" href="https://tristanmetz.com/en/projects/lua.html">
+  <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/projects/lua.html">
+  <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/projects/lua.html">
+  <link rel="alternate" hreflang="x-default" href="https://tristanmetz.com/projects/lua.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Tristan Metz">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:url" content="https://tristanmetz.com/en/projects/lua.html">
+  <meta property="og:title" content="Lua scripting — Tristan Metz">
+  <meta property="og:description" content="A C++ host that runs a point-and-click adventure written in Lua, through C++ functions registered with the Lua state. By Tristan Metz.">
+  <meta property="og:image" content="https://tristanmetz.com/assets/img/og/lua-adventure.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css?v=3b6ff8a3">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">Résumé</a>
+    <a href="../portfolio.html" aria-current="page">Portfolio</a>
+    <a class="lang" href="../../projects/lua.html" hreflang="ja" lang="ja">日本語</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>Lua scripting</h1>
+      <p class="lead">A C++ program with SFML that runs a point-and-click adventure written entirely in Lua. The C++
+        side only provides drawing, buttons and switching rooms; the rooms, the items and the dragon are Lua.</p>
+      <p class="facts">C++ · Lua 5.3 · SFML · 2017 · solo</p>
+    </div>
+    <div class="hero-media">
+      <video class="shot" autoplay muted loop playsinline poster="../../assets/img/lua-adventure.webp" width="960" height="540">
+        <source src="../../assets/video/lua-adventure.mp4" type="video/mp4">
+      </video>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>Binding C++ methods</h2>
+        <p>Lua calls plain C functions, so each method is registered through a template that recovers the parser
+          object from the Lua state's extra space and calls the member function on it. The host registers image,
+          button and visit, and every frame it calls the Lua function named after the current room.</p>
+      </div>
+<pre><code><span class="k">template</span> &lt;<span class="k">int</span> (LuaParser::*func)(lua_State* L)&gt;
+<span class="k">int</span> dispatch(lua_State* L)
+{
+    <span class="c">// the LuaParser instance is stored in the state's extra space</span>
+    LuaParser* ptr = *static_cast&lt;LuaParser**&gt;(lua_getextraspace(L));
+    <span class="k">return</span> (*ptr.*func)(L);
+}
+
+<span class="k">void</span> LuaParser::setup()
+{
+    lua_pushcfunction(lua, &amp;dispatch&lt;&amp;LuaParser::image&gt;);
+    lua_setglobal(lua, <span class="s">"image"</span>);
+    lua_pushcfunction(lua, &amp;dispatch&lt;&amp;LuaParser::button&gt;);
+    lua_setglobal(lua, <span class="s">"button"</span>);
+    lua_pushcfunction(lua, &amp;dispatch&lt;&amp;LuaParser::visit&gt;);
+    lua_setglobal(lua, <span class="s">"visit"</span>);
+}
+
+<span class="k">void</span> LuaParser::step()   <span class="c">// called once per frame</span>
+{
+    lua_getglobal(lua, currentFunction);
+    <span class="k">int</span> result = lua_pcall(lua, <span class="s">0</span>, <span class="s">0</span>, <span class="s">0</span>);
+    CheckError(result)
+}</code></pre>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>The game in Lua</h2>
+        <p>Each room is a Lua function that draws its images and checks its buttons; visit sets which function runs
+          from the next frame on. State such as having the sword is a global in the script, so the game can be changed
+          without recompiling the host. The dragon's bobbing is a sine in the script as well.</p>
+      </div>
+<pre><code><span class="k">function</span> hallway()
+    image(<span class="s">"empty_room.png"</span>, <span class="s">0</span>, <span class="s">0</span>)
+    <span class="k">if</span> button(<span class="s">"door_orange.png"</span>, <span class="s">222</span>, <span class="s">228</span>) <span class="k">then</span>
+        visit(<span class="s">"dragonroom"</span>)
+    <span class="k">end</span>
+    <span class="k">if</span> button(<span class="s">"door_green.png"</span>, <span class="s">445</span>, <span class="s">226</span>) <span class="k">then</span>
+        visit(<span class="s">"closetroom"</span>)
+    <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">function</span> dragonroom()
+    image(<span class="s">"empty_room.png"</span>, <span class="s">0</span>, <span class="s">0</span>)
+    time = time + <span class="s">1</span>
+    <span class="k">if</span> monsterIsDead == <span class="k">false</span> <span class="k">then</span>
+        <span class="k">if</span> button(<span class="s">"dragon.png"</span>, <span class="s">0</span>, math.sin(time*<span class="s">0.1</span>)*<span class="s">25</span>) <span class="k">then</span>
+            <span class="k">if</span> hasSword <span class="k">then</span>
+                monsterIsDead = <span class="k">true</span>
+            <span class="k">else</span>
+                visit(<span class="s">"dead"</span>)
+            <span class="k">end</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+<span class="k">end</span></code></pre>
+    </section>
+
+    <hr>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#lua">← Back to the portfolio</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>

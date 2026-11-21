@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ゲームアーキテクチャ — トリスタン・メッツ</title>
+  <meta name="description" content="C#の小さなゲームループを、型で取得するグラフィックス・入力・物理のコンポーネントに分けたもの。トリスタン・メッツ作。">
+  <link rel="canonical" href="https://tristanmetz.com/projects/game-architecture.html">
+  <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/projects/game-architecture.html">
+  <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/projects/game-architecture.html">
+  <link rel="alternate" hreflang="x-default" href="https://tristanmetz.com/projects/game-architecture.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="トリスタン・メッツ">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:url" content="https://tristanmetz.com/projects/game-architecture.html">
+  <meta property="og:title" content="ゲームアーキテクチャ — トリスタン・メッツ">
+  <meta property="og:description" content="C#の小さなゲームループを、型で取得するグラフィックス・入力・物理のコンポーネントに分けたもの。トリスタン・メッツ作。">
+  <meta property="og:image" content="https://tristanmetz.com/assets/img/og/components.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../assets/img/favicon.png">
+  <link rel="stylesheet" href="../assets/css/style.css?v=3b6ff8a3">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">履歴書</a>
+    <a href="../portfolio.html" aria-current="page">ポートフォリオ</a>
+    <a class="lang" href="../en/projects/game-architecture.html" hreflang="en" lang="en">English</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>ゲームアーキテクチャ</h1>
+      <p class="lead">Windows Formsの小さなゲームループをコンポーネント中心に組み直したもの。各ゲームオブジェクトはコンポーネントのリストを持ち、ループは入力・物理・描画の各処理で、すべてのオブジェクトにその種類のコンポーネントを問い合わせて実行します。</p>
+      <p class="facts">C# · Windows Forms · 2016年 · 個人開発</p>
+    </div>
+    <div class="hero-media">
+      <video class="shot" autoplay muted loop playsinline poster="../assets/img/components.webp" width="960" height="540">
+        <source src="../assets/video/components.mp4" type="video/mp4">
+      </video>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>型によるコンポーネントの取得</h2>
+        <p>GetComponent<T>はオブジェクトが持つ型Tの最初のコンポーネントを返します。ループは入力と物理を毎秒144回の固定頻度で更新し、ウィンドウの再描画時に描画します。各処理は、該当するコンポーネントを持つすべてのオブジェクトでそのコンポーネントを呼びます。</p>
+        <p>映像では、Pastry（カップケーキ）がウィンドウの中心に引き寄せられてその周りを回り、BjornがPastryを追いかけます。どちらの動きも入力コンポーネントによるもので、物理コンポーネントは速度を位置に加えるだけです。</p>
+      </div>
+<pre><code><span class="k">public</span> T GetComponent&lt;T&gt;() <span class="k">where</span> T : Component
+{
+    <span class="k">return</span> Components.OfType&lt;T&gt;().Select(component =&gt; component).FirstOrDefault();
+}
+
+<span class="k">private</span> <span class="k">void</span> UpdatePhysics()
+{
+    <span class="k">foreach</span> (GameObject gameObject <span class="k">in</span> GameObjects)
+        gameObject.GetComponent&lt;PhysicsComponent&gt;()?.Update(gameObject);
+}
+
+<span class="k">private</span> <span class="k">void</span> UpdateInput()
+{
+    <span class="k">foreach</span> (GameObject gameObject <span class="k">in</span> GameObjects)
+        gameObject.GetComponent&lt;InputComponent&gt;()?.Update(gameObject);
+}</code></pre>
+    </section>
+
+    <hr>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#game-architecture">← ポートフォリオに戻る</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Game physics — Tristan Metz</title>
+  <meta name="description" content="2D game physics in C# by Tristan Metz: a vector class, a slingshot ball with wall collisions and a tank steered with vector angles.">
+  <link rel="canonical" href="https://tristanmetz.com/en/projects/game-physics.html">
+  <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/projects/game-physics.html">
+  <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/projects/game-physics.html">
+  <link rel="alternate" hreflang="x-default" href="https://tristanmetz.com/projects/game-physics.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Tristan Metz">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:url" content="https://tristanmetz.com/en/projects/game-physics.html">
+  <meta property="og:title" content="Game physics — Tristan Metz">
+  <meta property="og:description" content="2D game physics in C# by Tristan Metz: a vector class, a slingshot ball with wall collisions and a tank steered with vector angles.">
+  <meta property="og:image" content="https://tristanmetz.com/assets/img/og/physics-slingshot.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css?v=3b6ff8a3">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">Résumé</a>
+    <a href="../portfolio.html" aria-current="page">Portfolio</a>
+    <a class="lang" href="../../projects/game-physics.html" hreflang="ja" lang="ja">日本語</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>Game physics</h1>
+      <p class="lead">2D physics on a vector class I wrote from scratch: a ball launched like a slingshot that falls
+        under gravity and bounces off walls, and a tank that steers and aims with vector angles.</p>
+      <p class="facts">C# · GXPEngine · 2016 · solo</p>
+    </div>
+    <div class="hero-media">
+      <video class="shot" autoplay muted loop playsinline poster="../../assets/img/physics-slingshot.webp" width="960" height="540">
+        <source src="../../assets/video/physics-slingshot.mp4" type="video/mp4">
+      </video>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>Wall collisions</h2>
+        <p>Each step adds gravity to the velocity and the velocity to the position. When the ball has passed a wall,
+          it is moved back along its velocity by the fraction of the step that went past the wall, so it bounces from
+          the point of impact instead of from inside the wall. The velocity component into the wall is then
+          inverted.</p>
+        <p>Dragging pulls the ball back with a square-root falloff, and releasing it launches the ball the opposite
+          way and switches gravity on. The red trail runs from the previous position to the current one each frame;
+          the green arrow is the velocity.</p>
+      </div>
+<pre><code><span class="k">public</span> <span class="k">void</span> Step()
+{
+    oldPosition = _position.Clone();
+    _velocity.Add(gravity);
+    _position.Add(_velocity);
+
+    <span class="c">// Left wall (the other three work the same way)</span>
+    <span class="k">if</span> (_position.x - _radius &lt; <span class="s">100</span> &amp;&amp; _velocity.x &lt; <span class="s">0</span>)
+    {
+        <span class="c">// fraction of this step that went past the wall</span>
+        <span class="k">float</span> ratio = (-_position.x + <span class="s">100</span> + _radius) / (oldPosition.x - _position.x);
+        _position.Add(_velocity.Clone().Scale(-ratio));
+        _velocity.x *= -elasticity;
+    }
+    ...
+}</code></pre>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>Steering with vector angles</h2>
+        <p>The tank's velocity vector is rotated together with the tank, so it always drives along its body. The
+          barrel is a child sprite whose angle is the angle of the vector from the tank to the mouse, minus the body's
+          rotation. Bullets take the barrel's angle and spawn in front of the barrel.</p>
+      </div>
+      <figure>
+        <video class="shot" autoplay muted loop playsinline poster="../../assets/img/physics-tank.webp" width="960" height="540">
+          <source src="../../assets/video/physics-tank.mp4" type="video/mp4">
+        </video>
+        <figcaption>The tank drives a circle while the barrel follows the mouse and fires</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#game-physics">← Back to the portfolio</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>

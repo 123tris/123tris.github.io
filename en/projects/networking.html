@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Networking — Tristan Metz</title>
+  <meta name="description" content="A TCP chat server in C# that relays length-prefixed messages between clients, with a Unity client. By Tristan Metz.">
+  <link rel="canonical" href="https://tristanmetz.com/en/projects/networking.html">
+  <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/projects/networking.html">
+  <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/projects/networking.html">
+  <link rel="alternate" hreflang="x-default" href="https://tristanmetz.com/projects/networking.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Tristan Metz">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:url" content="https://tristanmetz.com/en/projects/networking.html">
+  <meta property="og:title" content="Networking — Tristan Metz">
+  <meta property="og:description" content="A TCP chat server in C# that relays length-prefixed messages between clients, with a Unity client. By Tristan Metz.">
+  <meta property="og:image" content="https://tristanmetz.com/assets/img/og/chat.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css?v=3b6ff8a3">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">Résumé</a>
+    <a href="../portfolio.html" aria-current="page">Portfolio</a>
+    <a class="lang" href="../../projects/networking.html" hreflang="ja" lang="ja">日本語</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>Networking</h1>
+      <p class="lead">A TCP chat server that relays messages between several clients, each on its own thread, with a
+        chat client in Unity.</p>
+      <p class="facts">C# · Unity · TCP · 2016 · solo</p>
+    </div>
+    <div class="hero-media">
+      <video class="shot" autoplay muted loop playsinline poster="../../assets/img/chat.webp" width="960" height="540">
+        <source src="../../assets/video/chat.mp4" type="video/mp4">
+      </video>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>Message framing</h2>
+        <p>TCP delivers a stream of bytes, so every message starts with a 4-byte length followed by the text encoded
+          as UTF-16. The receiver reads the length first and then the message bytes.</p>
+        <p>The server accepts connections on port 6969 and starts a thread per client. Each message it receives is
+          sent to every other connected client. In the clip the Unity client is connected together with two scripted
+          test clients, whose replies arrive through the server.</p>
+      </div>
+<pre><code><span class="c">// Unity client: length prefix, then the text</span>
+<span class="k">byte</span>[] packet = Encoding.Unicode.GetBytes(UserName + <span class="s">" "</span> + input);
+<span class="k">byte</span>[] number = BitConverter.GetBytes(packet.Length);
+stream.Write(number, <span class="s">0</span>, number.Length);
+stream.Write(packet, <span class="s">0</span>, packet.Length);
+
+<span class="c">// Server: relay to everyone except the sender</span>
+<span class="k">public</span> <span class="k">void</span> SendMessageToClients(<span class="k">string</span> message, <span class="k">params</span> HandleClient[] ignoreClients)
+{
+    <span class="k">foreach</span> (HandleClient client <span class="k">in</span> clientList)
+    {
+        <span class="k">if</span> (!ignoreClients.Contains(client) &amp;&amp; client.Active)
+            client.SendMessage(message);
+    }
+}</code></pre>
+    </section>
+
+    <hr>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#networking">← Back to the portfolio</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>

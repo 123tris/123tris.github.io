@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>八分木 — トリスタン・メッツ</title>
+  <meta name="description" content="自作C++エンジンの物理のための八分木。毎フレーム作り直し、デバッグ線で表示します。トリスタン・メッツ作。">
+  <link rel="canonical" href="https://tristanmetz.com/projects/octree.html">
+  <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/projects/octree.html">
+  <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/projects/octree.html">
+  <link rel="alternate" hreflang="x-default" href="https://tristanmetz.com/projects/octree.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="トリスタン・メッツ">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:url" content="https://tristanmetz.com/projects/octree.html">
+  <meta property="og:title" content="八分木 — トリスタン・メッツ">
+  <meta property="og:description" content="自作C++エンジンの物理のための八分木。毎フレーム作り直し、デバッグ線で表示します。トリスタン・メッツ作。">
+  <meta property="og:image" content="https://tristanmetz.com/assets/img/og/octree.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../assets/img/favicon.png">
+  <link rel="stylesheet" href="../assets/css/style.css?v=3b6ff8a3">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">履歴書</a>
+    <a href="../portfolio.html" aria-current="page">ポートフォリオ</a>
+    <a class="lang" href="../en/projects/octree.html" hreflang="en" lang="en">English</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>八分木</h1>
+      <p class="lead">初の自作C++エンジンの物理のための八分木。毎フレーム作り直し、各ボックスコライダーをそれを完全に含む最小のノードに格納します。テストシーンでは、ランダムに配置した動くコライダーで木を埋めます。</p>
+      <p class="facts">C++ · 初の自作エンジン · 2017年 · 個人開発</p>
+    </div>
+    <div class="hero-media">
+      <video class="shot" autoplay muted loop playsinline poster="../assets/img/octree.webp" width="960" height="540">
+        <source src="../assets/video/octree.mp4" type="video/mp4">
+      </video>
+      <p class="caption">深さ3、ランダムなコライダー40個。2.5秒後に空のノードを非表示</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>挿入</h2>
+        <p>ルートノードはあらかじめ決めた深さまで分割します。各ノードは8つの子を持ち、子は3ビット（上・右・奥）で番号付けされます。コライダーは、AABBの両端の点を含む子ノードへ降りていきます。どの子にも収まらない場合は現在のノードに残るので、境界をまたぐコライダーは木の上の方に格納されます。</p>
+        <p>デバッグ表示では、コライダーを持つノードを緑、空のノードを青、コライダーを赤で描きます。Fで空のノードの表示を切り替え（映像では2.5秒後）、J/Kで描画する深さを変えます。このバージョンは木の構築と表示までで、木を使う衝突判定のクエリは実装していません。</p>
+      </div>
+<pre><code><span class="k">void</span> OctNode::addCollider(BoxCollider* collider)
+{
+    <span class="k">if</span> (isLeaf())
+    {
+        colliders.push_back(collider);
+        <span class="k">return</span>;
+    }
+
+    <span class="c">// Find the child that contains the whole collider</span>
+    OctNode* foundNode = <span class="k">nullptr</span>;
+    <span class="k">for</span> (OctNode* node : subNodes)
+    {
+        AABB nodeAABB = node-&gt;getBoundary();
+        <span class="k">if</span> (!nodeAABB.AABBvsPoint(collider-&gt;aabb.min) ||
+            !nodeAABB.AABBvsPoint(collider-&gt;aabb.max)) <span class="k">continue</span>;
+        foundNode = node;
+    }
+
+    <span class="k">if</span> (foundNode == <span class="k">nullptr</span>) colliders.push_back(collider);
+    <span class="k">else</span> foundNode-&gt;addCollider(collider);
+}</code></pre>
+    </section>
+
+    <hr>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#octree">← ポートフォリオに戻る</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>

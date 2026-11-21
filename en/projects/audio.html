@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Audio programming — Tristan Metz</title>
+  <meta name="description" content="A polyphonic software synthesizer in C# that renders MIDI files to WAV, with effect classes and waveform and keyboard views. By Tristan Metz.">
+  <link rel="canonical" href="https://tristanmetz.com/en/projects/audio.html">
+  <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/projects/audio.html">
+  <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/projects/audio.html">
+  <link rel="alternate" hreflang="x-default" href="https://tristanmetz.com/projects/audio.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Tristan Metz">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:url" content="https://tristanmetz.com/en/projects/audio.html">
+  <meta property="og:title" content="Audio programming — Tristan Metz">
+  <meta property="og:description" content="A polyphonic software synthesizer in C# that renders MIDI files to WAV, with effect classes and waveform and keyboard views. By Tristan Metz.">
+  <meta property="og:image" content="https://tristanmetz.com/assets/img/og/synth-furelise.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css?v=3b6ff8a3">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">Résumé</a>
+    <a href="../portfolio.html" aria-current="page">Portfolio</a>
+    <a class="lang" href="../../projects/audio.html" hreflang="ja" lang="ja">日本語</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>Audio programming</h1>
+      <p class="lead">A software synthesizer that renders MIDI files to a WAV file, sample by sample, and plays the
+        result back with a waveform view and a keyboard view of the notes.</p>
+      <p class="facts">C# · GXPEngine · 2016 · solo</p>
+    </div>
+    <div class="hero-media">
+      <video class="shot" controls preload="metadata" poster="../../assets/img/synth-furelise.webp" width="960" height="540">
+        <source src="../../assets/video/synth-furelise.mp4" type="video/mp4">
+      </video>
+      <p class="caption">Für Elise from a MIDI file, square wave, 16-bit 44.1 kHz (with sound)</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>Polyphony</h2>
+        <p>The polyphonic synth owns one mono synth per voice (16 here). A note-on takes the first free voice and a
+          note-off frees the voice playing that note. Each output sample is the sum of all voices, scaled by the
+          volume and clamped to −1…1.</p>
+        <p>The mono synths generate sine, square, triangle and sawtooth waves. Effects wrap any sound source and can
+          be chained: a delay with feedback, a low-pass filter, a bit crusher, fuzz and tremolo.</p>
+      </div>
+<pre><code><span class="k">public</span> <span class="k">override</span> <span class="k">double</span> getSample()
+{
+    <span class="k">double</span> sampleval = <span class="s">0</span>;
+    <span class="k">for</span> (<span class="k">int</span> i = <span class="s">0</span>; i &lt; tonesynthArray.Length; i++)
+        sampleval += tonesynthArray[i].getSample();
+
+    sampleval *= volume;
+    <span class="k">if</span> (sampleval &gt; <span class="s">1</span>) sampleval = <span class="s">1</span>;
+    <span class="k">if</span> (sampleval &lt; -<span class="s">1</span>) sampleval = -<span class="s">1</span>;
+    <span class="k">return</span> sampleval;
+}
+
+<span class="k">public</span> <span class="k">override</span> <span class="k">void</span> playNote(<span class="k">byte</span> notenum, <span class="k">byte</span> velocity)
+{
+    <span class="k">for</span> (<span class="k">int</span> i = <span class="s">0</span>; i &lt; playingnoteArray.Length; i++)
+    {
+        <span class="k">if</span> (playingnoteArray[i] == -<span class="s">1</span>)   <span class="c">// first free voice</span>
+        {
+            tonesynthArray[i].playNote(notenum, velocity);
+            playingnoteArray[i] = notenum;
+            <span class="k">break</span>;
+        }
+    }
+}</code></pre>
+    </section>
+
+    <hr>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#audio">← Back to the portfolio</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>

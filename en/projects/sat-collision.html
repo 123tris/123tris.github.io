@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SAT collision detection — Tristan Metz</title>
+  <meta name="description" content="Box collision with the separating axis test and custom rigidbodies in Unity, outside Unity's own physics. By Tristan Metz.">
+  <link rel="canonical" href="https://tristanmetz.com/en/projects/sat-collision.html">
+  <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/projects/sat-collision.html">
+  <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/projects/sat-collision.html">
+  <link rel="alternate" hreflang="x-default" href="https://tristanmetz.com/projects/sat-collision.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Tristan Metz">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:url" content="https://tristanmetz.com/en/projects/sat-collision.html">
+  <meta property="og:title" content="SAT collision detection — Tristan Metz">
+  <meta property="og:description" content="Box collision with the separating axis test and custom rigidbodies in Unity, outside Unity&#x27;s own physics. By Tristan Metz.">
+  <meta property="og:image" content="https://tristanmetz.com/assets/img/og/sat-bounce.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css?v=3b6ff8a3">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">Résumé</a>
+    <a href="../portfolio.html" aria-current="page">Portfolio</a>
+    <a class="lang" href="../../projects/sat-collision.html" hreflang="ja" lang="ja">日本語</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>SAT collision detection</h1>
+      <p class="lead">A small physics loop in Unity that doesn't use Unity's physics: custom rigidbodies with gravity,
+        and box-against-box tests based on the separating axis theorem.</p>
+      <p class="facts">C# · Unity · 2016 · solo</p>
+    </div>
+    <div class="hero-media">
+      <video class="shot" autoplay muted loop playsinline poster="../../assets/img/sat-bounce.webp" width="960" height="540">
+        <source src="../../assets/video/sat-bounce.mp4" type="video/mp4">
+      </video>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>Axis-aligned overlap test</h2>
+        <p>For axis-aligned boxes the separating axis theorem comes down to three interval checks: the boxes are apart
+          if their extents don't overlap on x, on y or on z. Each box takes its extents from its position and its
+          BoxCollider's size.</p>
+        <p>A physics manager tests every rigidbody against the static objects each frame and reverses the rigidbody's
+          velocity when they overlap. The rigidbody itself only integrates gravity and velocity in FixedUpdate. In the
+          clip the upper cube falls onto the lower one and is sent back up.</p>
+      </div>
+<pre><code><span class="k">public</span> <span class="k">bool</span> AABBvsAABB(AABB a)
+{
+    <span class="c">// Exit with no intersection if separated along an axis</span>
+    <span class="k">if</span> (max.x &lt; a.min.x || min.x &gt; a.max.x) <span class="k">return</span> <span class="k">false</span>;
+    <span class="k">if</span> (max.y &lt; a.min.y || min.y &gt; a.max.y) <span class="k">return</span> <span class="k">false</span>;
+    <span class="k">if</span> (max.z &lt; a.min.z || min.z &gt; a.max.z) <span class="k">return</span> <span class="k">false</span>;
+    <span class="c">// No separating axis found, so the boxes overlap</span>
+    <span class="k">return</span> <span class="k">true</span>;
+}
+
+<span class="c">// PhysicsManager.Update()</span>
+<span class="k">foreach</span> (CustomRigidbody rb <span class="k">in</span> Rigidbodies)
+{
+    <span class="k">foreach</span> (GameObject o <span class="k">in</span> GameObjects)
+    {
+        <span class="k">if</span> (rb.GetComponent&lt;AABB&gt;().AABBvsAABB(o.GetComponent&lt;AABB&gt;()))
+            rb.velocity *= -<span class="s">1</span>;
+    }
+}</code></pre>
+    </section>
+
+    <hr>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#sat-collision">← Back to the portfolio</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>

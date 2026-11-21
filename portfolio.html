@@ -393,66 +393,90 @@
       </div>
       <h3 class="sub-title">個人で制作した小規模プロジェクト</h3>
       <p class="sub-lead">一人で開発したプロジェクト。それぞれゲームプログラミングの一つの分野に絞っています。</p>
-      <div class="cards coursework">
-        <div class="card note">
+      <div class="cards">
+        <div class="card" id="game-physics">
+          <img src="assets/img/thumbs/physics-slingshot.webp" alt="ゲーム物理：壁の間で跳ね返るボールの赤い軌跡" loading="lazy">
           <h3>ゲーム物理</h3>
-          <div class="meta">C# · GXPEngine</div>
-          <p>速度、円運動、線分との衝突と反射など、ボールの物理を基礎から実装。</p>
+          <div class="meta">C# · GXPEngine · 2016年</div>
+          <p>一から書いたベクトルクラスで、重力で落ちて壁で跳ね返るスリングショットのボールと、ベクトルの角度で進んで狙う戦車を動かします。</p>
+          <a class="btn btn-primary" href="projects/game-physics.html">詳しく見る</a>
         </div>
-        <div class="card note">
+        <div class="card" id="sat-collision">
+          <img src="assets/img/thumbs/sat-bounce.webp" alt="Unityの2つの箱。上の箱が下の箱で跳ね返る" loading="lazy">
           <h3>SATによる衝突判定</h3>
-          <div class="meta">C# · Unity</div>
-          <p>Unity標準の物理を使わず、独自のリジッドボディと分離軸定理による衝突判定をもつ小さな物理マネージャー。</p>
+          <div class="meta">C# · Unity · 2016年</div>
+          <p>Unity標準の物理を使わず、独自のリジッドボディと分離軸定理に基づく箱同士の衝突判定を実装。</p>
+          <a class="btn btn-primary" href="projects/sat-collision.html">詳しく見る</a>
         </div>
-        <div class="card note">
-          <h3>八分木によるブロードフェーズ</h3>
-          <div class="meta">C++ · 初の自作エンジン</div>
-          <p>自作エンジンの物理で、近くのオブジェクト同士だけを衝突判定する八分木。ランダムに動くコライダーによる負荷テストシーン付き。</p>
+        <div class="card" id="octree">
+          <img src="assets/img/thumbs/octree.webp" alt="緑の八分木ノードと赤いコライダーのデバッグ表示" loading="lazy">
+          <h3>八分木</h3>
+          <div class="meta">C++ · 初の自作エンジン · 2017年</div>
+          <p>自作エンジンの物理のための八分木。各コライダーをそれを含む最小のノードに格納し、毎フレーム作り直してデバッグ線で表示します。</p>
+          <a class="btn btn-primary" href="projects/octree.html">詳しく見る</a>
         </div>
-        <div class="card note">
+        <div class="card" id="game-ai">
+          <img src="assets/img/thumbs/ai-woodcutter.webp" alt="家のノード、木のノード、エージェントがあるノードグラフ" loading="lazy">
           <h3>ゲームAI</h3>
-          <div class="meta">C#</div>
-          <p>ステートマシンで動くエージェント、ノードグラフ上の経路探索、四目並べとDomineeringのミニマックスAI。</p>
+          <div class="meta">C# · GXPEngine · 2016年</div>
+          <p>有限ステートマシンで動く木こりのエージェントと、ノードグラフ上のA*による経路探索。</p>
+          <a class="btn btn-primary" href="projects/game-ai.html">詳しく見る</a>
         </div>
-        <div class="card note">
+        <div class="card" id="networking">
+          <img src="assets/img/thumbs/chat.webp" alt="3つのクライアントのメッセージが並ぶUnityのチャットクライアント" loading="lazy">
           <h3>ネットワーク</h3>
-          <div class="meta">C# · Unity</div>
-          <p>複数クライアントを同時に扱うTCPチャットサーバーと、独自のパケットシリアライズを備えたUnityクライアント。</p>
+          <div class="meta">C# · Unity · 2016年</div>
+          <p>長さ付きのメッセージをクライアント間で中継するTCPチャットサーバー（クライアントごとにスレッド）と、Unityのクライアント。</p>
+          <a class="btn btn-primary" href="projects/networking.html">詳しく見る</a>
         </div>
-        <div class="card note">
+        <div class="card" id="audio">
+          <img src="assets/img/thumbs/synth-furelise.webp" alt="MIDIファイル再生中の波形表示と鍵盤表示" loading="lazy">
           <h3>オーディオプログラミング</h3>
-          <div class="meta">C#</div>
-          <p>ポリフォニー対応のシンセサイザー、ビットクラッシャー・ローパスフィルター・ディレイなどのエフェクト、MIDI再生。</p>
+          <div class="meta">C# · GXPEngine · 2016年</div>
+          <p>MIDIファイルをWAVに書き出すポリフォニックなソフトウェアシンセサイザー。エフェクトのクラスと、波形・鍵盤の表示付き。</p>
+          <a class="btn btn-primary" href="projects/audio.html">詳しく見る</a>
         </div>
-        <div class="card note">
+        <div class="card" id="rendering">
+          <img src="assets/img/thumbs/opengl-camera.webp" alt="テクスチャ付きの床、レンガのティーポット、回転する猿" loading="lazy">
           <h3>3Dレンダリング</h3>
-          <div class="meta">C++ · OpenGL</div>
-          <p>小さなOpenGLフレームワーク上でのマテリアル、テクスチャ、ライト、GLSLシェーダー。</p>
+          <div class="meta">C++ · OpenGL · 2016年</div>
+          <p>小さなOpenGLエンジン上のカメラ処理。3つのベクトルから組み立てるルックアット変換と、対象の周りを回るカメラ。</p>
+          <a class="btn btn-primary" href="projects/rendering.html">詳しく見る</a>
         </div>
-        <div class="card note">
+        <div class="card" id="lua">
+          <img src="assets/img/thumbs/lua-adventure.webp" alt="Luaアドベンチャーのドラゴンの部屋" loading="lazy">
           <h3>Luaスクリプト</h3>
-          <div class="meta">C++ · Lua</div>
-          <p>C++へのLuaの組み込み。最終的に初の自作エンジンにLuaバインディングを実装。</p>
+          <div class="meta">C++ · Lua · 2017年</div>
+          <p>Luaで書いたポイント＆クリックのアドベンチャーを動かすC++のホスト。C++のメソッドをLuaステートにバインドしています。</p>
+          <a class="btn btn-primary" href="projects/lua.html">詳しく見る</a>
         </div>
-        <div class="card note">
+        <div class="card" id="procedural-meshes">
+          <img src="assets/img/thumbs/procedural-mushroom.webp" alt="プロシージャルに生成したキノコのメッシュ" loading="lazy">
           <h3>プロシージャルメッシュ</h3>
-          <div class="meta">C# · Unity</div>
-          <p>コードで生成するメッシュ：メッシュビルダー、部屋、曲線を回転体メッシュにするスプラインエディター。</p>
+          <div class="meta">C# · Unity · 2016年</div>
+          <p>コードで生成するメッシュ：メッシュビルダー、2Dの断面を回転させる旋盤、インスペクターで形を決めるキノコ。</p>
+          <a class="btn btn-primary" href="projects/procedural-meshes.html">詳しく見る</a>
         </div>
-        <div class="card note">
+        <div class="card" id="tiled-levels">
+          <img src="assets/img/thumbs/tiled-level.webp" alt="Tiledから読み込んだレベル：柵、扉、NPC、プレイヤー" loading="lazy">
           <h3>Tiledレベルの読み込み</h3>
-          <div class="meta">C# · GXPEngine</div>
-          <p>Tiled（TMX）で作ったレベルをゲームに読み込む仕組みを、MVCで構成。</p>
+          <div class="meta">C# · GXPEngine · 2016年</div>
+          <p>Tiled（TMX）で作ったレベルを読み込み、オブジェクトのプロパティで鍵・扉・NPCを制御。モデル・ビュー・コントローラー構成の線エディターも作りました。</p>
+          <a class="btn btn-primary" href="projects/tiled-levels.html">詳しく見る</a>
         </div>
-        <div class="card note">
+        <div class="card" id="game-architecture">
+          <img src="assets/img/thumbs/components.webp" alt="コンポーネントのデモでPastryを追うBjorn" loading="lazy">
           <h3>ゲームアーキテクチャ</h3>
-          <div class="meta">C#</div>
-          <p>グラフィックス・入力・物理のマネージャーを分けた、コンポーネントベースのエンジンの中核部分。</p>
+          <div class="meta">C# · Windows Forms · 2016年</div>
+          <p>小さなゲームループを、型で取得するグラフィックス・入力・物理のコンポーネントに組み直したもの。</p>
+          <a class="btn btn-primary" href="projects/game-architecture.html">詳しく見る</a>
         </div>
-        <div class="card note">
+        <div class="card" id="editor-research">
+          <img src="assets/img/thumbs/editor-assetbrowser.webp" alt="ImGuiのアセットブラウザーの試作" loading="lazy">
           <h3>エディターの研究</h3>
-          <div class="meta">C++ · ImGui</div>
-          <p>エンジンのエディターの作り方の研究：即時モードと保持モードのUIの比較、アセットブラウザーとJSONシーンの試作。Tristeonのエディターにつながりました。</p>
+          <div class="meta">C++ · ImGui · Vulkan · 2017年</div>
+          <p>エンジンのエディターの作り方の研究：即時モードと保持モードのUIの比較、アセットブラウザーの試作、JSONシリアライズのための型の登録。のちにTristeonで使いました。</p>
+          <a class="btn btn-primary" href="projects/editor-research.html">詳しく見る</a>
         </div>
       </div>
 

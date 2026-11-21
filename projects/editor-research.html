@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>エディターの研究 — トリスタン・メッツ</title>
+  <meta name="description" content="エンジンのエディターの作り方の研究：即時モードと保持モードのUI、Vulkan上のImGuiによるアセットブラウザー、シリアライズのための型の登録。トリスタン・メッツ作。">
+  <link rel="canonical" href="https://tristanmetz.com/projects/editor-research.html">
+  <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/projects/editor-research.html">
+  <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/projects/editor-research.html">
+  <link rel="alternate" hreflang="x-default" href="https://tristanmetz.com/projects/editor-research.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="トリスタン・メッツ">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:url" content="https://tristanmetz.com/projects/editor-research.html">
+  <meta property="og:title" content="エディターの研究 — トリスタン・メッツ">
+  <meta property="og:description" content="エンジンのエディターの作り方の研究：即時モードと保持モードのUI、Vulkan上のImGuiによるアセットブラウザー、シリアライズのための型の登録。トリスタン・メッツ作。">
+  <meta property="og:image" content="https://tristanmetz.com/assets/img/og/editor-assetbrowser.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../assets/img/favicon.png">
+  <link rel="stylesheet" href="../assets/css/style.css?v=3b6ff8a3">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">履歴書</a>
+    <a href="../portfolio.html" aria-current="page">ポートフォリオ</a>
+    <a class="lang" href="../en/projects/editor-research.html" hreflang="en" lang="en">English</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>エディターの研究</h1>
+      <p class="lead">エンジンのエディター作りに関する研究と試作。即時モードと保持モードのUIの比較、Vulkan上のDear ImGuiによるアセットブラウザー、JSONシリアライズのための型の登録。成果は<a href="tristeon.html">Tristeon</a>のエディターに使いました。</p>
+      <p class="facts">C++ · Dear ImGui · Vulkan · 2017年 · 個人開発</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>即時モードと保持モード</h2>
+        <p>即時モードのUIでは、ウィジェットは毎フレーム呼ぶ関数で、描画と入力の結果の取得を一度に行います。パネルを隠すには呼ばなければよいだけです。保持モードのUIでは、ウィジェットを一度オブジェクトとして作り、コールバックやイベントで変更します。試作とTristeonのエディターは即時モードのライブラリDear ImGuiを使っています。</p>
+        <p>アセットブラウザーはプロジェクトのAssetsフォルダーを走査し、左にフォルダーツリー、右に選択したフォルダーの中身を表示します。</p>
+      </div>
+      <figure>
+        <img class="shot contain" src="../assets/img/editor-assetbrowser.webp" alt="アセットブラウザーの試作：左にフォルダーツリー、右にフォルダーの中身" width="732" height="412">
+        <figcaption>アセットブラウザーの試作（Vulkan上のDear ImGui、2017年のビルド）</figcaption>
+      </figure>
+    </section>
+
+    <hr>
+
+    <section class="detail flip">
+      <div>
+        <h2>型の登録</h2>
+        <p>C++にはリフレクションがないため、デシリアライザーは型名だけではオブジェクトを生成できません。シリアライズ可能な型はそれぞれ、名前をキーとして静的マップにファクトリー関数を登録し、デシリアライズ時は名前でファクトリーを引いて呼び出します。Tristeonのリフレクションも同じ構造です。</p>
+      </div>
+<pre><code><span class="k">template</span> &lt;<span class="k">typename</span> T&gt; Serializable* CreateInstance() { <span class="k">return</span> <span class="k">new</span> T; }
+
+<span class="k">struct</span> TypeRegister
+{
+    <span class="k">using</span> TypeMap = std::map&lt;std::string, Serializable*(*)()&gt;;
+
+    <span class="k">static</span> Serializable* createInstance(<span class="k">const</span> std::string&amp; s)
+    {
+        <span class="k">const</span> <span class="k">auto</span> it = getMap()-&gt;find(s);
+        <span class="k">if</span> (it == getMap()-&gt;end())
+            <span class="k">return</span> <span class="k">nullptr</span>;
+        <span class="k">return</span> it-&gt;second();
+    }
+
+    <span class="k">inline</span> <span class="k">static</span> TypeMap* getMap()
+    {
+        <span class="k">static</span> TypeMap instance;
+        <span class="k">return</span> &amp;instance;
+    }
+};
+
+<span class="k">template</span> &lt;<span class="k">typename</span> T&gt;
+<span class="k">struct</span> DerivedRegister : TypeRegister
+{
+    DerivedRegister(<span class="k">const</span> std::string&amp; s)
+    {
+        getMap()-&gt;emplace(s, &amp;CreateInstance&lt;T&gt;);
+    }
+};</code></pre>
+    </section>
+
+    <hr>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#editor-research">← ポートフォリオに戻る</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>

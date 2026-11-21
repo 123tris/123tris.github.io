@@ -408,66 +408,90 @@
       </div>
       <h3 class="sub-title">Smaller solo projects</h3>
       <p class="sub-lead">Projects I built on my own, each focused on one area of game programming.</p>
-      <div class="cards coursework">
-        <div class="card note">
+      <div class="cards">
+        <div class="card" id="game-physics">
+          <img src="../assets/img/thumbs/physics-slingshot.webp" alt="Game physics: the ball's red trail bouncing between the walls" loading="lazy">
           <h3>Game physics</h3>
-          <div class="meta">C# · GXPEngine</div>
-          <p>Ball physics from first principles: velocities, circular motion, and collisions and reflections against line segments.</p>
+          <div class="meta">C# · GXPEngine · 2016</div>
+          <p>A vector class written from scratch, used for a slingshot ball with gravity and wall bounces and a tank that steers and aims with vector angles.</p>
+          <a class="btn btn-primary" href="projects/game-physics.html">More info</a>
         </div>
-        <div class="card note">
+        <div class="card" id="sat-collision">
+          <img src="../assets/img/thumbs/sat-bounce.webp" alt="Two cubes in Unity, the upper one bouncing off the lower one" loading="lazy">
           <h3>SAT collision detection</h3>
-          <div class="meta">C# · Unity</div>
-          <p>A small physics manager with custom rigidbodies and separating-axis collision tests, outside Unity's own physics.</p>
+          <div class="meta">C# · Unity · 2016</div>
+          <p>Custom rigidbodies and box collisions based on the separating axis theorem, outside Unity's own physics.</p>
+          <a class="btn btn-primary" href="projects/sat-collision.html">More info</a>
         </div>
-        <div class="card note">
-          <h3>Octree broad phase</h3>
-          <div class="meta">C++ · our first engine</div>
-          <p>An octree that limits collision checks to nearby objects in our engine's physics, with a stress-test scene of random moving colliders.</p>
+        <div class="card" id="octree">
+          <img src="../assets/img/thumbs/octree.webp" alt="Octree nodes in green and colliders in red, drawn as debug lines" loading="lazy">
+          <h3>Octree</h3>
+          <div class="meta">C++ · our first engine · 2017</div>
+          <p>An octree for our engine's physics that stores each collider in the smallest node containing it, rebuilt every frame and drawn with debug lines.</p>
+          <a class="btn btn-primary" href="projects/octree.html">More info</a>
         </div>
-        <div class="card note">
+        <div class="card" id="game-ai">
+          <img src="../assets/img/thumbs/ai-woodcutter.webp" alt="Node graph with the home node, tree nodes and the agent" loading="lazy">
           <h3>Game AI</h3>
-          <div class="meta">C#</div>
-          <p>Agents driven by finite state machines, pathfinding on node graphs, and minimax players for Connect Four and Domineering.</p>
+          <div class="meta">C# · GXPEngine · 2016</div>
+          <p>A woodcutter agent driven by a finite state machine, with A* pathfinding on a node graph.</p>
+          <a class="btn btn-primary" href="projects/game-ai.html">More info</a>
         </div>
-        <div class="card note">
+        <div class="card" id="networking">
+          <img src="../assets/img/thumbs/chat.webp" alt="The Unity chat client with messages from three clients" loading="lazy">
           <h3>Networking</h3>
-          <div class="meta">C# · Unity</div>
-          <p>A TCP chat server that handles several clients at once, with a Unity client and its own packet serialization.</p>
+          <div class="meta">C# · Unity · 2016</div>
+          <p>A TCP chat server that relays length-prefixed messages between clients on separate threads, with a Unity client.</p>
+          <a class="btn btn-primary" href="projects/networking.html">More info</a>
         </div>
-        <div class="card note">
+        <div class="card" id="audio">
+          <img src="../assets/img/thumbs/synth-furelise.webp" alt="Waveform view and keyboard view while a MIDI file plays" loading="lazy">
           <h3>Audio programming</h3>
-          <div class="meta">C#</div>
-          <p>Synthesizers with polyphony, effects such as a bit crusher, low-pass filter and delay, and MIDI playback.</p>
+          <div class="meta">C# · GXPEngine · 2016</div>
+          <p>A polyphonic software synthesizer that renders MIDI files to WAV, with effect classes and waveform and keyboard views.</p>
+          <a class="btn btn-primary" href="projects/audio.html">More info</a>
         </div>
-        <div class="card note">
+        <div class="card" id="rendering">
+          <img src="../assets/img/thumbs/opengl-camera.webp" alt="Textured plane with a brick teapot and a rotating monkey" loading="lazy">
           <h3>3D rendering</h3>
-          <div class="meta">C++ · OpenGL</div>
-          <p>Materials, textures, lights and GLSL shaders on a small OpenGL framework.</p>
+          <div class="meta">C++ · OpenGL · 2016</div>
+          <p>Camera code on a small OpenGL engine: a look-at transform built from three vectors and a camera that circles its target.</p>
+          <a class="btn btn-primary" href="projects/rendering.html">More info</a>
         </div>
-        <div class="card note">
+        <div class="card" id="lua">
+          <img src="../assets/img/thumbs/lua-adventure.webp" alt="The dragon room of the Lua adventure" loading="lazy">
           <h3>Lua scripting</h3>
-          <div class="meta">C++ · Lua</div>
-          <p>Embedding Lua in C++, ending with Lua bindings for our first engine.</p>
+          <div class="meta">C++ · Lua · 2017</div>
+          <p>A C++ host that runs a point-and-click adventure written in Lua, with C++ methods bound to the Lua state.</p>
+          <a class="btn btn-primary" href="projects/lua.html">More info</a>
         </div>
-        <div class="card note">
+        <div class="card" id="procedural-meshes">
+          <img src="../assets/img/thumbs/procedural-mushroom.webp" alt="A procedurally generated mushroom mesh" loading="lazy">
           <h3>Procedural meshes</h3>
-          <div class="meta">C# · Unity</div>
-          <p>Meshes generated in code: a mesh builder, rooms, and a spline editor that turns a curve into a lathed mesh.</p>
+          <div class="meta">C# · Unity · 2016</div>
+          <p>Meshes generated in code: a mesh builder, a lathe that revolves a 2D profile, and a mushroom shaped from the inspector.</p>
+          <a class="btn btn-primary" href="projects/procedural-meshes.html">More info</a>
         </div>
-        <div class="card note">
+        <div class="card" id="tiled-levels">
+          <img src="../assets/img/thumbs/tiled-level.webp" alt="A level loaded from Tiled: fence, door, NPC and player" loading="lazy">
           <h3>Tiled level loading</h3>
-          <div class="meta">C# · GXPEngine</div>
-          <p>Loading levels made in Tiled (TMX) into a game, structured with model-view-controller.</p>
+          <div class="meta">C# · GXPEngine · 2016</div>
+          <p>Levels made in Tiled (TMX) loaded into a game, with object properties for keys, doors and NPCs, plus a model-view-controller line editor.</p>
+          <a class="btn btn-primary" href="projects/tiled-levels.html">More info</a>
         </div>
-        <div class="card note">
+        <div class="card" id="game-architecture">
+          <img src="../assets/img/thumbs/components.webp" alt="Bjorn chasing the pastry in the component demo" loading="lazy">
           <h3>Game architecture</h3>
-          <div class="meta">C#</div>
-          <p>A component-based engine core with separate graphics, input and physics managers.</p>
+          <div class="meta">C# · Windows Forms · 2016</div>
+          <p>A small game loop reorganised into graphics, input and physics components that are looked up by type.</p>
+          <a class="btn btn-primary" href="projects/game-architecture.html">More info</a>
         </div>
-        <div class="card note">
+        <div class="card" id="editor-research">
+          <img src="../assets/img/thumbs/editor-assetbrowser.webp" alt="The ImGui asset browser prototype" loading="lazy">
           <h3>Editor research</h3>
-          <div class="meta">C++ · ImGui</div>
-          <p>How engine editors are built: immediate versus retained mode UI, plus an asset browser and JSON scene prototypes that fed into Tristeon's editor.</p>
+          <div class="meta">C++ · ImGui · Vulkan · 2017</div>
+          <p>How engine editors are built: immediate versus retained mode UI, an asset browser prototype and type registration for JSON serialization, later used in Tristeon.</p>
+          <a class="btn btn-primary" href="projects/editor-research.html">More info</a>
         </div>
       </div>
     </section>

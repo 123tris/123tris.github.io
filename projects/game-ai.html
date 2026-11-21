@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ゲームAI — トリスタン・メッツ</title>
+  <meta name="description" content="有限ステートマシンで動く木こりのエージェントと、ノードグラフ上のA*による経路探索。トリスタン・メッツ作のC#。">
+  <link rel="canonical" href="https://tristanmetz.com/projects/game-ai.html">
+  <link rel="alternate" hreflang="ja" href="https://tristanmetz.com/projects/game-ai.html">
+  <link rel="alternate" hreflang="en" href="https://tristanmetz.com/en/projects/game-ai.html">
+  <link rel="alternate" hreflang="x-default" href="https://tristanmetz.com/projects/game-ai.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="トリスタン・メッツ">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:url" content="https://tristanmetz.com/projects/game-ai.html">
+  <meta property="og:title" content="ゲームAI — トリスタン・メッツ">
+  <meta property="og:description" content="有限ステートマシンで動く木こりのエージェントと、ノードグラフ上のA*による経路探索。トリスタン・メッツ作のC#。">
+  <meta property="og:image" content="https://tristanmetz.com/assets/img/og/ai-woodcutter.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../assets/img/favicon.png">
+  <link rel="stylesheet" href="../assets/css/style.css?v=3b6ff8a3">
+</head>
+<body>
+  <nav class="site-nav" aria-label="Main">
+    <a href="../index.html">履歴書</a>
+    <a href="../portfolio.html" aria-current="page">ポートフォリオ</a>
+    <a class="lang" href="../en/projects/game-ai.html" hreflang="en" lang="en">English</a>
+  </nav>
+
+  <header class="jumbo">
+    <div class="container">
+      <h1>ゲームAI</h1>
+      <p class="lead">ノードグラフ上で動く木こりのエージェント。次の行動は有限ステートマシンが決め、ノード間の経路はA*で求めます。</p>
+      <p class="facts">C# · GXPEngine · 2016年 · 個人開発</p>
+    </div>
+    <div class="hero-media">
+      <video class="shot" autoplay muted loop playsinline poster="../assets/img/ai-woodcutter.webp" width="960" height="540">
+        <source src="../assets/video/ai-woodcutter.mp4" type="video/mp4">
+      </video>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="detail">
+      <div>
+        <h2>ステートマシン</h2>
+        <p>各状態は独自のUpdateを持つクラスです。睡眠状態は、木が残っていれば探索状態に移ります。探索状態は最初に見つかった木のあるノードまでの経路を計画し、到着すると木を取り除いて帰宅状態に切り替えます。帰宅状態はノード0までの経路を計画し、到着すると再び探索状態に戻ります。</p>
+        <p>映像では、エージェント（小さな緑の四角）が家から水色の木のノードへ歩き、木を切って（ノードが青になる）家に戻ります。</p>
+      </div>
+<pre><code><span class="c">// SearchWoodState</span>
+<span class="k">public</span> <span class="k">override</span> <span class="k">void</span> Update()
+{
+    <span class="k">if</span> (_agent.lastNode == _treeTarget)
+    {
+        _treeTarget.hasTree = <span class="k">false</span>;
+        _treeTarget.SetColor(System.Drawing.Color.Blue);
+        _agent.SetState(<span class="k">new</span> ReturnHomeState(_agent, _world));
+    }
+}
+
+<span class="c">// ReturnHomeState</span>
+<span class="k">public</span> <span class="k">override</span> <span class="k">void</span> Update()
+{
+    <span class="k">if</span> (_agent.lastNode == home)
+    {
+        <span class="k">if</span> (_world.GetTreeCount() &gt; <span class="s">0</span>)
+            _agent.SetState(<span class="k">new</span> SearchWoodState(_agent, _world));
+    }
+}</code></pre>
+    </section>
+
+    <hr>
+
+    <section class="detail wide">
+      <div>
+        <h2>A*による経路探索</h2>
+        <p>オープンリストは、そこまでのコストとゴールまでの直線距離の和で並べ替えます。リストから取り出したノードは確定し、現在のノードを経由する方が安い場合は隣接ノードのコストと親を更新します。ゴールが取り出されたら親をたどってスタートまで経路を復元し、エージェントはそれをウェイポイントのリストとして受け取ります。</p>
+      </div>
+    </section>
+
+    <hr>
+    <p style="text-align:center"><a class="back" href="../portfolio.html#game-ai">← ポートフォリオに戻る</a></p>
+  </main>
+
+  <footer>© 2026 Tristan Metz</footer>
+</body>
+</html>
